@@ -14,7 +14,7 @@ function ProjectPageWrapper() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/sagomade-website">
       <SagoNavigation />
       <Routes>
         <Route path="/" element={<Home />} />
