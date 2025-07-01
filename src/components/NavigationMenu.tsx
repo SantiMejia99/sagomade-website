@@ -37,7 +37,7 @@ export default function SagoNavigation() {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3 group">
           <div className="h-auto w-25 bg-foreground flex items-center justify-center text-background font-semibold text-sm group-hover:scale-105 transition-transform duration-200">
-            <img src="/sagomade-website/sago-logo.png" alt="Sago Design Logo" />
+            <img src="/sago-logo.png" alt="Sago Design Logo" />
           </div>
         </Link>
 

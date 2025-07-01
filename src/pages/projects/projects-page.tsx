@@ -49,7 +49,7 @@ const projectData: Record<
     category: "Product Design",
     liveUrl: "https://consultation-notice.example.com",
     githubUrl: "https://github.com/example/consultation-notice",
-    images: ["/sagomade-website/projects/consultation-notice/notice-1.jpg", "/sagomade-website/projects/consultation-notice/notice-2.jpg", "/sagomade-website/projects/consultation-notice/notice-3.jpg", "/sagomade-website/projects/consultation-notice/notice-4.jpg"],
+    images: ["/projects/consultation-notice/notice-1.jpg", "/projects/consultation-notice/notice-2.jpg", "/projects/consultation-notice/notice-3.jpg", "/projects/consultation-notice/notice-4.jpg"],
   },
   "2": {
     title: "Espacio Ideal",
@@ -74,7 +74,7 @@ const projectData: Record<
     year: "2023",
     category: "Typeface Design",
     liveUrl: "https://espacio-ideal.example.com",
-    images: ["/sagomade-website/projects/espacio-ideal/espacio-ideal-1.jpg", "/sagomade-website/projects/espacio-ideal/espacio-ideal-2.jpg", "/sagomade-website/projects/espacio-ideal/espacio-ideal-3.png"],
+    images: ["/projects/espacio-ideal/espacio-ideal-1.jpg", "/projects/espacio-ideal/espacio-ideal-2.jpg", "/projects/espacio-ideal/espacio-ideal-3.png"],
   },
   "3": {
     title: "Wine Bottles",
@@ -99,7 +99,7 @@ const projectData: Record<
     year: "2024",
     category: "Package Design",
     liveUrl: "https://wine-bottles.example.com",
-    images: ["/sagomade-website/projects/wine-bottles/wine-bottle-1.png", "/sagomade-website/projects/wine-bottles/wine-bottle-2.png", "/sagomade-website/projects/wine-bottles/wine-bottle-3.jpg", "/sagomade-website/projects/wine-bottles/wine-bottle-4.jpg"],
+    images: ["/projects/wine-bottles/wine-bottle-1.png", "/projects/wine-bottles/wine-bottle-2.png", "/projects/wine-bottles/wine-bottle-3.jpg", "/projects/wine-bottles/wine-bottle-4.jpg"],
   },
   "4": {
     title: "Burlington Co.",
@@ -124,7 +124,7 @@ const projectData: Record<
     year: "2022",
     category: "Illustration & Package Design",
     liveUrl: "https://burlington-co.example.com",
-    images: ["/sagomade-website/projects/burlington-co/burlington-1.jpg", "/sagomade-website/projects/burlington-co/burlington-2.jpg", "/sagomade-website/projects/burlington-co/burlington-3.jpg", "/sagomade-website/projects/burlington-co/burlington-4.jpg", "/sagomade-website/projects/burlington-co/burlington-5.png", "/sagomade-website/projects/burlington-co/burlington-6.jpg"],
+    images: ["/projects/burlington-co/burlington-1.jpg", "/projects/burlington-co/burlington-2.jpg", "/projects/burlington-co/burlington-3.jpg", "/projects/burlington-co/burlington-4.jpg", "/projects/burlington-co/burlington-5.png", "/projects/burlington-co/burlington-6.jpg"],
   },
   "5": {
     title: "Autonomous Standing Desk",
@@ -149,7 +149,7 @@ const projectData: Record<
     year: "2023",
     category: "Product Design",
     githubUrl: "https://github.com/example/autonomous-desk",
-    images: ["/sagomade-website/projects/autonomous-desk/autonomous-1.jpg", "/sagomade-website/projects/autonomous-desk/autonomous-5.jpg", "/sagomade-website/projects/autonomous-desk/autonomous-3.jpg", "/sagomade-website/projects/autonomous-desk/autonomous-4.jpg"],
+    images: ["/projects/autonomous-desk/autonomous-1.jpg", "/projects/autonomous-desk/autonomous-5.jpg", "/projects/autonomous-desk/autonomous-3.jpg", "/projects/autonomous-desk/autonomous-4.jpg"],
   },
   "6": {
     title: "POSS Magazine",
@@ -174,7 +174,7 @@ const projectData: Record<
     year: "2023",
     category: "Digital Publishing",
     liveUrl: "https://poss-magazine.example.com",
-    images: ["/sagomade-website/projects/poss-magazine/poss-2.jpg", "/sagomade-website/projects/poss-magazine/poss-3.jpg"],
+    images: ["/projects/poss-magazine/poss-2.jpg", "/projects/poss-magazine/poss-3.jpg"],
   },
   "7": {
     title: "Run, Ride or Walk",
@@ -199,7 +199,7 @@ const projectData: Record<
     year: "2022",
     category: "Campaign & Apparel Design",
     liveUrl: "https://run-ride-walk.example.com",
-    images: ["/sagomade-website/projects/running-shirt/running-shirt-1.jpg", "/sagomade-website/projects/running-shirt/running-shirt-2.jpg", "/sagomade-website/projects/running-shirt/running-shirt-3.jpg", "/sagomade-website/projects/running-shirt/running-shirt-4.jpg", "/sagomade-website/projects/running-shirt/running-shirt-5.jpg", "/sagomade-website/projects/running-shirt/running-shirt-6.jpg"],
+    images: ["/projects/running-shirt/running-shirt-1.jpg", "/projects/running-shirt/running-shirt-2.jpg", "/projects/running-shirt/running-shirt-3.jpg", "/projects/running-shirt/running-shirt-4.jpg", "/projects/running-shirt/running-shirt-5.jpg", "/projects/running-shirt/running-shirt-6.jpg"],
   },
   "8": {
     title: "Green Standards Toolkit",
@@ -224,7 +224,7 @@ const projectData: Record<
     year: "2023",
     category: "Layout, 3D & Book Design",
     liveUrl: "https://green-standards.example.com",
-    images: ["/sagomade-website/projects/green-toolkit/green-toolkit-1.png", "/sagomade-website/projects/green-toolkit/green-toolkit-2.png", "/sagomade-website/projects/green-toolkit/green-toolkit-3.png", "/sagomade-website/projects/green-toolkit/green-toolkit-4.png"],
+    images: ["/projects/green-toolkit/green-toolkit-1.png", "/projects/green-toolkit/green-toolkit-2.png", "/projects/green-toolkit/green-toolkit-3.png", "/projects/green-toolkit/green-toolkit-4.png"],
   },
   "9": {
     title: "Tote Bag",
@@ -249,7 +249,7 @@ const projectData: Record<
     year: "2023",
     category: "E-commerce",
     liveUrl: "https://tote-bag.example.com",
-    images: ["/sagomade-website/projects/tote-bag/tote-1.jpg", "/sagomade-website/projects/tote-bag/tote-2.jpg", "/sagomade-website/projects/tote-bag/tote-3.jpg", "/sagomade-website/projects/tote-bag/tote-4.jpg"],
+    images: ["/projects/tote-bag/tote-1.jpg", "/projects/tote-bag/tote-2.jpg", "/projects/tote-bag/tote-3.jpg", "/projects/tote-bag/tote-4.jpg"],
   },
 }
 
