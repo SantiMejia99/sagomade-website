@@ -2,9 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function About() {
   const [activeAccomplishment, setActiveAccomplishment] = useState(0)
+  const [isExperienceExpanded, setIsExperienceExpanded] = useState(false);
+  const previewCount = 3;
 
   const experience = [
     {
@@ -14,6 +19,13 @@ export default function About() {
       description: "Leading development of scalable web applications and mentoring junior developers.",
       highlight: true,
     },
+        {
+      year: "2019 - Present",
+      role: "Design Contractor",
+      company: "Espacio Ideal",
+      description: "Developed features for multiple client projects using modern web technologies.",
+      highlight: false,
+    },     
     {
       year: "2022 - 2025",
       role: "Graphic Designer",
@@ -35,7 +47,16 @@ export default function About() {
       description: "Developed features for multiple client projects using modern web technologies.",
       highlight: false,
     },
-  ]
+        {
+      year: "2020 - 2021",
+      role: "Graphic Designer",
+      company: "Casavecchia Surfaces",
+      description: "Developed features for multiple client projects using modern web technologies.",
+      highlight: false,
+    },       
+  ];
+
+  const hasMoreExperience = experience.length > previewCount;
 
   const accomplishments = [
     { metric: "2023", label: "Featured on Magazine Blue Edition, Polemicalzine (Toronto, Ontario)" },
@@ -143,26 +164,95 @@ export default function About() {
 
         <div className="w-full h-px bg-border/30 my-16"></div>
 
-        {/* Experience Section */}
+        {/* Experience Section - Interactive */}
         <section className="mb-16">
           <h2 className="text-2xl font-black mb-16 tracking-tight text-muted-foreground">Experience</h2>
-          <div className="space-y-12 text-left">
-            {experience.map((exp, index) => (
-              <div key={index} className="group">
-                <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8">
+          <div className="space-y-8 text-left">
+            {/* Always visible first 3 experiences */}
+            {experience.slice(0, previewCount).map((exp, index) => (
+              <div key={index} className="group transition-all duration-300 ease-out">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 p-4 rounded-lg hover:bg-muted/20 transition-all duration-300 border border-transparent hover:border-border/30 hover:shadow-sm">
                   <div className="md:w-50 flex-shrink-0">
-                    <span className="text-sm text-muted-foreground/60 font-mono text-gray-400">{exp.year}</span>
+                    <span className="text-sm text-muted-foreground/60 font-mono text-gray-400 group-hover:text-muted-foreground/80 transition-colors duration-300">
+                      {exp.year}
+                    </span>
                   </div>
                   <div className="flex-1 space-y-2">
-                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors duration-200">
+                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors duration-300">
                       {exp.role}
                     </h3>
-                    <p className="text-muted-foreground font-bold">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground/80 font-thin leading-tight text-gray-400">{exp.description}</p>
+                    <p className="text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300">
+                      {exp.company}
+                    </p>
+                    <p className="text-sm text-muted-foreground/80 font-thin leading-tight text-gray-400 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                      {exp.description}
+                    </p>
                   </div>
                 </div>
               </div>
             ))}
+
+            {/* Collapsible additional experiences */}
+            {hasMoreExperience && (
+              <Collapsible open={isExperienceExpanded} onOpenChange={setIsExperienceExpanded}>
+                <CollapsibleContent className="space-y-8 overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+                  {experience.slice(previewCount).map((exp, index) => (
+                    <div
+                      key={index + previewCount}
+                      className="group transition-all duration-300 ease-out"
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animationFillMode: "both",
+                      }}
+                    >
+                      <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 p-4 rounded-lg hover:bg-muted/20 transition-all duration-300 border border-transparent hover:border-border/30 hover:shadow-sm">
+                        <div className="md:w-50 flex-shrink-0">
+                          <span className="text-sm text-muted-foreground/60 font-mono text-gray-400 group-hover:text-muted-foreground/80 transition-colors duration-300">
+                            {exp.year}
+                          </span>
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <h3 className="text-lg font-bold group-hover:text-primary transition-colors duration-300">
+                            {exp.role}
+                          </h3>
+                          <p className="text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300">
+                            {exp.company}
+                          </p>
+                          <p className="text-sm text-muted-foreground/80 font-thin leading-tight text-gray-400 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                            {exp.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </CollapsibleContent>
+                {/* Expand/Collapse Trigger */}
+                <div className="flex justify-center mt-12">
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="group flex items-center gap-3 text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-muted/30 px-8 py-4 rounded-full border border-border/30 hover:border-border/60 hover:shadow-md backdrop-blur-sm"
+                    >
+                      <span className="font-medium text-sm uppercase tracking-wider">
+                        {isExperienceExpanded ? "Show Less" : `Show ${experience.length - previewCount} More`}
+                      </span>
+                      <div className="relative">
+                        <ChevronDown
+                          className={`w-4 h-4 transition-all duration-500 ease-in-out ${
+                            isExperienceExpanded ? "rotate-180 opacity-0" : "rotate-0 opacity-100"
+                          }`}
+                        />
+                        <ChevronUp
+                          className={`w-4 h-4 absolute inset-0 transition-all duration-500 ease-in-out ${
+                            isExperienceExpanded ? "rotate-0 opacity-100" : "rotate-180 opacity-0"
+                          }`}
+                        />
+                      </div>
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+              </Collapsible>
+            )}
           </div>
         </section>
 

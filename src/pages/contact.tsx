@@ -51,7 +51,7 @@ export default function Contact() {
           <div className="space-y-8">
             <div className="space-y-6 text-sm leading-relaxed"></div>
             <p className="text-muted-foreground/70 font-thin">
-              Explore how we can to bring your ideas to life.
+              Explore how we can bring your ideas to life.
             </p>
           </div>
         </section>

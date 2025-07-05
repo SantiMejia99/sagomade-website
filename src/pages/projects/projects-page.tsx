@@ -47,8 +47,7 @@ const projectData: Record<
     team: "1 designer, 1 project manager",
     year: "2024",
     category: "Product Design",
-    liveUrl: "https://consultation-notice.example.com",
-    githubUrl: "https://github.com/example/consultation-notice",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/consultation-notice/notice-1.jpg", "/projects/consultation-notice/notice-2.jpg", "/projects/consultation-notice/notice-3.jpg", "/projects/consultation-notice/notice-4.jpg"],
   },
   "2": {
@@ -73,7 +72,7 @@ const projectData: Record<
     team: "1 designer",
     year: "2023",
     category: "Typeface Design",
-    liveUrl: "https://espacio-ideal.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/espacio-ideal/espacio-ideal-1.jpg", "/projects/espacio-ideal/espacio-ideal-2.jpg", "/projects/espacio-ideal/espacio-ideal-3.png"],
   },
   "3": {
@@ -98,7 +97,7 @@ const projectData: Record<
     team: "1 designer, 1 wine consultant",
     year: "2024",
     category: "Package Design",
-    liveUrl: "https://wine-bottles.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/wine-bottles/wine-bottle-1.png", "/projects/wine-bottles/wine-bottle-2.png", "/projects/wine-bottles/wine-bottle-3.jpg", "/projects/wine-bottles/wine-bottle-4.jpg"],
   },
   "4": {
@@ -123,7 +122,7 @@ const projectData: Record<
     team: "1 Designer",
     year: "2022",
     category: "Illustration & Package Design",
-    liveUrl: "https://burlington-co.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/burlington-co/burlington-1.jpg", "/projects/burlington-co/burlington-2.jpg", "/projects/burlington-co/burlington-3.jpg", "/projects/burlington-co/burlington-4.jpg", "/projects/burlington-co/burlington-5.png", "/projects/burlington-co/burlington-6.jpg"],
   },
   "5": {
@@ -148,6 +147,7 @@ const projectData: Record<
     team: "1 Designer, Autonomous Production Team",
     year: "2023",
     category: "Product Design",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     githubUrl: "https://github.com/example/autonomous-desk",
     images: ["/projects/autonomous-desk/autonomous-1.jpg", "/projects/autonomous-desk/autonomous-5.jpg", "/projects/autonomous-desk/autonomous-3.jpg", "/projects/autonomous-desk/autonomous-4.jpg"],
   },
@@ -173,7 +173,7 @@ const projectData: Record<
     team: "2 Designers",
     year: "2023",
     category: "Digital Publishing",
-    liveUrl: "https://poss-magazine.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/poss-magazine/poss-2.jpg", "/projects/poss-magazine/poss-3.jpg"],
   },
   "7": {
@@ -198,7 +198,7 @@ const projectData: Record<
     team: "1 Designer, 1 Coordinator",
     year: "2022",
     category: "Campaign & Apparel Design",
-    liveUrl: "https://run-ride-walk.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/running-shirt/running-shirt-1.jpg", "/projects/running-shirt/running-shirt-2.jpg", "/projects/running-shirt/running-shirt-3.jpg", "/projects/running-shirt/running-shirt-4.jpg", "/projects/running-shirt/running-shirt-5.jpg", "/projects/running-shirt/running-shirt-6.jpg"],
   },
   "8": {
@@ -223,7 +223,7 @@ const projectData: Record<
     team: "1 Urban Designer, 1 Architect",
     year: "2023",
     category: "Layout, 3D & Book Design",
-    liveUrl: "https://green-standards.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/green-toolkit/green-toolkit-1.png", "/projects/green-toolkit/green-toolkit-2.png", "/projects/green-toolkit/green-toolkit-3.png", "/projects/green-toolkit/green-toolkit-4.png"],
   },
   "9": {
@@ -248,7 +248,7 @@ const projectData: Record<
     team: "1 Designer, 1 Coordinator",
     year: "2023",
     category: "E-commerce",
-    liveUrl: "https://tote-bag.example.com",
+    liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     images: ["/projects/tote-bag/tote-1.jpg", "/projects/tote-bag/tote-2.jpg", "/projects/tote-bag/tote-3.jpg", "/projects/tote-bag/tote-4.jpg"],
   },
 }
