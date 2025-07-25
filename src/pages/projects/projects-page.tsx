@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { ArrowLeft, ExternalLink, Github, Calendar, Users, Palette } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
+import TypographyPlayground from '@/components/ui/font-playground';
 
 const projectData: Record<
   string,
@@ -231,7 +232,7 @@ const projectData: Record<
     content: "This is the Tote Bag project.",
     subtitle: "An illustrated tote design that embodies urbanism and company spirit as a festive keepsake.",
     description:
-      "Designed as part of the company’s Christmas gift package, this tote bag features an illustration that fuses intricate detailing with minimalism. Inspired by urbanism and city planning, the artwork reflects the company’s identity while maintaining a sophisticated and clean aesthetic through a restrained grey palette contrasting with the bag’s texture.",
+      "Designed as part of the company's Christmas gift package, this tote bag features an illustration that fuses intricate detailing with minimalism. Inspired by urbanism and city planning, the artwork reflects the company’s identity while maintaining a sophisticated and clean aesthetic through a restrained grey palette contrasting with the bag’s texture.",
     challenge:
       "To create an illustration that is visually compelling and thematically aligned with the company’s values, while ensuring the design works effectively on fabric and complements the tote’s material and festive context.",
     solution:
@@ -272,6 +273,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const project = projectData[id]
+  // Detect typography projects by category or title
+  const isTypographyProject = project.category?.toLowerCase().includes('type') || project.title?.toLowerCase().includes('typography')
 
   return (
     <div className="min-h-screen bg-background">
@@ -306,6 +309,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </div>
         </section>
+
+        {/* Typography Playground for Typography Projects */}
+        {isTypographyProject && (
+          <section className="mb-16">
+            <TypographyPlayground fontWeight="400" />
+          </section>
+        )}
 
         {/* Project Images */}
         <section className="mb-16">

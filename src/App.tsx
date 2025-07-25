@@ -7,6 +7,8 @@ import Contact from './pages/contact';
 import SagoNavigation from './components/NavigationMenu';
 import ProjectPage from './pages/projects/projects-page';
 import { useParams } from 'react-router-dom';
+import CustomCursor from './components/CustomCursor';
+
 function ProjectPageWrapper() {
   const params = useParams<{ id: string }>();
   return <ProjectPage params={{ id: params.id ?? '' }} />;
@@ -14,16 +16,19 @@ function ProjectPageWrapper() {
 
 function App() {
   return (
-    <Router basename="/">
-      <SagoNavigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/work" element={<Work />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/projects/:id" element={<ProjectPageWrapper />} />
-      </Routes>
-    </Router>
+    <>
+      <CustomCursor />
+      <Router basename="/">
+        <SagoNavigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/projects/:id" element={<ProjectPageWrapper />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
