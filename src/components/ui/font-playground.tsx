@@ -1,52 +1,67 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Settings, Shuffle } from 'lucide-react';
-
-// Import Espacio Ideal font
-import '/fonts/Espacio Ideal.otf';
+import { RotateCcw } from 'lucide-react';
 
 export default function TypographyPlayground({
     fontWeight = "400",
 }: {
     fontWeight?: string
 }) {
-    const [text, setText] = useState("Espacio Ideal");
-    const [textColor, setTextColor] = useState("#FFFFFF");
-    const [dynamicFontSize, setDynamicFontSize] = useState(80);
+    const [text, setText] = useState("ESPACIO IDEAL");
+    const [fontSize, setFontSize] = useState(100);
+    const [leading, setLeading] = useState(1.2);
+    const [columns, setColumns] = useState<'single' | 'double' | 'triple'>('single');
+    const [colorMode, setColorMode] = useState<'white' | 'black'>('white');
     const textRef = useRef<HTMLDivElement>(null);
-    const [isControlsOpen, setIsControlsOpen] = useState(false);
-
-    useEffect(() => {
-        const textLength = text.length;
-        let basesize = 80;
-        let CalculatedSize = basesize;
-        if (textLength <= 10) CalculatedSize = basesize;
-        else if (textLength <= 30) CalculatedSize = basesize * 0.8;
-        else if (textLength <= 60) CalculatedSize = basesize * 0.6;
-        else if (textLength <= 100) CalculatedSize = basesize * 0.45;
-        else if (textLength <= 200) CalculatedSize = basesize * 0.35;
-        else CalculatedSize = Math.max(CalculatedSize, 16);
-
-        setDynamicFontSize(CalculatedSize)
-    }, [text]);
 
     const previewStyle: React.CSSProperties = {
         fontFamily: 'Espacio Ideal, sans-serif',
         fontWeight: fontWeight,
-        fontSize: `${dynamicFontSize}px`,
-        color: textColor,
-        lineHeight: 1.1,
-        textTransform: "uppercase" as React.CSSProperties["textTransform"],
-        transition: "font-size 0.3s, color 0.2s", 
-        direction: 'ltr',
+        fontSize: `${fontSize}px`,
+        color: colorMode === 'white' ? '#ffffff' : '#000000',
+        lineHeight: leading,
+        transition: "font-size 0.3s, color 0.2s, line-height 0.3s", 
+        columnCount: columns === 'single' ? 1 : columns === 'double' ? 2 : 3,
+        columnGap: '2rem',
+        textAlign: 'center',
     }
 
-    const handleTextInput = () => {
-        if (textRef.current) setText(textRef.current.textContent || "");
+    const handleTextInput = (e: React.FormEvent<HTMLDivElement>) => {
+        let newText = e.currentTarget.textContent || "";
+        
+        // Remove numbers and convert to uppercase
+        newText = newText.replace(/[0-9]/g, '').toUpperCase();
+        
+        setText(newText);
+    }
+
+    // Restore caret position after text updates
+    useEffect(() => {
+        if (textRef.current) {
+            const el = textRef.current;
+            
+            // Move caret to end
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+
+            const sel = window.getSelection();
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    }, [text]);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        // Prevent number keys from being entered
+        if (e.key >= '0' && e.key <= '9') {
+            e.preventDefault();
+        }
     }
 
     const handleFocus = () => {
-        if (textRef.current && textRef.current.textContent === "Espacio Ideal") {
+        if (textRef.current && textRef.current.textContent === "ESPACIO IDEAL") {
             textRef.current.textContent = "";
             setText("");
         }
@@ -54,93 +69,175 @@ export default function TypographyPlayground({
 
     const handleBlur = () => {
         if (textRef.current && textRef.current.textContent?.trim() === "") {
-            textRef.current.textContent = "Espacio Ideal";
-            setText("Espacio Ideal");
+            textRef.current.textContent = "ESPACIO IDEAL";
+            setText("ESPACIO IDEAL");
         }
     }
 
-    const generateSampleText = () => {
-        const samples = [
-            "The quick brown fox jumps over the lazy dog", 
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 
-            "Aenean lacinia bibendum nulla sed consectetur", 
-            "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor", 
-            "Donec sed odio dui", "Donec id elit non mi porta gravida at eget metus", 
-            "Nullam id dolor id nibh ultricies vehicula ut id elit", 
-            "Cras mattis consectetur purus sit amet fermentum", 
-        ]
-        const selectedText = samples[Math.floor(Math.random() * samples.length)]
-        setText(selectedText)
-        if (textRef.current) textRef.current.textContent = selectedText
+    const resetToDefaults = () => {
+        setFontSize(100);
+        setLeading(1.2);
+        setColumns('single');
+        setColorMode('white');
     }
 
     return (
-        <div className='relative bg-muted/20 rounded-lg overflow-hidden'>
-            {/* Controls */}
-            <div className='bg-background/95 backdrop-blur px-6 py-4 flex items-center justify-between'>
-                <div className='flex items-center gap-2'>
-                    <span className='text-xs font-medium text-muted-foreground uppercase tracking-wider'>Color</span>
-                    <input 
-                        type="color"
-                        value={textColor}
-                        onChange={(e) => setTextColor(e.target.value)}
-                        className='w-8 h-8 rounded border border-input cursor-pointer'
-                    />
-                    <input 
-                        value={textColor}
-                        onChange={(e) => setTextColor(e.target.value)}
-                        placeholder='#ffffff'
-                        className='w-24 h-8 text-xs font-mono'
-                    />
-                </div>
-                <div className='flex items-center gap-3'>
+        <div className='space-y-2'>
+            {/* Top Control Panel - Outside the frame */}
+            <div className='px-6 py-4 bg-background/95 backdrop-blur-lg'>
+                <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-8'>
+                        
+                        <div className='flex items-center gap-4'>
+                            <span className='text-sm font-medium text-muted-foreground'>Size</span>
+                            <div className='flex items-center gap-2'>
+                                <div className='w-32 h-1 bg-muted/50 rounded-lg relative'>
+                                    <div 
+                                        className='absolute top-0 left-0 h-full bg-white/80 rounded-lg'
+                                        style={{ width: `${((fontSize - 20) / 180) * 100}%` }}
+                                    />
+                                    <div 
+                                        className='absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
+                                        style={{ left: `${((fontSize - 20) / 180) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                                    />
+                                    <input 
+                                        type="range"
+                                        min="20"
+                                        max="200"
+                                        value={fontSize}
+                                        onChange={(e) => setFontSize(Number(e.target.value))}
+                                        className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                                    />
+                                </div>
+                                <span className='text-xs text-muted-foreground w-8'>{fontSize}</span>
+                            </div>
+                        </div>
+
+                        <div className='flex items-center gap-4'>
+                            <span className='text-sm font-medium text-muted-foreground'>Leading</span>
+                            <div className='flex items-center gap-2'>
+                                <div className='w-32 h-1 bg-muted/50 rounded-lg relative'>
+                                    <div 
+                                        className='absolute top-0 left-0 h-full bg-white/80 rounded-lg'
+                                        style={{ width: `${((leading - 0.8) / 2.2) * 100}%` }}
+                                    />
+                                    <div 
+                                        className='absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
+                                        style={{ left: `${((leading - 0.8) / 2.2) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                                    />
+                                    <input 
+                                        type="range"
+                                        min="0.8"
+                                        max="3"
+                                        step="0.1"
+                                        value={leading}
+                                        onChange={(e) => setLeading(Number(e.target.value))}
+                                        className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                                    />
+                                </div>
+                                <span className='text-xs text-muted-foreground w-8'>{leading}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <Button
-                        onClick={generateSampleText}
-                        className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-x1 transition-all duration-300 group"
-                        size="sm"
-                    >
-                        <Shuffle className='w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-300' />
-                        Generate Sample
-                    </Button>
-                    <Button
-                        onClick={() => setIsControlsOpen(!isControlsOpen)}
+                        onClick={resetToDefaults}
                         variant="outline"
                         size="sm"
-                        className="transition-all duration-200 hover:bg-muted/50"
+                        className="text-xs"
                     >
-                        <Settings
-                            className={`w-4 h-4 mr-2 transition-transform duration-200 ${isControlsOpen ? "rotate-90" : ""}`}
-                        />
-                        Controls
+                        <RotateCcw className='w-3 h-3 mr-2' />
+                        Reset
                     </Button>
                 </div>
             </div>
-            {/* Preview */}
-            <div className='px-6 py-10'>
-                <div className='min-h-[40vh] flex items-center justify-center'>
+
+            {/* Main Text Display Area - The rounded frame */}
+            <div className='rounded-[80px] border border-gray-400/30 overflow-hidden'>
+                <div className={`min-h-[60vh] flex items-center justify-center p-8 transition-colors duration-300 ${
+                    colorMode === 'white' ? 'bg-black' : 'bg-white'
+                }`}>
                     <div
                         ref={textRef}
                         style={previewStyle}
-                        className='text-center break-words max-w-full leading-tight px-4 outline-none cursor-text'
+                        className='break-words max-w-full outline-none cursor-text'
                         contentEditable
                         suppressContentEditableWarning
                         spellCheck={false}
                         onInput={handleTextInput}
+                        onKeyDown={handleKeyDown}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        dir="ltr"
                     >
                         {text}
                     </div>
                 </div>
             </div>
-            {/* Footer Info */}
-            <div className='bg-background/95 backdrop-blur px-6 py-3'>
-                <div className='flex items-center justify-center gap-8 text-xs text-muted-foreground'>
-                    <span>Font: Espacio Ideal</span>
-                    <span>Size: {Math.round(dynamicFontSize)}</span>
-                    <span>Weight: {fontWeight}</span>
-                    <span>Characters: {text.length}</span>
+
+            {/* Bottom Control Panel - Outside the frame */}
+            <div className='px-8 py-4 bg-background/95 backdrop-blur-lg'>
+                <div className='grid grid-cols-2 gap-8'>
+                    {/* Text Controls */}
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-[auto_1fr] items-center gap-4">
+                            <span className="text-sm font-medium text-muted-foreground">Columns</span>
+                            <div className="flex items-center gap-2">
+                                {(['single', 'double', 'triple'] as const).map((col) => (
+                                    <Button
+                                        key={col}
+                                        variant={columns === col ? 'default' : 'ghost'}
+                                        size="sm"
+                                        onClick={() => setColumns(col)}
+                                        className={`h-6 px-3 text-xs transition-all duration-200 ${
+                                            columns === col
+                                                ? 'bg-white text-black hover:bg-white/90'
+                                                : 'hover:bg-white hover:text-black'
+                                        }`}
+                                    >
+                                        {col.charAt(0).toUpperCase() + col.slice(1)}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-[auto_1fr] items-center gap-4">
+                            <span className="text-sm font-medium text-muted-foreground">Color Mode</span>
+                            <div className="flex items-center gap-2">
+                                {(['white', 'black'] as const).map((mode) => (
+                                    <Button
+                                        key={mode}
+                                        variant={colorMode === mode ? 'default' : 'ghost'}
+                                        size="sm"
+                                        onClick={() => setColorMode(mode)}
+                                        className={`h-6 px-3 text-xs transition-all duration-200 ${
+                                            colorMode === mode
+                                                ? 'bg-white text-black hover:bg-white/90'
+                                                : 'hover:bg-white hover:text-black'
+                                        }`}
+                                    >
+                                        {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Font Info */}
+                    <div className="flex items-center justify-end">
+                        <div className="flex gap-4">
+                            <div className="flex flex-col items-center px-4 py-2 rounded-full bg-white/10 border border-gray-400/30 backdrop-blur-sm">
+                                <span className="text-xs text-muted-foreground/70">Font</span>
+                                <span className="text-sm font-semibold text-foreground">Espacio Ideal</span>
+                            </div>
+                            <div className="flex flex-col items-center px-4 py-2 rounded-full bg-white/10 border border-gray-400/30 backdrop-blur-sm">
+                                <span className="text-xs text-muted-foreground/70">Weight</span>
+                                <span className="text-sm font-semibold text-foreground">{fontWeight}</span>
+                            </div>
+                            <div className="flex flex-col items-center px-4 py-2 rounded-full bg-white/10 border border-gray-400/30 backdrop-blur-sm">
+                                <span className="text-xs text-muted-foreground/70">Chars</span>
+                                <span className="text-sm font-semibold text-foreground">{text.length}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

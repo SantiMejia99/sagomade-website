@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import projects from "../app/dashboard/data.json";
 
 const CARD_SIZE = 240; // px, including margin/gap
 const GRID_GAP = 24; // px
 const VISIBLE_ROWS = 5;
 const VISIBLE_COLS = 6;
-const BLUR_MAX = 8;
+const BLUR_MAX = 3;
 
 const gifMap: Record<number, string> = {
   1: "/gifs/consultation-notice.gif",
@@ -18,6 +17,7 @@ const gifMap: Record<number, string> = {
   7: "/gifs/running-shirt.gif",
   8: "/gifs/green-standards-toolkit.gif",
   9: "/gifs/tote-bag.gif",
+  10: "/gifs/paradigm-shift.gif",
 };
 
 function getProjectGif(id: number) {
@@ -38,7 +38,7 @@ function InfinitePlaygroundGrid() {
   const lastMove = useRef(Date.now());
   const lastPos = useRef(offset);
 
-  // Handle drag-to-pan
+  // Enhanced mouse drag-to-pan
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
       if (e.button !== 0) return;
@@ -46,55 +46,83 @@ function InfinitePlaygroundGrid() {
       dragStart.current = { x: e.clientX, y: e.clientY };
       lastOffset.current = offset;
       document.body.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
     }
+    
     function onPointerMove(e: PointerEvent) {
       if (!isDragging || !dragStart.current) return;
+      e.preventDefault();
+      
       const dx = e.clientX - dragStart.current.x;
       const dy = e.clientY - dragStart.current.y;
+      
       setOffset({
         x: lastOffset.current.x + dx,
         y: lastOffset.current.y + dy,
       });
-      // Blur based on speed
+      
+      // Enhanced motion blur based on mouse speed
       const now = Date.now();
-      const dist = Math.sqrt(
-        Math.pow(offset.x - lastPos.current.x, 2) +
-          Math.pow(offset.y - lastPos.current.y, 2)
-      );
+      const dist = Math.sqrt(dx * dx + dy * dy);
       const dt = now - lastMove.current;
       const speed = dist / (dt || 1);
-      setBlur(Math.min(BLUR_MAX, speed * 0.7));
+      setBlur(Math.min(BLUR_MAX, speed * 0.25));
       lastMove.current = now;
-      lastPos.current = offset;
+      lastPos.current = { x: dx, y: dy };
     }
+    
     function onPointerUp() {
       setIsDragging(false);
       dragStart.current = null;
       document.body.style.cursor = "";
+      document.body.style.userSelect = "";
       setTimeout(() => setBlur(0), 120);
     }
+    
+    // Handle mouse leave to prevent stuck dragging
+    function onMouseLeave() {
+      if (isDragging) {
+        setIsDragging(false);
+        dragStart.current = null;
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+        setTimeout(() => setBlur(0), 120);
+      }
+    }
+    
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("mouseleave", onMouseLeave);
+    
     return () => {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [isDragging, offset]);
 
-  // Handle wheel-to-pan and prevent browser navigation
+  // Enhanced wheel-to-pan with smooth scrolling
   useEffect(() => {
     function onWheel(e: WheelEvent) {
       e.preventDefault(); // Prevent browser navigation on horizontal swipe
+      
+      // Smooth wheel scrolling with momentum
+      const deltaX = e.deltaX * 1.2; // Slightly faster horizontal scrolling
+      const deltaY = e.deltaY * 1.2;
+      
       setOffset((prev) => ({
-        x: prev.x - e.deltaX,
-        y: prev.y - e.deltaY,
+        x: prev.x - deltaX,
+        y: prev.y - deltaY,
       }));
-      // Blur based on speed
-      setBlur(Math.min(BLUR_MAX, Math.abs(e.deltaX) + Math.abs(e.deltaY)));
-      setTimeout(() => setBlur(0), 120);
+      
+      // Enhanced motion blur based on wheel speed
+      const wheelSpeed = Math.abs(deltaX) + Math.abs(deltaY);
+      setBlur(Math.min(BLUR_MAX, wheelSpeed * 0.08));
+      setTimeout(() => setBlur(0), 100);
     }
+    
     const ref = containerRef.current;
     if (ref) ref.addEventListener("wheel", onWheel, { passive: false });
     return () => {
@@ -102,17 +130,64 @@ function InfinitePlaygroundGrid() {
     };
   }, []);
 
-  // Prevent browser navigation on touch events (for mobile)
+  // Enhanced touch handling for mobile
   useEffect(() => {
-    function onTouchMove(e: TouchEvent) {
-      e.preventDefault();
+    let touchStart = { x: 0, y: 0 };
+    let touchStartOffset = { x: 0, y: 0 };
+    let isTouching = false;
+
+    function onTouchStart(e: TouchEvent) {
+      if (e.touches.length !== 1) return;
+      isTouching = true;
+      touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      touchStartOffset = { ...offset };
+      document.body.style.cursor = "grabbing";
     }
+
+    function onTouchMove(e: TouchEvent) {
+      if (!isTouching || e.touches.length !== 1) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const dx = touch.clientX - touchStart.x;
+      const dy = touch.clientY - touchStart.y;
+      
+      setOffset({
+        x: touchStartOffset.x + dx,
+        y: touchStartOffset.y + dy,
+      });
+
+      // Motion blur for touch
+      const now = Date.now();
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const dt = now - lastMove.current;
+      const speed = dist / (dt || 1);
+      setBlur(Math.min(BLUR_MAX, speed * 0.2));
+      lastMove.current = now;
+      lastPos.current = { x: dx, y: dy };
+    }
+
+    function onTouchEnd() {
+      isTouching = false;
+      document.body.style.cursor = "";
+      setTimeout(() => setBlur(0), 100);
+    }
+
     const ref = containerRef.current;
-    if (ref) ref.addEventListener("touchmove", onTouchMove, { passive: false });
+    if (ref) {
+      ref.addEventListener("touchstart", onTouchStart, { passive: true });
+      ref.addEventListener("touchmove", onTouchMove, { passive: false });
+      ref.addEventListener("touchend", onTouchEnd, { passive: true });
+    }
+    
     return () => {
-      if (ref) ref.removeEventListener("touchmove", onTouchMove);
+      if (ref) {
+        ref.removeEventListener("touchstart", onTouchStart);
+        ref.removeEventListener("touchmove", onTouchMove);
+        ref.removeEventListener("touchend", onTouchEnd);
+      }
     };
-  }, []);
+  }, [offset]);
 
   // Calculate visible grid
   const cards: React.ReactNode[] = [];
@@ -125,9 +200,8 @@ function InfinitePlaygroundGrid() {
       const x = (startCol + col) * (CARD_SIZE + GRID_GAP) + offset.x;
       const y = (startRow + row) * (CARD_SIZE + GRID_GAP) + offset.y;
       cards.push(
-        <Link
+            <div
           key={`${row}-${col}-${project.id}`}
-          to={`/projects/${project.id}`}
           className="group absolute"
           style={{
             left: x,
@@ -137,9 +211,22 @@ function InfinitePlaygroundGrid() {
             transition: "box-shadow 0.3s, transform 0.3s",
             zIndex: 1,
           }}
+          onClick={() => {
+            // Only navigate if not dragging and not on touch devices
+            if (!isDragging && !('ontouchstart' in window)) {
+              window.location.href = `/projects/${project.id}`;
+            }
+          }}
+          onTouchEnd={(e) => {
+            // Handle touch navigation for mobile devices
+            if (!isDragging && 'ontouchstart' in window) {
+              e.preventDefault();
+              window.location.href = `/projects/${project.id}`;
+            }
+          }}
         >
           {/* Card content */}
-          <div className="relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md group-hover:scale-110 group-hover:z-10 group-hover:shadow-2xl transition-transform duration-300 cursor-pointer">
+          <div className="relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md group-hover:scale-110 group-hover:z-10 group-hover:shadow-2xl transition-transform duration-300 cursor-pointer touch-manipulation">
             {getProjectGif(project.id) ? (
               <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
@@ -157,9 +244,9 @@ function InfinitePlaygroundGrid() {
               </h3>
               <p className="text-md text-center opacity-90">{project.type}</p>
             </div>
-            <div className="absolute inset-0 border-transparent group-hover:border-white/30 rounded-xl transition-all duration-500" />
-          </div>
-        </Link>
+                            <div className="absolute inset-0 border-transparent group-hover:border-white/30 rounded-xl transition-all duration-500" />
+            </div>
+        </div>
       );
     }
   }
@@ -168,10 +255,17 @@ function InfinitePlaygroundGrid() {
     <div
       ref={containerRef}
       className="fixed inset-0 w-screen h-screen overflow-hidden select-none bg-background z-0"
-      style={{ filter: blur ? `blur(${blur}px)` : undefined, touchAction: "none" }}
+      style={{ 
+        filter: blur ? `blur(${blur}px)` : undefined, 
+        touchAction: "none",
+        transition: blur ? 'none' : 'filter 0.2s ease-out',
+        WebkitOverflowScrolling: 'touch',
+        overscrollBehavior: 'none',
+        cursor: isDragging ? 'grabbing' : 'grab'
+      }}
     >
       {cards}
-    </div>
+        </div>
   );
 }
 

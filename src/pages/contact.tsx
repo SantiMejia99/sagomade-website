@@ -45,7 +45,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto py-16 px-4 max-w-4xl">
+      <main className="container mx-auto pt-32 pb-16 px-4 max-w-4xl">
         {/* Hero Section */}
         <section className="mb-16">
           <div className="space-y-8">

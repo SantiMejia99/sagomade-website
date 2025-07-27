@@ -2,6 +2,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Import Espacio Ideal font */
+@font-face {
+  font-family: 'Espacio Ideal';
+  src: url('/fonts/Espacio Ideal.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

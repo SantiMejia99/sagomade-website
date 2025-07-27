@@ -77,7 +77,7 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto py-16 px-4 max-w-3xl">
+      <main className="container mx-auto pt-32 pb-16 px-4 max-w-3xl">
         {/* Philosophy Section - Ultra Minimalist */}
         <section className="mb-16">
           <div className="space-y-6 text-sm leading-relaxed">

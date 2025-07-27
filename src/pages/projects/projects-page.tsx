@@ -74,7 +74,7 @@ const projectData: Record<
     year: "2023",
     category: "Typeface Design",
     liveUrl: "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
-    images: ["/projects/espacio-ideal/espacio-ideal-1.jpg", "/projects/espacio-ideal/espacio-ideal-2.jpg", "/projects/espacio-ideal/espacio-ideal-3.png"],
+    images: ["/projects/espacio-ideal/espacio-ideal-1.jpg", "/projects/espacio-ideal/espacio-ideal-2.jpg"],
   },
   "3": {
     title: "Wine Bottles",
@@ -278,7 +278,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto py-16 px-4 max-w-4xl">
+      <main className="container mx-auto pt-32 pb-16 px-4 max-w-4xl">
         {/* Back Navigation */}
         <div className="mb-12">
           <Link
