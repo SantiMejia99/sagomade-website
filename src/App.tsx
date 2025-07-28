@@ -8,6 +8,7 @@ import SagoNavigation from './components/NavigationMenu';
 import ProjectPage from './pages/projects/projects-page';
 import { useParams } from 'react-router-dom';
 import CustomCursor from './components/CustomCursor';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 function ProjectPageWrapper() {
   const params = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ function ProjectPageWrapper() {
 function App() {
   return (
     <>
+      <SpeedInsights />
       <CustomCursor />
       <Router basename='/'>
         <SagoNavigation />
