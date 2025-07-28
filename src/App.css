@@ -41,6 +41,8 @@
   color: #888;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   cursor: none !important;
 }

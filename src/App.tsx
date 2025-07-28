@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home';
 import Work from './pages/work';
@@ -18,14 +18,14 @@ function App() {
   return (
     <>
       <CustomCursor />
-      <Router basename="/">
+      <Router basename='/'>
         <SagoNavigation />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/work" element={<Work />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/projects/:id" element={<ProjectPageWrapper />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/work' element={<Work />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/projects/:id' element={<ProjectPageWrapper />} />
         </Routes>
       </Router>
     </>

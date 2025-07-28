@@ -171,8 +171,6 @@ export default function SagoNavigation() {
               <span className="relative z-10 group-hover:text-primary transition-colors duration-300">{item.name}</span>
               {/* Animated underline */}
               <span className="absolute left-6 right-6 bottom-1 h-1 bg-primary/70 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 rounded-full" />
-              {/* Soft glow on hover */}
-              <span className="absolute inset-0 rounded-full pointer-events-none group-hover:shadow-[0_0_16px_4px_rgba(99,102,241,0.10)] transition-all duration-300" />
             </Link>
           ))}
         </nav>
@@ -183,7 +181,6 @@ export default function SagoNavigation() {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full bg-primary/10 hover:bg-primary/20 transition-all duration-300 hover:scale-105">
                 <Menu className="h-4 w-4 text-primary" />
-                <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent 
@@ -202,8 +199,8 @@ export default function SagoNavigation() {
             >
               <div className="flex flex-col pt-6 pb-6 max-h-[calc(100vh-2rem)] overflow-y-auto">
                 <div className="px-6 space-y-6">
-                  {/* Mobile Work Section */}
-                  <div className="space-y-4">
+                  {/* Mobile Work Button */}
+                  <div className="space-y-1 mb-4 mt-4 pb-4 relative">
                     <button
                       onClick={() => setMobileWorkOpen(!mobileWorkOpen)}
                       className="flex items-center justify-between w-full text-sm text-foreground font-semibold hover:text-primary transition-colors duration-300 group px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20"
@@ -211,6 +208,7 @@ export default function SagoNavigation() {
                       <span>WORK</span>
                       <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${mobileWorkOpen ? 'rotate-180' : 'rotate-0'}`} />
                     </button>
+                    <div className="absolute left-0 right-0 w-full h-px bg-gray-400/30 bottom-0" style={{ left: '-1.5rem', right: '-1.5rem', width: 'calc(100% + 3rem)' }} />
                     
                     <div className={`overflow-hidden transition-all duration-300 ${mobileWorkOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
                       <div className="grid grid-cols-1 gap-3 pl-4">
@@ -240,20 +238,18 @@ export default function SagoNavigation() {
                           <div className="h-7 w-7 flex items-center justify-center flex-shrink-0 bg-primary/20 rounded-full">
                             <span className="text-xs font-bold">ALL</span>
                           </div>
-                          <span className="text-left w-full transition-all duration-300 font-medium text-sm">View All Work</span>
                         </Link>
                       </div>
                     </div>
                   </div>
 
-                  {/* Mobile About & Contact */}
-                  <div className="space-y-4">
-                    {navItems.map((item, index) => (
+                  {/* Mobile About & Contact Buttons */}
+                  <div className="space-y-1">
+                    {navItems.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}
-                        className="flex items-center justify-between w-full text-sm text-foreground font-semibold hover:text-primary transition-colors duration-300 group px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 animate-in slide-in-from-right"
-                        style={{ animationDelay: `${(projects.length + 1 + index) * 50}ms` }}
+                        className="flex pb-2 px-2 py-2 rounded-xl w-full transition-all duration-200 hover:text-primary hover:scale-105 focus:outline-none group animate-in slide-in-from-right bg-primary/10 hover:bg-primary/20"
                         onClick={() => setIsOpen(false)}
                       >
                         <span>{item.name}</span>

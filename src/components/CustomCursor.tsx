@@ -3,27 +3,95 @@ import React, { useEffect, useRef, useState } from 'react';
 const CustomCursor: React.FC = () => {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovering, setHovering] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Hide the default cursor globally
-    const originalCursor = document.body.style.cursor;
-    document.body.style.cursor = 'none';
+    // Check if device is desktop (not touch device)
+    const checkDesktop = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isDesktopSize = window.innerWidth > 768; // md breakpoint
+      setIsDesktop(!isTouchDevice && isDesktopSize);
+    };
+
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    
     return () => {
-      document.body.style.cursor = originalCursor;
+      window.removeEventListener('resize', checkDesktop);
     };
   }, []);
 
   useEffect(() => {
+    if (!isDesktop) return;
+
+    // Add global CSS to hide cursor
+    const style = document.createElement('style');
+    style.textContent = `
+      * {
+        cursor: none !important;
+      }
+      *:hover {
+        cursor: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [isDesktop]);
+
+  useEffect(() => {
+    // Only hide cursor on desktop
+    if (!isDesktop) return;
+    
+    // Show cursor when leaving the window
+    const showCursor = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        * {
+          cursor: auto !important;
+        }
+      `;
+      style.id = 'cursor-restore';
+      document.head.appendChild(style);
+    };
+
+    // Hide cursor when entering the window
+    const hideCursor = () => {
+      const existingStyle = document.getElementById('cursor-restore');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
+    
+    // Show cursor when leaving the window
+    document.addEventListener('mouseleave', showCursor);
+    // Hide cursor when entering the window
+    document.addEventListener('mouseenter', hideCursor);
+    
+    return () => {
+      showCursor();
+      document.removeEventListener('mouseenter', hideCursor);
+      document.removeEventListener('mouseleave', showCursor);
+    };
+  }, [isDesktop]);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+    
     const move = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', move);
     return () => window.removeEventListener('mousemove', move);
-  }, []);
+  }, [isDesktop]);
 
   // Listen for hover on interactive elements
   useEffect(() => {
+    if (!isDesktop) return;
+    
     const checkHover = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
       if (el.closest('a,button,[role="button"],.menu-item')) {
@@ -34,7 +102,10 @@ const CustomCursor: React.FC = () => {
     };
     window.addEventListener('mousemove', checkHover);
     return () => window.removeEventListener('mousemove', checkHover);
-  }, []);
+  }, [isDesktop]);
+
+  // Don't render on mobile/tablet
+  if (!isDesktop) return null;
 
   return (
     <div
@@ -43,15 +114,15 @@ const CustomCursor: React.FC = () => {
         position: 'fixed',
         left: pos.x,
         top: pos.y,
-        width: hovering ? 56 : 36,
-        height: hovering ? 56 : 36,
+        width: hovering ? 100 : 20,
+        height: hovering ? 100 : 20,
         background: 'white',
         borderRadius: '50%',
         pointerEvents: 'none',
         transform: 'translate(-50%, -50%)',
         zIndex: 9999,
         mixBlendMode: 'exclusion',
-        transition: 'width 0.2s, height 0.2s, background 0.2s',
+        transition: 'width 0.3s ease-out, height 0.3s ease-out, background 0.2s',
         boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
         opacity: 0.95,
       }}
