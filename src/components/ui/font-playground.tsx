@@ -187,9 +187,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     size='sm'
                     onClick={() => setColumns(col)}
                     className={`h-6 px-3 text-xs transition-all duration-200 ${
-                      columns === col
-                        ? 'bg-white text-black hover:bg-white/90'
-                        : 'hover:bg-white hover:text-black'
+                      columns === col ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'
                     }`}
                   >
                     {col.charAt(0).toUpperCase() + col.slice(1)}
@@ -207,9 +205,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     size='sm'
                     onClick={() => setColorMode(mode)}
                     className={`h-6 px-3 text-xs transition-all duration-200 ${
-                      colorMode === mode
-                        ? 'bg-white text-black hover:bg-white/90'
-                        : 'hover:bg-white hover:text-black'
+                      colorMode === mode ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'
                     }`}
                   >
                     {mode.charAt(0).toUpperCase() + mode.slice(1)}

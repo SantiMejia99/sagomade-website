@@ -16,7 +16,7 @@ const CustomCursor: React.FC = () => {
 
     checkDesktop();
     window.addEventListener('resize', checkDesktop);
-    
+
     return () => {
       window.removeEventListener('resize', checkDesktop);
     };
@@ -45,7 +45,7 @@ const CustomCursor: React.FC = () => {
   useEffect(() => {
     // Only hide cursor on desktop
     if (!isDesktop) return;
-    
+
     // Show cursor when leaving the window
     const showCursor = () => {
       const style = document.createElement('style');
@@ -65,12 +65,12 @@ const CustomCursor: React.FC = () => {
         document.head.removeChild(existingStyle);
       }
     };
-    
+
     // Show cursor when leaving the window
     document.addEventListener('mouseleave', showCursor);
     // Hide cursor when entering the window
     document.addEventListener('mouseenter', hideCursor);
-    
+
     return () => {
       showCursor();
       document.removeEventListener('mouseenter', hideCursor);
@@ -80,7 +80,7 @@ const CustomCursor: React.FC = () => {
 
   useEffect(() => {
     if (!isDesktop) return;
-    
+
     const move = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY });
     };
@@ -91,7 +91,7 @@ const CustomCursor: React.FC = () => {
   // Listen for hover on interactive elements
   useEffect(() => {
     if (!isDesktop) return;
-    
+
     const checkHover = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
       if (el.closest('a,button,[role="button"],.menu-item')) {
@@ -130,4 +130,4 @@ const CustomCursor: React.FC = () => {
   );
 };
 
-export default CustomCursor; 
+export default CustomCursor;

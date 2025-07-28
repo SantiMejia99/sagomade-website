@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import projects from "../app/dashboard/data.json";
+import React, { useEffect, useRef, useState } from 'react';
+import projects from '../app/dashboard/data.json';
 
 const CARD_SIZE = 240; // px, including margin/gap
 const GRID_GAP = 24; // px
@@ -8,16 +8,16 @@ const VISIBLE_COLS = 6;
 const BLUR_MAX = 3;
 
 const gifMap: Record<number, string> = {
-  1: "/gifs/consultation-notice.gif",
-  2: "/gifs/espacio-ideal.gif",
-  3: "/gifs/wine-bottles.gif",
-  4: "/gifs/beer-bottles.gif",
-  5: "/gifs/standing-desk.gif",
-  6: "/gifs/poss-magazine.gif",
-  7: "/gifs/running-shirt.gif",
-  8: "/gifs/green-standards-toolkit.gif",
-  9: "/gifs/tote-bag.gif",
-  10: "/gifs/paradigm-shift.gif",
+  1: '/gifs/consultation-notice.gif',
+  2: '/gifs/espacio-ideal.gif',
+  3: '/gifs/wine-bottles.gif',
+  4: '/gifs/beer-bottles.gif',
+  5: '/gifs/standing-desk.gif',
+  6: '/gifs/poss-magazine.gif',
+  7: '/gifs/running-shirt.gif',
+  8: '/gifs/green-standards-toolkit.gif',
+  9: '/gifs/tote-bag.gif',
+  10: '/gifs/paradigm-shift.gif',
 };
 
 function getProjectGif(id: number) {
@@ -45,22 +45,22 @@ function InfinitePlaygroundGrid() {
       setIsDragging(true);
       dragStart.current = { x: e.clientX, y: e.clientY };
       lastOffset.current = offset;
-      document.body.style.cursor = "grabbing";
-      document.body.style.userSelect = "none";
+      document.body.style.cursor = 'grabbing';
+      document.body.style.userSelect = 'none';
     }
-    
+
     function onPointerMove(e: PointerEvent) {
       if (!isDragging || !dragStart.current) return;
       e.preventDefault();
-      
+
       const dx = e.clientX - dragStart.current.x;
       const dy = e.clientY - dragStart.current.y;
-      
+
       setOffset({
         x: lastOffset.current.x + dx,
         y: lastOffset.current.y + dy,
       });
-      
+
       // Enhanced motion blur based on mouse speed
       const now = Date.now();
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -70,36 +70,36 @@ function InfinitePlaygroundGrid() {
       lastMove.current = now;
       lastPos.current = { x: dx, y: dy };
     }
-    
+
     function onPointerUp() {
       setIsDragging(false);
       dragStart.current = null;
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
       setTimeout(() => setBlur(0), 120);
     }
-    
+
     // Handle mouse leave to prevent stuck dragging
     function onMouseLeave() {
       if (isDragging) {
         setIsDragging(false);
         dragStart.current = null;
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
         setTimeout(() => setBlur(0), 120);
       }
     }
-    
-    window.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("mouseleave", onMouseLeave);
-    
+
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('mouseleave', onMouseLeave);
+
     return () => {
-      window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('mouseleave', onMouseLeave);
     };
   }, [isDragging, offset]);
 
@@ -107,26 +107,26 @@ function InfinitePlaygroundGrid() {
   useEffect(() => {
     function onWheel(e: WheelEvent) {
       e.preventDefault(); // Prevent browser navigation on horizontal swipe
-      
+
       // Smooth wheel scrolling with momentum
       const deltaX = e.deltaX * 1.2; // Slightly faster horizontal scrolling
       const deltaY = e.deltaY * 1.2;
-      
-      setOffset((prev) => ({
+
+      setOffset(prev => ({
         x: prev.x - deltaX,
         y: prev.y - deltaY,
       }));
-      
+
       // Enhanced motion blur based on wheel speed
       const wheelSpeed = Math.abs(deltaX) + Math.abs(deltaY);
       setBlur(Math.min(BLUR_MAX, wheelSpeed * 0.08));
       setTimeout(() => setBlur(0), 100);
     }
-    
+
     const ref = containerRef.current;
-    if (ref) ref.addEventListener("wheel", onWheel, { passive: false });
+    if (ref) ref.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      if (ref) ref.removeEventListener("wheel", onWheel);
+      if (ref) ref.removeEventListener('wheel', onWheel);
     };
   }, []);
 
@@ -141,17 +141,17 @@ function InfinitePlaygroundGrid() {
       isTouching = true;
       touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       touchStartOffset = { ...offset };
-      document.body.style.cursor = "grabbing";
+      document.body.style.cursor = 'grabbing';
     }
 
     function onTouchMove(e: TouchEvent) {
       if (!isTouching || e.touches.length !== 1) return;
       e.preventDefault();
-      
+
       const touch = e.touches[0];
       const dx = touch.clientX - touchStart.x;
       const dy = touch.clientY - touchStart.y;
-      
+
       setOffset({
         x: touchStartOffset.x + dx,
         y: touchStartOffset.y + dy,
@@ -169,22 +169,22 @@ function InfinitePlaygroundGrid() {
 
     function onTouchEnd() {
       isTouching = false;
-      document.body.style.cursor = "";
+      document.body.style.cursor = '';
       setTimeout(() => setBlur(0), 100);
     }
 
     const ref = containerRef.current;
     if (ref) {
-      ref.addEventListener("touchstart", onTouchStart, { passive: true });
-      ref.addEventListener("touchmove", onTouchMove, { passive: false });
-      ref.addEventListener("touchend", onTouchEnd, { passive: true });
+      ref.addEventListener('touchstart', onTouchStart, { passive: true });
+      ref.addEventListener('touchmove', onTouchMove, { passive: false });
+      ref.addEventListener('touchend', onTouchEnd, { passive: true });
     }
-    
+
     return () => {
       if (ref) {
-        ref.removeEventListener("touchstart", onTouchStart);
-        ref.removeEventListener("touchmove", onTouchMove);
-        ref.removeEventListener("touchend", onTouchEnd);
+        ref.removeEventListener('touchstart', onTouchStart);
+        ref.removeEventListener('touchmove', onTouchMove);
+        ref.removeEventListener('touchend', onTouchEnd);
       }
     };
   }, [offset]);
@@ -200,15 +200,15 @@ function InfinitePlaygroundGrid() {
       const x = (startCol + col) * (CARD_SIZE + GRID_GAP) + offset.x;
       const y = (startRow + row) * (CARD_SIZE + GRID_GAP) + offset.y;
       cards.push(
-            <div
+        <div
           key={`${row}-${col}-${project.id}`}
-          className="group absolute"
+          className='group absolute'
           style={{
             left: x,
             top: y,
             width: CARD_SIZE,
             height: CARD_SIZE,
-            transition: "box-shadow 0.3s, transform 0.3s",
+            transition: 'box-shadow 0.3s, transform 0.3s',
             zIndex: 1,
           }}
           onClick={() => {
@@ -217,7 +217,7 @@ function InfinitePlaygroundGrid() {
               window.location.href = `/projects/${project.id}`;
             }
           }}
-          onTouchEnd={(e) => {
+          onTouchEnd={e => {
             // Handle touch navigation for mobile devices
             if (!isDragging && 'ontouchstart' in window) {
               e.preventDefault();
@@ -226,26 +226,24 @@ function InfinitePlaygroundGrid() {
           }}
         >
           {/* Card content */}
-          <div className="relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md group-hover:scale-110 group-hover:z-10 group-hover:shadow-2xl transition-transform duration-300 cursor-pointer touch-manipulation">
+          <div className='relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md group-hover:scale-110 group-hover:z-10 group-hover:shadow-2xl transition-transform duration-300 cursor-pointer touch-manipulation'>
             {getProjectGif(project.id) ? (
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                className='absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110'
                 style={{ backgroundImage: `url(${getProjectGif(project.id)})` }}
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60">
-                {project.header?.[0] || "?"}
+              <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
+                {project.header?.[0] || '?'}
               </div>
             )}
-            <div className="absolute inset-0 group-hover:bg-black/40 transition-all duration-500" />
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-6 opacity-0 group-hover:opacity-100 transition-all duration-400">
-              <h3 className="text-xl font-black mb-2 text-center">
-                {project.header}
-              </h3>
-              <p className="text-md text-center opacity-90">{project.type}</p>
+            <div className='absolute inset-0 group-hover:bg-black/40 transition-all duration-500' />
+            <div className='absolute inset-0 flex flex-col justify-center items-center text-white p-6 opacity-0 group-hover:opacity-100 transition-all duration-400'>
+              <h3 className='text-xl font-black mb-2 text-center'>{project.header}</h3>
+              <p className='text-md text-center opacity-90'>{project.type}</p>
             </div>
-                            <div className="absolute inset-0 border-transparent group-hover:border-white/30 rounded-xl transition-all duration-500" />
-            </div>
+            <div className='absolute inset-0 border-transparent group-hover:border-white/30 rounded-xl transition-all duration-500' />
+          </div>
         </div>
       );
     }
@@ -254,24 +252,24 @@ function InfinitePlaygroundGrid() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-screen h-screen overflow-hidden select-none bg-background z-0"
-      style={{ 
-        filter: blur ? `blur(${blur}px)` : undefined, 
-        touchAction: "none",
+      className='fixed inset-0 w-screen h-screen overflow-hidden select-none bg-background z-0'
+      style={{
+        filter: blur ? `blur(${blur}px)` : undefined,
+        touchAction: 'none',
         transition: blur ? 'none' : 'filter 0.2s ease-out',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',
-        cursor: isDragging ? 'grabbing' : 'grab'
+        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {cards}
-        </div>
+    </div>
   );
 }
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className='min-h-screen bg-background'>
       <InfinitePlaygroundGrid />
     </div>
   );
