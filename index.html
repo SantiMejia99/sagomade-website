@@ -5,6 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sago Made</title>
+
+    <!-- Preload critical resources to prevent CLS -->
+    <link rel="preload" href="/fonts/Espacio Ideal.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/sago-logo.png" as="image" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Prevent layout shift during font loading -->
+    <style>
+      /* Font fallback to prevent layout shift */
+      body {
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
+      }
+
+      /* Reserve space for images */
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

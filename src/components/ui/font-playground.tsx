@@ -151,9 +151,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
       {/* Main Text Display Area - The rounded frame */}
       <div className='rounded-[80px] border border-gray-400/30 overflow-hidden'>
         <div
-          className={`min-h-[60vh] flex items-center justify-center p-8 transition-colors duration-300 ${
-            colorMode === 'white' ? 'bg-black' : 'bg-white'
-          }`}
+          className={`min-h-[60vh] flex items-center justify-center p-8 transition-colors duration-300 ${colorMode === 'white' ? 'bg-black' : 'bg-white'}`}
         >
           <div
             ref={textRef}
@@ -186,9 +184,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     variant={columns === col ? 'default' : 'ghost'}
                     size='sm'
                     onClick={() => setColumns(col)}
-                    className={`h-6 px-3 text-xs transition-all duration-200 ${
-                      columns === col ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'
-                    }`}
+                    className={`h-6 px-3 text-xs transition-all duration-200 ${columns === col ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'}`}
                   >
                     {col.charAt(0).toUpperCase() + col.slice(1)}
                   </Button>
@@ -204,9 +200,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     variant={colorMode === mode ? 'default' : 'ghost'}
                     size='sm'
                     onClick={() => setColorMode(mode)}
-                    className={`h-6 px-3 text-xs transition-all duration-200 ${
-                      colorMode === mode ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'
-                    }`}
+                    className={`h-6 px-3 text-xs transition-all duration-200 ${colorMode === mode ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white hover:text-black'}`}
                   >
                     {mode.charAt(0).toUpperCase() + mode.slice(1)}
                   </Button>

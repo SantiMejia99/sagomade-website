@@ -125,9 +125,15 @@ export default function SagoNavigation() {
               <div
                 onMouseEnter={cancelCloseWorkMenu}
                 onMouseLeave={closeWorkMenu}
-                className={`absolute top-full left-1/2 -translate-x-1/2 w-96 bg-background/95 backdrop-blur-2xl border border-gray-400/30 rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 mt-6 ${
-                  workMenuOpen ? 'opacity-100 max-h-[600px] translate-y-0' : 'opacity-0 max-h-0 -translate-y-2'
+                className={`absolute top-full left-1/2 -translate-x-1/2 w-96 rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 mt-6 ${
+                  workMenuOpen ? 'opacity-100 max-h-[600px] translate-y-0 scale-100' : 'opacity-0 max-h-0 -translate-y-2 scale-95'
                 }`}
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(156, 163, 175, 0.3)',
+                }}
               >
                 <div className='p-6 pb-6'>
                   <div className='grid grid-cols-2 gap-3'>

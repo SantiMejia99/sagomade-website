@@ -58,6 +58,76 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Performance optimizations for smooth scrolling */
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift for images */
+img[loading='lazy'] {
+  content-visibility: auto;
+}
+
+/* Ensure consistent aspect ratios */
+.aspect-\[4\/3\] {
+  aspect-ratio: 4/3;
+}
+
+.aspect-\[1\/1\] {
+  aspect-ratio: 1/1;
+}
+
+/* Optimize for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hardware acceleration for smooth scrolling */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  transform: translateZ(0);
+}
+
+/* Optimize video rendering for smooth playback */
+video {
+  transform: translateZ(0);
+  will-change: auto;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+}
+
+/* Ensure videos play smoothly without buffering */
+video[preload="auto"] {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Prevent video buffering during scroll */
+video {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 a {
   color: #ffffff;
   text-decoration: inherit;

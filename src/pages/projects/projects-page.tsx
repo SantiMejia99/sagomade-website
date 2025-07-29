@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, ExternalLink, Github, Calendar, Users, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Image } from '@/components/ui/image';
 import TypographyPlayground from '@/components/ui/font-playground';
 
 const projectData: Record<
@@ -29,7 +30,8 @@ const projectData: Record<
   '1': {
     title: 'Consultation Notice',
     content: 'This is the Consultation Notice project.',
-    subtitle: 'The project effectively incorporates key elements of urban design, including adherence to AODA standards for accessibility and inclusivity.',
+    subtitle:
+      'The project effectively incorporates key elements of urban design, including adherence to AODA standards for accessibility and inclusivity.',
     description:
       'Designed for clarity, accessibility, and engagement, fully AODA-compliant. The layout features a custom map, interactive QR codes, and a modular template for efficient rollout. Printed on recyclable stock, the piece balances environmental responsibility with thoughtful, user-focused design.',
     challenge:
@@ -59,7 +61,8 @@ const projectData: Record<
   '2': {
     title: 'Espacio Ideal',
     content: 'This is the Espacio Ideal project.',
-    subtitle: 'Architectural form meets typographic precision in a custom typeface designed for expressive identity systems.',
+    subtitle:
+      'Architectural form meets typographic precision in a custom typeface designed for expressive identity systems.',
     description:
       'Espacio Ideal explores typography through the lens of architecture, where thin, sharp forms contrast with bold structural elements to create a refined and visually dynamic type system. Designed for logos and small-scale titles, the font merges architectural detail with typographic artistry.',
     challenge:
@@ -114,7 +117,8 @@ const projectData: Record<
   '4': {
     title: 'Burlington Co.',
     content: 'This is the Burlington Co. project.',
-    subtitle: 'A bold fusion of hand-drawn artistry and accessible design, celebrating local spirit through expressive beer labels.',
+    subtitle:
+      'A bold fusion of hand-drawn artistry and accessible design, celebrating local spirit through expressive beer labels.',
     description:
       'A series of beer can labels created for a local brewery in Stratford, Ontario. Rooted in the town’s character and natural surroundings, the labels combine expressive linework with hand-drawn illustrations of native animals—infused with a personal illustrative style inspired by Alberto Giacometti. The result is a distinctive blend of local identity and fine art sensibility.',
     challenge:
@@ -202,8 +206,10 @@ const projectData: Record<
   '7': {
     title: 'Run, Ride or Walk',
     content: 'This is the Run, Ride or Walk project.',
-    subtitle: 'A campaign identity built where movement, form, and color come together in a sole-inspired visual system.',
-    description: 'Comprehensive fitness platform that gamifies exercise routines, tracks multiple activity types, and builds community through challenges and social features.',
+    subtitle:
+      'A campaign identity built where movement, form, and color come together in a sole-inspired visual system.',
+    description:
+      'Comprehensive fitness platform that gamifies exercise routines, tracks multiple activity types, and builds community through challenges and social features.',
     challenge:
       ' To develop a visual identity that captures the campaign’s themes of activity and connection, while ensuring that the design was impactful both as a printed shirt and a standalone logo across various applications.',
     solution:
@@ -233,7 +239,8 @@ const projectData: Record<
   '8': {
     title: 'Green Standards Toolkit',
     content: 'This is the Green Standards Toolkit project.',
-    subtitle: 'An accessible and visually unified toolkit designed to guide sustainable city planning with clarity and impact.',
+    subtitle:
+      'An accessible and visually unified toolkit designed to guide sustainable city planning with clarity and impact.',
     description:
       'The Green Standards Toolkit is a comprehensive planning document aimed at promoting sustainable urban development through clear, engaging design. Developed in collaboration with a senior urban designer and an architect, the toolkit communicates complex ideas through layered diagrams, strategic layouts, and accessible formatting, all aligned with AODA standards to ensure broad usability.',
     challenge:
@@ -283,7 +290,12 @@ const projectData: Record<
     year: '2023',
     category: 'E-commerce',
     liveUrl: 'https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link',
-    images: ['/projects/tote-bag/tote-1.jpg', '/projects/tote-bag/tote-2.jpg', '/projects/tote-bag/tote-3.jpg', '/projects/tote-bag/tote-4.jpg'],
+    images: [
+      '/projects/tote-bag/tote-1.jpg',
+      '/projects/tote-bag/tote-2.jpg',
+      '/projects/tote-bag/tote-3.jpg',
+      '/projects/tote-bag/tote-4.jpg',
+    ],
   },
 };
 
@@ -295,10 +307,17 @@ interface ProjectPageProps {
 
 export default function ProjectPage({ params }: ProjectPageProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [, setIsLoading] = useState(true);
   const { id } = params;
 
   useEffect(() => {
-    setIsVisible(true);
+    // Simulate loading time to prevent layout shift
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      setIsVisible(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   if (!id || !projectData[id]) {
@@ -307,21 +326,27 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   const project = projectData[id];
   // Detect typography projects by category or title
-  const isTypographyProject = project.category?.toLowerCase().includes('type') || project.title?.toLowerCase().includes('typography');
+  const isTypographyProject =
+    project.category?.toLowerCase().includes('type') || project.title?.toLowerCase().includes('typography');
 
   return (
     <div className='min-h-screen bg-background'>
       <main className='container mx-auto pt-32 pb-16 px-4 max-w-4xl'>
         {/* Back Navigation */}
         <div className='mb-12'>
-          <Link to='/' className='inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-200 group'>
+          <Link
+            to='/'
+            className='inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-200 group'
+          >
             <ArrowLeft className='h-4 w-4 transform group-hover:-translate-x-1 transition-transform duration-200' />
             <span>Back to work</span>
           </Link>
         </div>
 
         {/* Hero Section */}
-        <section className={`mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <section
+          className={`mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
           <div className='space-y-8'>
             <div className='space-y-4'>
               <div className='inline-flex items-center space-x-3 text-sm text-muted-foreground'>
@@ -331,7 +356,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
               </div>
               <h1 className='text-5xl md:text-6xl font-black tracking-tight'>{project.title}</h1>
               <div className='w-16 h-px bg-foreground/20'></div>
-              <p className='inline-flex text-sm text-muted-foreground text-muted-foreground/70 font-thin leading-relaxed max-w-3xl'>{project.subtitle}</p>
+              <p className='inline-flex text-sm text-muted-foreground text-muted-foreground/70 font-thin leading-relaxed max-w-3xl'>
+                {project.subtitle}
+              </p>
             </div>
           </div>
         </section>
@@ -347,9 +374,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         <section className='mb-16'>
           <div className='grid md:grid-cols-2 gap-2'>
             {project.images.map((image, index) => (
-              <div key={index} className='aspect-auto bg-muted rounded-lg overflow-hidden'>
-                <img src={image || '/placeholder.svg'} alt={`${project.title} screenshot ${index + 1}`} className='w-full h-full object-cover' />
-              </div>
+              <Image
+                key={index}
+                src={image || '/placeholder.svg'}
+                alt={`${project.title} screenshot ${index + 1}`}
+                aspectRatio='4/3'
+                className='w-full h-full object-cover'
+              />
             ))}
           </div>
         </section>
@@ -391,7 +422,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 <h3 className='text-md uppercase text-muted-foreground/60 mb-4 font-black'>Technologies</h3>
                 <div className='flex flex-wrap gap-2'>
                   {project.technologies.map(tech => (
-                    <span key={tech} className='px-2 py-1 bg-muted/50 text-muted-foreground text-sm rounded-full text-gray-400'>
+                    <span
+                      key={tech}
+                      className='px-2 py-1 bg-muted/50 text-muted-foreground text-sm rounded-full text-gray-400'
+                    >
                       {tech}
                     </span>
                   ))}

@@ -91,8 +91,9 @@ export default function About() {
         <section className='mb-16'>
           <div className='space-y-6 text-sm leading-relaxed'>
             <p className='text-muted-foreground/70 font-thin'>
-              My work explores the diverse relationship between urban ideologies and minimalism. Throughout design, I aspire to depict colour, imagery, and forms aesthetically
-              pleasing, providing innovative solutions tailored to elevate.
+              My work explores the diverse relationship between urban ideologies and minimalism. Throughout design, I
+              aspire to depict colour, imagery, and forms aesthetically pleasing, providing innovative solutions
+              tailored to elevate.
             </p>
           </div>
         </section>
@@ -109,7 +110,10 @@ export default function About() {
               <h3 className='text-md uppercase tracking-wider text-muted-foreground/60 mb-6 font-bold'>Technical</h3>
               <div className='text-sm grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 text-gray-400'>
                 {['React', 'TypeScript', 'Javascript', 'HTML', 'CSS', 'Tailwind CSS'].map(skill => (
-                  <div key={skill} className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'>
+                  <div
+                    key={skill}
+                    className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'
+                  >
                     {skill}
                   </div>
                 ))}
@@ -120,8 +124,18 @@ export default function About() {
             <div>
               <h3 className='text-md uppercase tracking-wider text-muted-foreground/60 mb-6 font-bold'>Design</h3>
               <div className='text-sm grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 text-gray-400'>
-                {['Figma', 'Adobe Creative Suite', 'UI/UX Design', 'Prototyping', 'Design Systems', 'User Research'].map(skill => (
-                  <div key={skill} className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'>
+                {[
+                  'Figma',
+                  'Adobe Creative Suite',
+                  'UI/UX Design',
+                  'Prototyping',
+                  'Design Systems',
+                  'User Research',
+                ].map(skill => (
+                  <div
+                    key={skill}
+                    className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'
+                  >
                     {skill}
                   </div>
                 ))}
@@ -132,8 +146,18 @@ export default function About() {
             <div>
               <h3 className='text-md uppercase tracking-wider text-muted-foreground/60 mb-6 font-bold'>Leadership</h3>
               <div className='text-sm grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 text-gray-400'>
-                {['Team Management', 'Technical Mentoring', 'Code Review', 'Agile Methodologies', 'Project Management', 'Strategic Planning'].map(skill => (
-                  <div key={skill} className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'>
+                {[
+                  'Team Management',
+                  'Technical Mentoring',
+                  'Code Review',
+                  'Agile Methodologies',
+                  'Project Management',
+                  'Strategic Planning',
+                ].map(skill => (
+                  <div
+                    key={skill}
+                    className='text-foreground/70 hover:text-foreground transition-colors duration-200 cursor-default'
+                  >
                     {skill}
                   </div>
                 ))}
@@ -153,11 +177,17 @@ export default function About() {
               <div key={index} className='group transition-all duration-300 ease-out'>
                 <div className='flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 p-4 rounded-lg hover:bg-muted/20 transition-all duration-300 border border-transparent hover:border-border/30 hover:shadow-sm'>
                   <div className='md:w-50 flex-shrink-0'>
-                    <span className='text-sm text-muted-foreground/60 font-mono text-gray-400 group-hover:text-muted-foreground/80 transition-colors duration-300'>{exp.year}</span>
+                    <span className='text-sm text-muted-foreground/60 font-mono text-gray-400 group-hover:text-muted-foreground/80 transition-colors duration-300'>
+                      {exp.year}
+                    </span>
                   </div>
                   <div className='flex-1 space-y-2'>
-                    <h3 className='text-lg font-bold group-hover:text-primary transition-colors duration-300'>{exp.role}</h3>
-                    <p className='text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300'>{exp.company}</p>
+                    <h3 className='text-lg font-bold group-hover:text-primary transition-colors duration-300'>
+                      {exp.role}
+                    </h3>
+                    <p className='text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300'>
+                      {exp.company}
+                    </p>
                     <p className='text-sm text-muted-foreground/80 font-thin leading-tight text-gray-400 group-hover:text-muted-foreground/90 transition-colors duration-300'>
                       {exp.description}
                     </p>
@@ -186,8 +216,12 @@ export default function About() {
                           </span>
                         </div>
                         <div className='flex-1 space-y-2'>
-                          <h3 className='text-lg font-bold group-hover:text-primary transition-colors duration-300'>{exp.role}</h3>
-                          <p className='text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300'>{exp.company}</p>
+                          <h3 className='text-lg font-bold group-hover:text-primary transition-colors duration-300'>
+                            {exp.role}
+                          </h3>
+                          <p className='text-muted-foreground font-bold group-hover:text-foreground/80 transition-colors duration-300'>
+                            {exp.company}
+                          </p>
                           <p className='text-sm text-muted-foreground/80 font-thin leading-tight text-gray-400 group-hover:text-muted-foreground/90 transition-colors duration-300'>
                             {exp.description}
                           </p>
@@ -203,9 +237,13 @@ export default function About() {
                       variant='ghost'
                       className='group flex items-center gap-3 text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-muted/30 px-8 py-4 rounded-full border border-border/30 hover:border-border/60 hover:shadow-md backdrop-blur-sm'
                     >
-                      <span className='font-medium text-sm uppercase tracking-wider'>{isExperienceExpanded ? 'Show Less' : `Show ${experience.length - previewCount} More`}</span>
+                      <span className='font-medium text-sm uppercase tracking-wider'>
+                        {isExperienceExpanded ? 'Show Less' : `Show ${experience.length - previewCount} More`}
+                      </span>
                       <div className='relative'>
-                        <ChevronDown className={`w-4 h-4 transition-all duration-500 ease-in-out ${isExperienceExpanded ? 'rotate-180 opacity-0' : 'rotate-0 opacity-100'}`} />
+                        <ChevronDown
+                          className={`w-4 h-4 transition-all duration-500 ease-in-out ${isExperienceExpanded ? 'rotate-180 opacity-0' : 'rotate-0 opacity-100'}`}
+                        />
                         <ChevronUp
                           className={`w-4 h-4 absolute inset-0 transition-all duration-500 ease-in-out ${isExperienceExpanded ? 'rotate-0 opacity-100' : 'rotate-180 opacity-0'}`}
                         />
@@ -225,7 +263,10 @@ export default function About() {
           <h2 className='text-2xl font-black mb-16 tracking-tight text-muted-foreground'>Accomplishments</h2>
           <div className='grid grid-cols-2 md:grid-cols-3 gap-8'>
             {accomplishments.map((accomplishment, index) => (
-              <div key={index} className={`text-center space-y-2 transition-all duration-300 ${activeAccomplishment === index ? 'opacity-100' : 'opacity-60'}`}>
+              <div
+                key={index}
+                className={`text-center space-y-2 transition-all duration-300 ${activeAccomplishment === index ? 'opacity-100' : 'opacity-60'}`}
+              >
                 <div className='text-2xl md:text-2xl font-bold text-foreground'>{accomplishment.metric}</div>
                 <div className='text-sm text-muted-foreground/70 font-thin leading-tight'>{accomplishment.label}</div>
               </div>
@@ -238,7 +279,12 @@ export default function About() {
         {/* Contact CTA - Minimal */}
         <section className='text-center my-16'>
           <div className='inline-flex items-center gap-3 text-foreground hover:text-primary transition-colors duration-200 cursor-pointer group'>
-            <Link to='https://drive.google.com/file/d/1AENiTRBaTQ8Zh-0m69mwTVa0pGqXcDI0/view?usp=sharing' className='font-bold' target='_blank' rel='noopener noreferrer'>
+            <Link
+              to='https://drive.google.com/file/d/1AENiTRBaTQ8Zh-0m69mwTVa0pGqXcDI0/view?usp=sharing'
+              className='font-bold'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               DOWNLOAD CV
             </Link>
             <span className='transform group-hover:translate-x-1 transition-transform duration-200'>→</span>
