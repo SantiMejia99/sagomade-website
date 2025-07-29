@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
 
 const CARD_SIZE = 240; // px, including margin/gap
@@ -29,6 +30,7 @@ function mod(n: number, m: number) {
 }
 
 function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> }) {
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -61,7 +63,6 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
       setIsDragging(true);
       dragStart.current = { x: e.clientX, y: e.clientY };
       lastOffset.current = offset;
-      document.body.style.cursor = 'grabbing';
       document.body.style.userSelect = 'none';
     }
 
@@ -81,7 +82,6 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     function onPointerUp() {
       setIsDragging(false);
       dragStart.current = null;
-      document.body.style.cursor = '';
       document.body.style.userSelect = '';
     }
 
@@ -89,7 +89,6 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
       if (isDragging) {
         setIsDragging(false);
         dragStart.current = null;
-        document.body.style.cursor = '';
         document.body.style.userSelect = '';
       }
     }
@@ -215,13 +214,13 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
               }}
               onClick={() => {
                 if (!isDragging && !('ontouchstart' in window)) {
-                  window.location.href = `/projects/${project.id}`;
+                  navigate(`/projects/${project.id}`);
                 }
               }}
               onTouchEnd={e => {
                 if (!isDragging && 'ontouchstart' in window) {
                   e.preventDefault();
-                  window.location.href = `/projects/${project.id}`;
+                  navigate(`/projects/${project.id}`);
                 }
               }}
             >
@@ -272,7 +271,6 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         touchAction: 'none',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',
-        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {cards}

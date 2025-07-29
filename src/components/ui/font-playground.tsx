@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { RotateCcw } from 'lucide-react';
 
 export default function TypographyPlayground({ fontWeight = '400' }: { fontWeight?: string }) {
-  const [text, setText] = useState('ESPACIO IDEAL');
+  const [text, setText] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
   const [fontSize, setFontSize] = useState(100);
   const [leading, setLeading] = useState(1.2);
   const [columns, setColumns] = useState<'single' | 'double' | 'triple'>('single');
@@ -22,6 +23,10 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
     textAlign: 'center',
   };
 
+  const placeholderStyle: React.CSSProperties = {
+    ...previewStyle,
+  };
+
   const handleTextInput = (e: React.FormEvent<HTMLDivElement>) => {
     let newText = e.currentTarget.textContent || '';
 
@@ -33,7 +38,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
 
   // Restore caret position after text updates
   useEffect(() => {
-    if (textRef.current) {
+    if (textRef.current && isFocused) {
       const el = textRef.current;
 
       // Move caret to end
@@ -47,7 +52,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
         sel.addRange(range);
       }
     }
-  }, [text]);
+  }, [text, isFocused]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     // Prevent number keys from being entered
@@ -57,20 +62,15 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
   };
 
   const handleFocus = () => {
-    if (textRef.current && textRef.current.textContent === 'ESPACIO IDEAL') {
-      textRef.current.textContent = '';
-      setText('');
-    }
+    setIsFocused(true);
   };
 
   const handleBlur = () => {
-    if (textRef.current && textRef.current.textContent?.trim() === '') {
-      textRef.current.textContent = 'ESPACIO IDEAL';
-      setText('ESPACIO IDEAL');
-    }
+    setIsFocused(false);
   };
 
   const resetToDefaults = () => {
+    setText('');
     setFontSize(100);
     setLeading(1.2);
     setColumns('single');
@@ -92,9 +92,10 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     style={{ width: `${((fontSize - 20) / 180) * 100}%` }}
                   />
                   <div
-                    className='absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
+                    className='absolute w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
                     style={{
                       left: `${((fontSize - 20) / 180) * 100}%`,
+                      top: '50%',
                       transform: 'translate(-50%, -50%)',
                     }}
                   />
@@ -120,9 +121,10 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
                     style={{ width: `${((leading - 0.8) / 2.2) * 100}%` }}
                   />
                   <div
-                    className='absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
+                    className='absolute w-3 h-3 bg-white rounded-full border border-gray-400/50 shadow-sm cursor-pointer'
                     style={{
                       left: `${((leading - 0.8) / 2.2) * 100}%`,
+                      top: '50%',
                       transform: 'translate(-50%, -50%)',
                     }}
                   />
@@ -155,7 +157,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
         >
           <div
             ref={textRef}
-            style={previewStyle}
+            style={text ? previewStyle : placeholderStyle}
             className='break-words max-w-full outline-none cursor-text'
             contentEditable
             suppressContentEditableWarning
@@ -165,7 +167,7 @@ export default function TypographyPlayground({ fontWeight = '400' }: { fontWeigh
             onFocus={handleFocus}
             onBlur={handleBlur}
           >
-            {text}
+            {text || 'ESPACIO IDEAL'}
           </div>
         </div>
       </div>

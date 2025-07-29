@@ -104,6 +104,45 @@ const CustomCursor: React.FC = () => {
     return () => window.removeEventListener('mousemove', checkHover);
   }, [isDesktop]);
 
+  // Override any cursor styles set by other components
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    const overrideCursorStyles = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        * {
+          cursor: none !important;
+        }
+        *:hover {
+          cursor: none !important;
+        }
+        body {
+          cursor: none !important;
+        }
+        body:hover {
+          cursor: none !important;
+        }
+      `;
+      style.id = 'custom-cursor-override';
+      document.head.appendChild(style);
+    };
+
+    // Apply the override
+    overrideCursorStyles();
+
+    // Re-apply the override periodically to ensure it stays active
+    const interval = setInterval(overrideCursorStyles, 100);
+
+    return () => {
+      clearInterval(interval);
+      const existingStyle = document.getElementById('custom-cursor-override');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
+  }, [isDesktop]);
+
   // Don't render on mobile/tablet
   if (!isDesktop) return null;
 

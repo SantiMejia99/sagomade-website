@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { ArrowLeft, ExternalLink, Github, Calendar, Users, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -297,6 +296,35 @@ const projectData: Record<
       '/projects/tote-bag/tote-4.jpg',
     ],
   },
+  '10': {
+    title: 'Paradigm Shift',
+    content: 'This is the Paradigm Shift project.',
+    subtitle: 'A bold poster design that challenges conventional thinking through striking visual communication.',
+    description:
+      'A conceptual poster design that explores themes of transformation and change through bold typography and dynamic visual elements. The design serves as both a statement piece and a catalyst for reflection on shifting perspectives and new ways of thinking.',
+    challenge:
+      'To create a visually impactful poster that communicates the concept of paradigm shifts while maintaining strong readability and visual hierarchy. The design needed to be both thought-provoking and aesthetically compelling.',
+    solution:
+      'Developed a bold typographic approach using custom letterforms and dynamic composition. Utilized contrasting elements and strategic use of negative space to create visual tension and interest. The color palette was carefully chosen to enhance readability while supporting the conceptual theme.',
+    results: [
+      'A striking poster design that effectively communicates complex conceptual ideas',
+      'Strong visual impact achieved through bold typography and composition',
+      'Successful balance between artistic expression and functional communication',
+      'Positive reception for its ability to provoke thought and discussion',
+    ],
+    technologies: ['Adobe Photoshop', 'Adobe Illustrator', 'Adobe InDesign'],
+    role: 'Lead Designer',
+    duration: '1 month',
+    team: '1 Designer',
+    year: '2023',
+    category: 'Poster Design',
+    liveUrl: 'https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link',
+    images: [
+      '/projects/consultation-notice/notice-1.jpg',
+      '/projects/consultation-notice/notice-2.jpg',
+      '/projects/consultation-notice/notice-3.jpg',
+    ],
+  },
 };
 
 interface ProjectPageProps {
@@ -309,6 +337,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [, setIsLoading] = useState(true);
   const { id } = params;
+  
+  console.log('ProjectPage rendered with id:', id);
+  console.log('Available project IDs:', Object.keys(projectData));
+  console.log('Project data for this id:', projectData[id]);
 
   useEffect(() => {
     // Simulate loading time to prevent layout shift
