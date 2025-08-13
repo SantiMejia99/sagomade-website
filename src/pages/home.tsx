@@ -19,11 +19,9 @@ const gifMap: Record<number, string> = {
   10: '/optimized/paradigm-shift.webp',
 };
 
-
 function getProjectGif(id: number) {
   return gifMap[id] || undefined;
 }
-
 
 function mod(n: number, m: number) {
   return ((n % m) + m) % m;
@@ -36,6 +34,10 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
   const lastOffset = useRef(offset);
+  const targetOffsetRef = useRef(offset);
+  const rafIdRef = useRef<number | null>(null);
+  const animatingRef = useRef(false);
+  const offsetRef = useRef(offset);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   // Debounced window resize handler
@@ -56,6 +58,49 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     };
   }, []);
 
+  // Track latest committed offset
+  useEffect(() => {
+    offsetRef.current = offset;
+  }, [offset]);
+
+  // Gooey/eased animation loop toward target offset
+  const ensureAnimLoop = () => {
+    if (animatingRef.current) return;
+    animatingRef.current = true;
+
+    const step = () => {
+      const current = offsetRef.current;
+      const target = targetOffsetRef.current;
+      const dx = target.x - current.x;
+      const dy = target.y - current.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < 0.3) {
+        // Snap and stop
+        if (dx !== 0 || dy !== 0) {
+          const snapped = { x: target.x, y: target.y };
+          offsetRef.current = snapped;
+          setOffset(snapped);
+        }
+        animatingRef.current = false;
+        rafIdRef.current = null;
+        return;
+      }
+
+      // Smaller alpha => more gooey smoothing
+      const alpha = 0.15;
+      const next = {
+        x: current.x + dx * alpha,
+        y: current.y + dy * alpha,
+      };
+      offsetRef.current = next;
+      setOffset(next);
+      rafIdRef.current = requestAnimationFrame(step);
+    };
+
+    rafIdRef.current = requestAnimationFrame(step);
+  };
+
   // Optimized mouse drag-to-pan
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
@@ -72,11 +117,11 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
 
       const dx = e.clientX - dragStart.current.x;
       const dy = e.clientY - dragStart.current.y;
-
-      setOffset({
+      targetOffsetRef.current = {
         x: lastOffset.current.x + dx,
         y: lastOffset.current.y + dy,
-      });
+      };
+      ensureAnimLoop();
     }
 
     function onPointerUp() {
@@ -106,19 +151,20 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     };
   }, [isDragging, offset]);
 
-  // Optimized wheel scrolling
+  // Optimized wheel scrolling (smaller deltas + rAF easing)
   useEffect(() => {
     function onWheel(e: WheelEvent) {
       e.preventDefault();
 
-      // Smooth wheel scrolling with higher sensitivity
-      const deltaX = e.deltaX * 3.0;
-      const deltaY = e.deltaY * 3.0;
-
-      setOffset(prev => ({
-        x: prev.x - deltaX,
-        y: prev.y - deltaY,
-      }));
+      // Slightly slower wheel for smoother feel
+      const deltaX = e.deltaX * 1.1;
+      const deltaY = e.deltaY * 1.1;
+      const next = {
+        x: targetOffsetRef.current.x - deltaX,
+        y: targetOffsetRef.current.y - deltaY,
+      };
+      targetOffsetRef.current = next;
+      ensureAnimLoop();
     }
 
     const ref = containerRef.current;
@@ -148,11 +194,11 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
       const touch = e.touches[0];
       const dx = touch.clientX - touchStart.x;
       const dy = touch.clientY - touchStart.y;
-
-      setOffset({
+      targetOffsetRef.current = {
         x: touchStartOffset.x + dx,
         y: touchStartOffset.y + dy,
-      });
+      };
+      ensureAnimLoop();
     }
 
     function onTouchEnd() {
@@ -180,23 +226,29 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     const cardElements: React.ReactNode[] = [];
     const startRow = Math.floor(-offset.y / (CARD_SIZE + GRID_GAP)) - 2; // Reduced preload area
     const startCol = Math.floor(-offset.x / (CARD_SIZE + GRID_GAP)) - 2;
-    
+
     // Render fewer cards for better performance
     const visibleRows = Math.ceil(windowSize.height / (CARD_SIZE + GRID_GAP)) + 4; // Reduced buffer
     const visibleCols = Math.ceil(windowSize.width / (CARD_SIZE + GRID_GAP)) + 4;
-    
+
     for (let row = 0; row < visibleRows; row++) {
       for (let col = 0; col < visibleCols; col++) {
         const projIdx = mod((startRow + row) * VISIBLE_COLS + (startCol + col), projects.length);
         const project = projects[projIdx];
-        const x = (startCol + col) * (CARD_SIZE + GRID_GAP) + offset.x;
-        const y = (startRow + row) * (CARD_SIZE + GRID_GAP) + offset.y;
-        
+        // Base positions without offset; the wrapper will translate by current offset
+        const baseX = (startCol + col) * (CARD_SIZE + GRID_GAP);
+        const baseY = (startRow + row) * (CARD_SIZE + GRID_GAP);
+        // Positions with offset used only for visibility check
+        const xWithOffset = baseX + offset.x;
+        const yWithOffset = baseY + offset.y;
+
         // Smaller visibility bounds for better performance
         const isVisible =
-          x > -CARD_SIZE * 2 && x < windowSize.width + CARD_SIZE * 2 && 
-          y > -CARD_SIZE * 2 && y < windowSize.height + CARD_SIZE * 2;
-        
+          xWithOffset > -CARD_SIZE * 2 &&
+          xWithOffset < windowSize.width + CARD_SIZE * 2 &&
+          yWithOffset > -CARD_SIZE * 2 &&
+          yWithOffset < windowSize.height + CARD_SIZE * 2;
+
         if (isVisible) {
           const gif = getProjectGif(project.id);
           const isContentLoaded = gif ? loadedContent.has(gif) : true;
@@ -206,8 +258,8 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
               key={`${row}-${col}-${project.id}`}
               className='group absolute'
               style={{
-                left: x,
-                top: y,
+                left: baseX,
+                top: baseY,
                 width: CARD_SIZE,
                 height: CARD_SIZE,
                 zIndex: 1,
@@ -259,7 +311,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         }
       }
     }
-    
+
     return cardElements;
   }, [offset, windowSize, loadedContent, isDragging]);
 
@@ -273,7 +325,24 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         overscrollBehavior: 'none',
       }}
     >
-      {cards}
+      <div
+        style={{
+          transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+          willChange: 'transform',
+        }}
+      >
+        {cards}
+      </div>
+      {/* Vignette overlay for depth */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0'
+        style={{
+          zIndex: 5,
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 48%, rgba(0,0,0,0.55) 100%)',
+          boxShadow: 'inset 0 0 180px rgba(0,0,0,0.5)',
+        }}
+      />
     </div>
   );
 }
