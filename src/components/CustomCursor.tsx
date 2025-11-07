@@ -5,145 +5,89 @@ const CustomCursor: React.FC = () => {
   const [hovering, setHovering] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    // Check if device is desktop (not touch device)
     const checkDesktop = () => {
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isDesktopSize = window.innerWidth > 768; // md breakpoint
+      const isDesktopSize = window.innerWidth > 768;
       setIsDesktop(!isTouchDevice && isDesktopSize);
     };
 
     checkDesktop();
     window.addEventListener('resize', checkDesktop);
-
-    return () => {
-      window.removeEventListener('resize', checkDesktop);
-    };
+    return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
   useEffect(() => {
     if (!isDesktop) return;
 
-    // Add global CSS to hide cursor
+    // Single style injection
     const style = document.createElement('style');
+    style.id = 'custom-cursor-styles';
     style.textContent = `
       * {
-        cursor: none !important;
-      }
-      *:hover {
         cursor: none !important;
       }
     `;
     document.head.appendChild(style);
 
     return () => {
-      document.head.removeChild(style);
-    };
-  }, [isDesktop]);
-
-  useEffect(() => {
-    // Only hide cursor on desktop
-    if (!isDesktop) return;
-
-    // Show cursor when leaving the window
-    const showCursor = () => {
-      const style = document.createElement('style');
-      style.textContent = `
-        * {
-          cursor: auto !important;
-        }
-      `;
-      style.id = 'cursor-restore';
-      document.head.appendChild(style);
-    };
-
-    // Hide cursor when entering the window
-    const hideCursor = () => {
-      const existingStyle = document.getElementById('cursor-restore');
+      const existingStyle = document.getElementById('custom-cursor-styles');
       if (existingStyle) {
         document.head.removeChild(existingStyle);
       }
     };
-
-    // Show cursor when leaving the window
-    document.addEventListener('mouseleave', showCursor);
-    // Hide cursor when entering the window
-    document.addEventListener('mouseenter', hideCursor);
-
-    return () => {
-      showCursor();
-      document.removeEventListener('mouseenter', hideCursor);
-      document.removeEventListener('mouseleave', showCursor);
-    };
   }, [isDesktop]);
 
   useEffect(() => {
     if (!isDesktop) return;
 
+    // Use RAF for smooth cursor movement
     const move = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', move);
-    return () => window.removeEventListener('mousemove', move);
-  }, [isDesktop]);
-
-  // Listen for hover on interactive elements
-  useEffect(() => {
-    if (!isDesktop) return;
-
-    const checkHover = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      if (el.closest('a,button,[role="button"],.menu-item')) {
-        setHovering(true);
-      } else {
-        setHovering(false);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
       }
-    };
-    window.addEventListener('mousemove', checkHover);
-    return () => window.removeEventListener('mousemove', checkHover);
-  }, [isDesktop]);
-
-  // Override any cursor styles set by other components
-  useEffect(() => {
-    if (!isDesktop) return;
-
-    const overrideCursorStyles = () => {
-      const style = document.createElement('style');
-      style.textContent = `
-        * {
-          cursor: none !important;
-        }
-        *:hover {
-          cursor: none !important;
-        }
-        body {
-          cursor: none !important;
-        }
-        body:hover {
-          cursor: none !important;
-        }
-      `;
-      style.id = 'custom-cursor-override';
-      document.head.appendChild(style);
+      
+      rafRef.current = requestAnimationFrame(() => {
+        setPos({ x: e.clientX, y: e.clientY });
+      });
     };
 
-    // Apply the override
-    overrideCursorStyles();
-
-    // Re-apply the override periodically to ensure it stays active
-    const interval = setInterval(overrideCursorStyles, 100);
-
+    window.addEventListener('mousemove', move, { passive: true });
     return () => {
-      clearInterval(interval);
-      const existingStyle = document.getElementById('custom-cursor-override');
-      if (existingStyle) {
-        document.head.removeChild(existingStyle);
+      window.removeEventListener('mousemove', move);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
       }
     };
   }, [isDesktop]);
 
-  // Don't render on mobile/tablet
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    // Throttled hover check
+    let timeoutId: number | undefined;
+    const checkHover = (e: MouseEvent) => {
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = window.setTimeout(() => {
+        const el = e.target as HTMLElement;
+        const isInteractive = el.closest('a,button,[role="button"],.menu-item');
+        setHovering(!!isInteractive);
+      }, 50);
+    };
+
+    window.addEventListener('mousemove', checkHover, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', checkHover);
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isDesktop]);
+
   if (!isDesktop) return null;
 
   return (
@@ -161,8 +105,8 @@ const CustomCursor: React.FC = () => {
         transform: 'translate(-50%, -50%)',
         zIndex: 9999,
         mixBlendMode: 'exclusion',
-        transition: 'width 0.3s ease-out, height 0.3s ease-out, background 0.2s',
-        boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
+        transition: 'width 0.3s ease-out, height 0.3s ease-out',
+        willChange: 'transform',
         opacity: 0.95,
       }}
     />

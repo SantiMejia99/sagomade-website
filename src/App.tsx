@@ -5,6 +5,7 @@ import About from './pages/about';
 import Contact from './pages/contact';
 import SagoNavigation from './components/NavigationMenu';
 import ProjectPage from './pages/projects/projects-page';
+import NotFound from "./pages/NotFound";
 import { useParams } from 'react-router-dom';
 import CustomCursor from './components/CustomCursor';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -26,6 +27,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/projects/:id' element={<ProjectPageWrapper />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

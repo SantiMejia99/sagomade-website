@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  aspectRatio?: '1/1' | '4/3' | '16/9' | '3/2';
+  aspectRatio?: '1/1' | '4/3' | '16/9' | '3/2' | 'natural';
   fallback?: string;
   className?: string;
   containerClassName?: string;
@@ -11,7 +11,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 export function Image({
   src,
   alt,
-  aspectRatio = '4/3',
+  aspectRatio = '1/1',
   fallback = '/placeholder.svg',
   className,
   containerClassName,
@@ -46,6 +46,7 @@ export function Image({
   }, [src]);
 
   const aspectRatioClasses = {
+    natural: 'aspect-auto',
     '1/1': 'aspect-square',
     '4/3': 'aspect-[4/3]',
     '16/9': 'aspect-video',
@@ -55,7 +56,7 @@ export function Image({
   return (
     <div
       className={cn(
-        'relative overflow-hidden bg-muted rounded-lg',
+        'relative overflow-hidden bg-muted rounded-none',
         aspectRatioClasses[aspectRatio],
         containerClassName
       )}

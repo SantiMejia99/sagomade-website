@@ -1,35 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/sago-favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sago Made</title>
+ <head>
+ <meta charset="UTF-8" />
+ <link rel="icon" href="/sago-favicon.png" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Sago Made</title>
+<!-- Adobe Fonts -->
+ <link rel="stylesheet" href="https://use.typekit.net/ujl6hjj.css">
+<!-- Preload critical resources to prevent CLS -->
+ <link rel="preload" href="/sago-logo.png" as="image" />
+<!-- Preconnect to external domains -->
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+<!-- Prevent layout shift during font loading -->
+ <style>
+/* Font fallback to prevent layout shift */
+body {
+  font-family: "aktiv-grotesk", -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
-    <!-- Preload critical resources to prevent CLS -->
-    <link rel="preload" href="/fonts/Espacio Ideal.otf" as="font" type="font/otf" crossorigin />
-    <link rel="preload" href="/sago-logo.png" as="image" />
-
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Prevent layout shift during font loading -->
-    <style>
-      /* Font fallback to prevent layout shift */
-      body {
-        font-family: 'JetBrains Mono', 'Courier New', monospace;
-      }
-
-      /* Reserve space for images */
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+/* Reserve space for images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+ </head>
+ <body>
+ <div id="root"></div>
+ <script type="module" src="/src/main.tsx"></script>
+ </body>
 </html>

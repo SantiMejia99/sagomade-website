@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
 
-const CARD_SIZE = 240; // px, including margin/gap
-const GRID_GAP = 24; // px
+const CARD_SIZE = 240;
+const GRID_GAP = 24;
 const VISIBLE_COLS = 6;
 
 const gifMap: Record<number, string> = {
@@ -27,11 +27,105 @@ function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
 
+// Memoized card component to prevent unnecessary re-renders
+const ProjectCard = React.memo(({ 
+  project, 
+  baseX, 
+  baseY, 
+  gif, 
+  isContentLoaded,
+  isPageVisible,
+  hasMoved,
+  onNavigate
+}: { 
+  project: any;
+  baseX: number;
+  baseY: number;
+  gif: string | undefined;
+  isContentLoaded: boolean;
+  isDragging: boolean;
+  isPageVisible: boolean;
+  hasMoved: boolean;
+  onNavigate: () => void;
+}) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    // Only navigate if user didn't drag (clicked in place)
+    if (!hasMoved && !('ontouchstart' in window)) {
+      e.stopPropagation();
+      onNavigate();
+    }
+  }, [hasMoved, onNavigate]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!hasMoved && 'ontouchstart' in window) {
+      e.preventDefault();
+      onNavigate();
+    }
+  }, [hasMoved, onNavigate]);
+
+  return (
+    <div
+      className='group absolute'
+      style={{
+        left: baseX,
+        top: baseY,
+        width: CARD_SIZE,
+        height: CARD_SIZE,
+        zIndex: 1,
+      }}
+      onClick={handleClick}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div 
+        className='relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md cursor-pointer touch-manipulation'
+        style={{
+          // Disable transitions when page is not visible
+          transition: isPageVisible ? 'transform 200ms' : 'none',
+        }}
+      >
+        {gif && isContentLoaded ? (
+          <div
+            className='absolute inset-0 bg-cover bg-center'
+            style={{
+              backgroundImage: `url(${gif})`,
+              aspectRatio: '1/1',
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        ) : (
+          <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
+            {project.header?.[0] || '?'}
+          </div>
+        )}
+        <div 
+          className='absolute inset-0 group-hover:bg-black/30'
+          style={{
+            transition: isPageVisible ? 'all 200ms' : 'none',
+          }}
+        />
+        <div 
+          className='absolute inset-0 flex flex-col justify-center items-starts text-white p-4 opacity-0 group-hover:opacity-100'
+          style={{
+            transition: isPageVisible ? 'all 200ms' : 'none',
+          }}
+        >
+          <h3 className='text-xl font-bold mb-1 text-center'>{project.header}</h3>
+          <p className='text-md text-center opacity-90'>{project.type}</p>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+ProjectCard.displayName = 'ProjectCard';
+
 function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> }) {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
   const lastOffset = useRef(offset);
   const targetOffsetRef = useRef(offset);
@@ -39,16 +133,86 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
   const animatingRef = useRef(false);
   const offsetRef = useRef(offset);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const isVisibleRef = useRef(!document.hidden);
+  const isDraggingRef = useRef(false);
+  const hasMoved = useRef(false);
 
-  // Debounced window resize handler
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    offsetRef.current = offset;
+  }, [offset]);
 
+  useEffect(() => {
+    isDraggingRef.current = isDragging;
+  }, [isDragging]);
+
+  // Comprehensive page visibility handling - stops everything when tab is hidden
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const visible = !document.hidden;
+      isVisibleRef.current = visible;
+      setIsPageVisible(visible);
+      
+      if (!visible) {
+        // Cancel animation frame
+        if (rafIdRef.current !== null) {
+          cancelAnimationFrame(rafIdRef.current);
+          rafIdRef.current = null;
+          animatingRef.current = false;
+        }
+        
+        // Reset dragging state
+        setIsDragging(false);
+        dragStart.current = null;
+        document.body.style.userSelect = '';
+        
+        // Snap to target position immediately (no animation)
+        const target = targetOffsetRef.current;
+        offsetRef.current = target;
+        setOffset(target);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Also listen for focus/blur as backup
+    const handleBlur = () => {
+      if (!document.hidden) return; // Only if also hidden
+      isVisibleRef.current = false;
+      setIsPageVisible(false);
+      
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+        animatingRef.current = false;
+      }
+    };
+    
+    const handleFocus = () => {
+      if (document.hidden) return; // Only if not hidden
+      isVisibleRef.current = true;
+      setIsPageVisible(true);
+    };
+
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, []);
+
+  // Debounced resize - only when visible
+  useEffect(() => {
+    if (!isPageVisible) return;
+
+    let timeoutId: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-      }, 100);
+      }, 150);
     };
 
     window.addEventListener('resize', handleResize);
@@ -56,27 +220,28 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
       window.removeEventListener('resize', handleResize);
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [isPageVisible]);
 
-  // Track latest committed offset
-  useEffect(() => {
-    offsetRef.current = offset;
-  }, [offset]);
-
-  // Gooey/eased animation loop toward target offset
-  const ensureAnimLoop = () => {
-    if (animatingRef.current) return;
+  const ensureAnimLoop = useCallback(() => {
+    // Don't start animation if page is not visible
+    if (animatingRef.current || !isVisibleRef.current) return;
     animatingRef.current = true;
 
     const step = () => {
+      // Stop immediately if page becomes hidden
+      if (!isVisibleRef.current) {
+        animatingRef.current = false;
+        rafIdRef.current = null;
+        return;
+      }
+
       const current = offsetRef.current;
       const target = targetOffsetRef.current;
       const dx = target.x - current.x;
       const dy = target.y - current.y;
       const dist = Math.hypot(dx, dy);
 
-      if (dist < 0.3) {
-        // Snap and stop
+      if (dist < 0.5) {
         if (dx !== 0 || dy !== 0) {
           const snapped = { x: target.x, y: target.y };
           offsetRef.current = snapped;
@@ -87,8 +252,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         return;
       }
 
-      // Smaller alpha => more gooey smoothing
-      const alpha = 0.15;
+      const alpha = isDraggingRef.current ? 0.3 : 0.15;
       const next = {
         x: current.x + dx * alpha,
         y: current.y + dy * alpha,
@@ -99,96 +263,97 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     };
 
     rafIdRef.current = requestAnimationFrame(step);
-  };
+  }, []);
 
-  // Optimized mouse drag-to-pan
+  // Pointer events - disabled when page not visible
   useEffect(() => {
-    function onPointerDown(e: PointerEvent) {
-      if (e.button !== 0) return;
+    const handlePointerDown = (e: PointerEvent) => {
+      if (!isVisibleRef.current || e.button !== 0) return;
       setIsDragging(true);
+      hasMoved.current = false;
       dragStart.current = { x: e.clientX, y: e.clientY };
-      lastOffset.current = offset;
+      lastOffset.current = offsetRef.current;
       document.body.style.userSelect = 'none';
-    }
+    };
 
-    function onPointerMove(e: PointerEvent) {
-      if (!isDragging || !dragStart.current) return;
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!isVisibleRef.current || !dragStart.current) return;
       e.preventDefault();
 
       const dx = e.clientX - dragStart.current.x;
       const dy = e.clientY - dragStart.current.y;
+      
+      // Track if user has moved more than 3px (indicates drag intent, not click)
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+        hasMoved.current = true;
+      }
+      
       targetOffsetRef.current = {
         x: lastOffset.current.x + dx,
         y: lastOffset.current.y + dy,
       };
       ensureAnimLoop();
-    }
+    };
 
-    function onPointerUp() {
+    const handlePointerUp = () => {
       setIsDragging(false);
       dragStart.current = null;
       document.body.style.userSelect = '';
-    }
+      // Reset hasMoved after a short delay to prevent click
+      setTimeout(() => {
+        hasMoved.current = false;
+      }, 50);
+    };
 
-    function onMouseLeave() {
-      if (isDragging) {
-        setIsDragging(false);
-        dragStart.current = null;
-        document.body.style.userSelect = '';
-      }
-    }
-
-    window.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
 
     return () => {
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      document.body.style.userSelect = '';
     };
-  }, [isDragging, offset]);
+  }, [ensureAnimLoop]);
 
-  // Optimized wheel scrolling (smaller deltas + rAF easing)
+  // Wheel - disabled when page not visible
   useEffect(() => {
-    function onWheel(e: WheelEvent) {
+    const handleWheel = (e: WheelEvent) => {
+      if (!isVisibleRef.current) return;
       e.preventDefault();
 
-      // Slightly slower wheel for smoother feel
       const deltaX = e.deltaX * 1.1;
       const deltaY = e.deltaY * 1.1;
-      const next = {
+      targetOffsetRef.current = {
         x: targetOffsetRef.current.x - deltaX,
         y: targetOffsetRef.current.y - deltaY,
       };
-      targetOffsetRef.current = next;
       ensureAnimLoop();
-    }
+    };
 
     const ref = containerRef.current;
-    if (ref) ref.addEventListener('wheel', onWheel, { passive: false });
+    if (ref) ref.addEventListener('wheel', handleWheel, { passive: false });
     return () => {
-      if (ref) ref.removeEventListener('wheel', onWheel);
+      if (ref) ref.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [ensureAnimLoop]);
 
-  // Optimized touch handling
+  // Touch - disabled when page not visible
   useEffect(() => {
     let touchStart = { x: 0, y: 0 };
     let touchStartOffset = { x: 0, y: 0 };
     let isTouching = false;
 
-    function onTouchStart(e: TouchEvent) {
-      if (e.touches.length !== 1) return;
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!isVisibleRef.current || e.touches.length !== 1) return;
       isTouching = true;
       touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      touchStartOffset = { ...offset };
-    }
+      touchStartOffset = { ...offsetRef.current };
+    };
 
-    function onTouchMove(e: TouchEvent) {
-      if (!isTouching || e.touches.length !== 1) return;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isVisibleRef.current || !isTouching || e.touches.length !== 1) return;
       e.preventDefault();
 
       const touch = e.touches[0];
@@ -199,121 +364,78 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         y: touchStartOffset.y + dy,
       };
       ensureAnimLoop();
-    }
+    };
 
-    function onTouchEnd() {
+    const handleTouchEnd = () => {
       isTouching = false;
-    }
+    };
 
     const ref = containerRef.current;
     if (ref) {
-      ref.addEventListener('touchstart', onTouchStart, { passive: true });
-      ref.addEventListener('touchmove', onTouchMove, { passive: false });
-      ref.addEventListener('touchend', onTouchEnd, { passive: true });
+      ref.addEventListener('touchstart', handleTouchStart, { passive: true });
+      ref.addEventListener('touchmove', handleTouchMove, { passive: false });
+      ref.addEventListener('touchend', handleTouchEnd, { passive: true });
     }
 
     return () => {
       if (ref) {
-        ref.removeEventListener('touchstart', onTouchStart);
-        ref.removeEventListener('touchmove', onTouchMove);
-        ref.removeEventListener('touchend', onTouchEnd);
+        ref.removeEventListener('touchstart', handleTouchStart);
+        ref.removeEventListener('touchmove', handleTouchMove);
+        ref.removeEventListener('touchend', handleTouchEnd);
       }
     };
-  }, [offset]);
+  }, [ensureAnimLoop]);
 
-  // Memoized card rendering for better performance
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, []);
+
+  // Memoized cards - only recalculate when page is visible
   const cards = useMemo(() => {
-    const cardElements: React.ReactNode[] = [];
-    const startRow = Math.floor(-offset.y / (CARD_SIZE + GRID_GAP)) - 2; // Reduced preload area
-    const startCol = Math.floor(-offset.x / (CARD_SIZE + GRID_GAP)) - 2;
+    // Don't render cards if page is not visible (saves memory and CPU)
+    if (!isPageVisible) return [];
 
-    // Render fewer cards for better performance
-    const visibleRows = Math.ceil(windowSize.height / (CARD_SIZE + GRID_GAP)) + 4; // Reduced buffer
-    const visibleCols = Math.ceil(windowSize.width / (CARD_SIZE + GRID_GAP)) + 4;
+    const cardElements: React.ReactNode[] = [];
+    const startRow = Math.floor(-offset.y / (CARD_SIZE + GRID_GAP)) - 1;
+    const startCol = Math.floor(-offset.x / (CARD_SIZE + GRID_GAP)) - 1;
+
+    const visibleRows = Math.ceil(windowSize.height / (CARD_SIZE + GRID_GAP)) + 2;
+    const visibleCols = Math.ceil(windowSize.width / (CARD_SIZE + GRID_GAP)) + 2;
 
     for (let row = 0; row < visibleRows; row++) {
       for (let col = 0; col < visibleCols; col++) {
         const projIdx = mod((startRow + row) * VISIBLE_COLS + (startCol + col), projects.length);
         const project = projects[projIdx];
-        // Base positions without offset; the wrapper will translate by current offset
         const baseX = (startCol + col) * (CARD_SIZE + GRID_GAP);
         const baseY = (startRow + row) * (CARD_SIZE + GRID_GAP);
-        // Positions with offset used only for visibility check
-        const xWithOffset = baseX + offset.x;
-        const yWithOffset = baseY + offset.y;
 
-        // Smaller visibility bounds for better performance
-        const isVisible =
-          xWithOffset > -CARD_SIZE * 2 &&
-          xWithOffset < windowSize.width + CARD_SIZE * 2 &&
-          yWithOffset > -CARD_SIZE * 2 &&
-          yWithOffset < windowSize.height + CARD_SIZE * 2;
+        const gif = getProjectGif(project.id);
+        const isContentLoaded = gif ? loadedContent.has(gif) : true;
 
-        if (isVisible) {
-          const gif = getProjectGif(project.id);
-          const isContentLoaded = gif ? loadedContent.has(gif) : true;
-
-          cardElements.push(
-            <div
-              key={`${row}-${col}-${project.id}`}
-              className='group absolute'
-              style={{
-                left: baseX,
-                top: baseY,
-                width: CARD_SIZE,
-                height: CARD_SIZE,
-                zIndex: 1,
-              }}
-              onClick={() => {
-                if (!isDragging && !('ontouchstart' in window)) {
-                  navigate(`/projects/${project.id}`);
-                }
-              }}
-              onTouchEnd={e => {
-                if (!isDragging && 'ontouchstart' in window) {
-                  e.preventDefault();
-                  navigate(`/projects/${project.id}`);
-                }
-              }}
-            >
-              {/* Card content */}
-              <div className='relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md group-hover:scale-105 group-hover:z-10 transition-transform duration-200 cursor-pointer touch-manipulation'>
-                {(() => {
-                  // Use simple image backgrounds for better performance
-                  if (gif && isContentLoaded) {
-                    return (
-                      <div
-                        className='absolute inset-0 bg-cover bg-center'
-                        style={{
-                          backgroundImage: `url(${gif})`,
-                          aspectRatio: '1/1',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    );
-                  } else {
-                    return (
-                      <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
-                        {project.header?.[0] || '?'}
-                      </div>
-                    );
-                  }
-                })()}
-                <div className='absolute inset-0 group-hover:bg-black/30 transition-all duration-200' />
-                <div className='absolute inset-0 flex flex-col justify-center items-center text-white p-6 opacity-0 group-hover:opacity-100 transition-all duration-200'>
-                  <h3 className='text-xl font-black mb-2 text-center'>{project.header}</h3>
-                  <p className='text-md text-center opacity-90'>{project.type}</p>
-                </div>
-              </div>
-            </div>
-          );
-        }
+        cardElements.push(
+          <ProjectCard
+            key={`${startRow + row}-${startCol + col}`}
+            project={project}
+            baseX={baseX}
+            baseY={baseY}
+            gif={gif}
+            isContentLoaded={isContentLoaded}
+            isDragging={isDragging}
+            isPageVisible={isPageVisible}
+            hasMoved={hasMoved.current}
+            onNavigate={() => navigate(`/projects/${project.id}`)}
+          />
+        );
       }
     }
 
     return cardElements;
-  }, [offset, windowSize, loadedContent, isDragging]);
+  }, [offset.x, offset.y, windowSize, loadedContent, isDragging, isPageVisible, navigate]);
 
   return (
     <div
@@ -328,12 +450,12 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
       <div
         style={{
           transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
-          willChange: 'transform',
+          // Only use willChange when page is visible
+          willChange: isPageVisible ? 'transform' : 'auto',
         }}
       >
         {cards}
       </div>
-      {/* Vignette overlay for depth */}
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-0'
@@ -349,18 +471,40 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
 
 export default function Home() {
   const [loadedContent, setLoadedContent] = useState<Set<string>>(new Set());
+  const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
+  const preloadedRef = useRef(false);
 
-  // Simple background preloading
+  // Track page visibility at the top level too
   useEffect(() => {
-    // Preload optimized images in background
-    Object.values(gifMap).forEach(src => {
-      const img = new Image();
-      img.onload = () => {
-        setLoadedContent(prev => new Set([...prev, src]));
-      };
-      img.src = src;
-    });
+    const handleVisibilityChange = () => {
+      setIsPageVisible(!document.hidden);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
+
+  // Only preload images when page is visible
+  useEffect(() => {
+    if (!isPageVisible || preloadedRef.current) return;
+    preloadedRef.current = true;
+
+    const preload = () => {
+      Object.values(gifMap).forEach(src => {
+        const img = new Image();
+        img.onload = () => {
+          setLoadedContent(prev => new Set([...prev, src]));
+        };
+        img.src = src;
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(preload);
+    } else {
+      setTimeout(preload, 100);
+    }
+  }, [isPageVisible]);
 
   return (
     <div className='min-h-screen bg-background'>

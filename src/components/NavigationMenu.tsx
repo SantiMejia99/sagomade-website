@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, ChevronDown } from 'lucide-react';
 import {
-  LuFileText,
   LuType,
   LuWine,
   LuBeer,
@@ -25,7 +24,7 @@ export default function SagoNavigation() {
   const location = useLocation();
 
   const projects = [
-    { name: 'Consultation Notice', href: '/projects/1', icon: LuFileText },
+    { name: 'Consultation Notice', href: '/projects/1' },
     { name: 'Espacio Ideal', href: '/projects/2', icon: LuType },
     { name: 'Wine Bottles', href: '/projects/3', icon: LuWine },
     { name: 'Burlington Co.', href: '/projects/4', icon: LuBeer },
@@ -110,7 +109,7 @@ export default function SagoNavigation() {
               onMouseEnter={openWorkMenu}
               onMouseLeave={closeWorkMenu}
             >
-              <span className='relative z-10 group-hover:text-primary transition-colors duration-300'>WORK</span>
+              <span className='relative z-10 group-hover:text-primary transition-colors font-bold duration-300'>WORK</span>
               <ChevronDown
                 className={`h-4 w-4 ml-1 transition-transform duration-300 ${workMenuOpen ? 'rotate-180' : 'rotate-0'}`}
               />
@@ -138,17 +137,13 @@ export default function SagoNavigation() {
                 <div className='p-6 pb-6'>
                   <div className='grid grid-cols-2 gap-3'>
                     {projects.map(project => {
-                      const IconComponent = project.icon;
                       return (
                         <Link
                           key={project.href}
                           to={project.href}
                           className='flex items-center space-x-3 px-3 py-2 rounded-xl w-full transition-all duration-300 text-white hover:text-primary focus:text-primary hover:scale-105 focus:scale-105 focus:outline-none group'
                         >
-                          <div className='h-7 w-7 flex items-center justify-center flex-shrink-0 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300'>
-                            <IconComponent className='h-3.5 w-3.5 text-black group-hover:scale-110 transition-transform duration-300' />
-                          </div>
-                          <span className='text-left w-full transition-all duration-300 font-medium text-xs truncate'>
+                          <span className='text-left w-full transition-all duration-300 font-medium text-xs '>
                             {project.name}
                           </span>
                         </Link>
@@ -210,7 +205,7 @@ export default function SagoNavigation() {
                   <div className='space-y-1 mb-4 mt-4 pb-4 relative'>
                     <button
                       onClick={() => setMobileWorkOpen(!mobileWorkOpen)}
-                      className='flex items-center justify-between w-full text-sm text-foreground font-semibold hover:text-primary transition-colors duration-300 group px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20'
+                      className='flex items-center justify-between w-full text-sm text-foreground font-bold hover:text-primary transition-colors duration-300 group px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20'
                     >
                       <span>WORK</span>
                       <ChevronDown
@@ -231,7 +226,6 @@ export default function SagoNavigation() {
                     >
                       <div className='grid grid-cols-1 gap-3 pl-4'>
                         {projects.map((project, index) => {
-                          const IconComponent = project.icon;
                           return (
                             <Link
                               key={project.href}
@@ -241,7 +235,6 @@ export default function SagoNavigation() {
                               onClick={() => setIsOpen(false)}
                             >
                               <div className='h-7 w-7 flex items-center justify-center flex-shrink-0 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300'>
-                                <IconComponent className='h-3.5 w-3.5 text-black group-hover:scale-110 transition-transform duration-300' />
                               </div>
                               <span className='text-left w-full transition-all duration-300 font-medium text-sm'>
                                 {project.name}

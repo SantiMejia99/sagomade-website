@@ -36,14 +36,8 @@ export default function Contact() {
 
   return (
     <div className='min-h-screen bg-background'>
-      <main className='container mx-auto pt-32 pb-16 px-4 max-w-4xl'>
+      <main className='container mx-auto pt-32 pb-16 px-4 max-w-5xl'>
         {/* Hero Section */}
-        <section className='mb-16'>
-          <div className='space-y-8'>
-            <div className='space-y-6 text-sm leading-relaxed'></div>
-            <p className='text-muted-foreground/70 font-thin'>Explore how we can bring your ideas to life.</p>
-          </div>
-        </section>
 
         <div className='flex justify-center'>
           {/* Contact Information */}
