@@ -14,16 +14,12 @@ type ProjectData = Record<
     content: string;
     subtitle: string;
     overview: string;
-    context: {
-      text: string;
-      bullets: string[];
-    };
+    context:  string;
     problem: string;
     research: string;
     process: string;
     solution: string;
     impact: string;
-    results: string[];
     technologies: string[];
     role: string;
     duration: string;
@@ -42,7 +38,6 @@ type ProjectData = Record<
     processImage?: number;
     solutionImage?: number[];
     impactImage?: number;
-    resultsImage?: number;
   }
 >;
 
@@ -83,9 +78,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className='min-h-screen bg-background'>
-      <main className='container mx-auto pt-32 pb-16 px-4'>
+      <main className='container mx-auto pt-30 pb-16 px-4'>
         {/* Back Navigation */}
-        <div className='mb-12'>
+        <div className='mb-4'>
           <Link
             to='/'
             className='inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-200 group'
@@ -99,19 +94,18 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         <section
           className={`mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <div className='space-y-8'>
-            <div className='space-y-4 text-center'>
-              <div className='inline-flex items-center space-x-3 text-muted-foreground'>
-                <span>{project.category}</span>
-                <span>•</span>
-                <span>{project.year}</span>
-              </div>
+          <div className='space-y-4'>
+            <div className='space-y-2 text-center mb-20'>
               <h1 className='text-4xl md:text-6xl font-bold tracking-tighter leading-tight'>
                 {project.title}
               </h1>
-              <p className='text-muted-foreground/70 leading-relaxed max-w-3xl font-normal mx-auto mt-5 mb-20'>
-                {project.subtitle}
-              </p>
+              <div className='inline-flex items-center space-x-3 text-muted-foreground mt-4'>
+                <span>{project.subtitle}</span>
+                <span>•</span>
+                <span>{project.year}</span>
+                <span>•</span>
+                <span>{project.category}</span>
+              </div>
             </div>
 
             {/* Hero Image */}
@@ -213,17 +207,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <h2 className="text-2xl font-bold mb-4 tracking-tight text-muted-foreground">
               Context
             </h2>
-            <p className="text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line">
-              {project.context.text}
-            </p>
-            <ul className="text-muted-foreground/60 space-y-1.5 leading-snug">
-              {project.context.bullets.map((item, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="mr-2 text-muted-foreground">⦿</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
+                {project.context}
+            </p> 
 
             {/* Context Image */}
             {project.contextImage !== undefined && project.images[project.contextImage] && (
@@ -262,19 +248,20 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Divider */}
           <div className='w-full h-px my-20 bg-gray-300 opacity-20'></div>
 
-          {/* Research */}
+          {/* Research & Insights*/}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
-            <p className='text-muted-foreground/60'>{project.research}</p>
-            
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
+                {project.research}
+            </p>            
             {/* Research Image */}
             {project.researchImage !== undefined && project.images[project.researchImage] && (
               <div className='mt-6'>
                 <Image
                   src={project.images[project.researchImage]}
                   alt={`${project.title} research`}
-                  aspectRatio='4/3'
-                  className='w-full h-full object-cover rounded-none mt-20'
+                  aspectRatio='natural'
+                  className='w-full h-200 object-cover rounded-none mt-10'
                 />
               </div>
             )}
@@ -295,7 +282,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                   src={project.images[project.processImage]}
                   alt={`${project.title} process`}
                   aspectRatio= 'natural'
-                  className='w-full h-200 object-cover rounded-none mt-20'
+                  className='w-full h-200 object-cover rounded-none mt-10'
                 />
               </div>
             )}
@@ -332,39 +319,16 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Impact */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact</h2>
-            <p className='text-muted-foreground/60'>{project.impact}</p>
-            
+            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
+                {project.impact}
+            </p>             
             {/* Impact Image */}
             {project.impactImage !== undefined && project.images[project.impactImage] && (
               <div className='mt-6'>
                 <Image
                   src={project.images[project.impactImage]}
                   alt={`${project.title} impact`}
-                  aspectRatio='4/3'
-                  className='w-full h-full object-cover rounded-none mt-20'
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Results */}
-          <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Results</h2>
-            <div className='space-y-4'>
-              {project.results.map((result, index) => (
-                <div key={index} className='flex'>
-                  <p className='text-muted-foreground/60'>{result}</p>
-                </div>
-              ))}
-            </div>
-            
-            {/* Results Image */}
-            {project.resultsImage !== undefined && project.images[project.resultsImage] && (
-              <div className='mt-6'>
-                <Image
-                  src={project.images[project.resultsImage]}
-                  alt={`${project.title} results`}
                   aspectRatio='4/3'
                   className='w-full h-full object-cover rounded-none mt-20'
                 />
