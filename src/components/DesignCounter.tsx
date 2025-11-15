@@ -1,4 +1,3 @@
-// 'YYYY-MM-DD': hours
 import DESIGN_ACTIVITIES from '../data/DesignActivities.json';
 
 const activities = DESIGN_ACTIVITIES as { [key: string]: number };
