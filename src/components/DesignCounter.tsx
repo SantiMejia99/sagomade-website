@@ -1,4 +1,4 @@
-import DESIGN_ACTIVITIES from '../data/DesignActivities.json';
+import DESIGN_ACTIVITIES from '../data/designActivities.json';
 
 const activities = DESIGN_ACTIVITIES as { [key: string]: number };
 
