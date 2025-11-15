@@ -1,16 +1,16 @@
 [
   {
     "id": 1,
-    "header": "Consultation Notice",
-    "type": "Product Design",
+    "header": "Using Accessibility to Engage Communities",
+    "type": "2024",
     "status": "Done",
     "target": "18",
     "limit": "5"
   },
   {
     "id": 2,
-    "header": "Espacio Ideal",
-    "type": "Typography",
+    "header": "Architectural Lines a Distinct Typeface",
+    "type": "2025",
     "status": "Done",
     "target": "29",
     "limit": "24"
@@ -75,6 +75,14 @@
     "id": 10,
     "header": "Paradigm Shift",
     "type": "Poster Design",
+    "status": "Done",
+    "target": "30",
+    "limit": "28"
+  },
+  {
+    "id": 11,
+    "header": "A Curated Digital Experience",
+    "type": "2025",
     "status": "Done",
     "target": "30",
     "limit": "28"

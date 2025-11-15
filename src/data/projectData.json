@@ -1,21 +1,23 @@
 {
-   "1": {
-    "title": "Weston Consulting Notice",
-    "content": "This is the Consultation Notice project.",
-    "subtitle": "Designing Accessible Public Consultation Notices that Engage Communities.",
-    "overview": "As part of Weston Consulting's Community Consultation initiatives, this project aimed to redesign the Public Consultation Notice a document distributed to residents within designated city areas to inform them about upcoming developments. \n\nThe new design needed to be modern, approachable, and fully compliant with AODA accessibility standards, ensuring every resident—regardless of ability—could clearly understand the information. Printed on recyclable stock and mailed directly to households, the piece established a new benchmark for clarity, inclusivity, and civic communication design.",
-    "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
-    "problem": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "technologies": ["Design: Adobe Illustrator, Adobe Photoshop, Adobe InDesign",
-                     "Accessibility & Standards: AODA, WCAG 2.1, Ontario Building Code", 
-                     "Production: Print preparation, proofing, and vendor coordination"],
+  "1": {
+    "title": "Designing Accessible Public Consultation Notices that Engage Communities",
+    "content": "Consultation Notice project for Weston Consulting",
+    "subtitle": "Weston Consulting",
+    "overview": "As part of Weston Consulting’s Community Consultation initiatives, this project focused on redesigning the Public Consultation Notice, a document distributed to residents within designated city areas to inform them about upcoming developments. The goal was to create a modern, approachable, and fully AODA-compliant design that communicates clearly to all residents, regardless of ability. \n\nBy refining hierarchy, layout, and typographic structure, the new system balances accessibility with visual clarity, ensuring complex planning information feels transparent and easy to navigate. Printed on recyclable stock and mailed directly to households, the redesigned notice set a new benchmark for clarity, inclusivity, materiality, and civic communication, turning a procedural document into a meaningful tool for community engagement.",
+    "context": "The Public Consultation Notice redesign emerged from Weston Consulting’s broader effort to make community engagement more accessible and visually coherent. Working alongside planners and the design team, I participated in the design, accessibility research, and production of a notice system that translates technical planning information into clear, approachable communication for residents. \n\nThe process involved developing accessible typography, colour, and layout structures fully aligned with AODA standards, ensuring the notices could be easily read by all audiences. I also created maps, icons, and visual templates to establish a consistent framework that could be adapted across multiple city projects. Each element was tested for legibility, contrast, and clarity, resulting in a scalable system that balanced civic transparency with thoughtful design.",
+    "problem": "Previous Public Consultation Notices were dense, text-heavy, and visually outdated. Layouts lacked structure, and accessibility standards were inconsistently applied, resulting in documents that were functional but often overlooked because of the complexity of the information. The format failed to engage residents or communicate complex planning information clearly, especially for readers with visual or cognitive impairments. \n\nThe task was to design a fully accessible, visually clear, and modular system that met AODA and WCAG 2.1 standards while remaining practical for in-house teams to reproduce and adapt. Beyond compliance, the goal was to create a design that invited participation, strengthened public trust, and reflected Weston Consulting’s commitment to inclusive, environmentally responsible communication.",
+    "research": "Designing for accessibility, understanding, and trust. Through review of existing notices, accessibility documentation, and feedback from past consultations and resident surveys, we identified several recurring challenges in how information was presented to the public, from unclear hierarchies, visual clutter and inconsistent formatting to complex technical drawings and information. \n\nLegibility became the foundation for every design decision. Large type, generous spacing, and clear sectioning improved readability across audiences, while a set of custom icons I created helped simplify complex information. Simplified maps replaced technical diagrams to help residents locate sites easily and understand proposals at a glance. To make the notices both sustainable and practical for internal printing, I proposed using recyclable paper and embedding QR codes for extended content online. This solution reduced material waste and ensured each notice remained easy to reproduce and distribute directly from the office.",
+    "process": "Designing accessibility as an information outlet. The process followed a research-driven structure that moved from accessibility compliance and information clarity toward sustainable production and delivery. Each phase aimed to transform the Public Consultation Notice into an approachable, trustworthy, and operationally efficient communication tool for both residents and staff.",
+    "solution": "The Public Consultation Notice established a new standard for civic communication, an accessible system that translates complex planning information into clear, approachable language and layout. Each element was designed with legibility and inclusivity in mind: optimized for comfortable reading, contrast ratios refined for accessibility, and structure built to guide residents naturally through key details. \n\nCustom icons and simplified maps improve navigation and understanding, while the integration of QR codes extends engagement beyond print, connecting residents directly to online resources and feedback portals. The use of recyclable paper and a streamlined in-office production process ensured that the notice was not only accessible but also environmentally responsible. What emerged is a framework that balances clear, sustainable, and fully AODA-compliant design. Now adopted across Weston’s community engagement materials, it reinforces trust, transparency, and accessibility in every consultation.",
+    "impact": "The Public Consultation Notice transformed how residents interact with municipal planning information. By combining accessibility standards, clear hierarchy, and visual clarity, the notices became not only easier to read but more engaging, evidenced by a 40% increase in interactions using QR code and portal, compared to previous static formats. Feedback from residents and municipal partners highlighted improved comprehension and confidence, reinforcing the importance of inclusive design. Beyond immediate usability, the project established a repeatable system that can scale across future community consultation initiatives. The use of recyclable materials demonstrated that accessibility and environmental responsibility can coexist, setting a new standard for sustainable municipal communications. \n\nThrough this process, I learned how design can translate technical and regulatory requirements into meaningful experiences. Balancing AODA compliance with visual clarity, informational structure, and user-centred thinking showed me that accessibility is not a limitation, it is a creative opportunity. This project strengthened my understanding of designing for diverse audiences, building systems that endure, and connecting residents to their communities in ways that are both practical and engaging.",
+    "technologies": [
+      "Design: Adobe Illustrator, Adobe Photoshop, Adobe InDesign",
+      "Accessibility & Standards: AODA, WCAG 2.1, Ontario Building Code",
+      "Production: Print preparation, proofing, and vendor coordination"
+    ],
     "role": "Product & Graphic Designer",
     "duration": "2 months",
-    "team": "1 designer, 1 project manager",
+    "team": "Design Lead, Visual Designer",
     "year": "2024",
     "category": "Product Design",
     "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
@@ -32,30 +34,43 @@
     "solutionImage": [2, 3]
   },
   "2": {
-    "title": "Espacio Ideal",
-    "content": "This is the Espacio Ideal project.",
-    "subtitle": "Architectural form meets typographic precision in a custom typeface designed for expressive identity systems.",
-    "overview": "Espacio Ideal explores typography through the lens of architecture, where thin, sharp forms contrast with bold structural elements to create a refined and visually dynamic type system. Designed for logos and small-scale titles, the font merges architectural detail with typographic artistry.",
-    "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
-    "problem": "The typeface was developed from real architectural plans and forms. Edges, intersections, and proportions were carefully constructed to echo the visual language of modern architecture. The resulting characters emphasize contrast, spatial rhythm, and sharp detailing, balancing legibility with visual impact.",
-    "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "technologies": ["FontForge", "Procreate", "Adobe Photoshop", "Adobe Illustrator"],
+    "title": "Translating Architectural Lines into a Distinct Typographic Voice",
+    "content": "Typeface for Espacio Ideal.",
+    "subtitle": "Espacio Ideal",
+    "overview": "The Espacio Ideal Typeface builds on the studio’s architectural language, translating spatial thinking into typographic form. My focus was on capturing the rhythm, proportion, and balance found in their architectural sketches, turning hand-drawn gestures into a structured, functional design system. Using Illustrator and FontForge, I developed a framework that merges expressive line work with architectural precision, resulting in a typeface that feels both crafted and intentional. \n\nThroughout development, I studied how contrast, geometry, and negative space could echo the studio’s design principles: measured, deliberate, and enduring. What began as a personal exploration evolved into a working typeface now used as the foundation of Espacio Ideal’s rebrand. It anchors their new logo and visual identity across print and environmental applications, carrying forward the same clarity, rhythm, and material honesty that define their architectural work.",
+    "context": "The Espacio Ideal Typeface originated from a series of early collaborations with the studio, where architectural sketches often carried as much expression as the finished drawings. During one of these projects, the owner and architect shared a collection of hand-rendered studies that revealed a strong sense of rhythm and proportion, a set of architectural sketches defined by precision, gesture, and restraint. Those drawings became the foundation for exploring how the studio’s design sensibility could live beyond space and structure. \n\nRather than replicate their work visually, the goal was to translate its essence, the balance between technical control and expressive freedom, into a typographic system. The process became a study in how architectural thinking can inform visual communication, and how their creative process reflects proportion, rhythm, and contrast with the application of shape not only for buildings but to letters. What began as a conceptual exercise evolved into a design direction that reinterprets Espacio Ideal’s architectural language through typography, setting the stage for what would later become a key element of their rebrand.",
+    "problem": "Espacio Ideal lacked a typographic voice that represented its architectural sophistication. \n\ntheir existing fonts felt either too generic, overly decorative, and inconsistent. Failing to express the studio’s balance of craft and clarity. The challenge was to develop a typographic system that functioned like architecture itself: rigorous in logic, restrained in detail, and built for longevity.",
+    "research": "Through a detailed study of Espacio Ideal’s sketches, I identified recurring systems in how lines connected, intersected, and balanced proportionally. These became the structural DNA of the typeface, setting the logic and rhythm of each letterform. I observed that every architectural stroke carried weight and intention, a principle that guided the construction of the typeface with clarity and purpose. Repetition and proportion created a visual cadence essential for typographic balance, while the font’s character emerged not from decorative flourish, but from precision and restraint I added some unbalance to keep it fun. The process relied on the proper use of type guides and templates, referencing mood boards, and iterating through multiple tests in FontForge and across different media. Early print and screen proofs confirmed that optical balance often outweighed geometric accuracy, ensuring legibility and consistency across applications.",
+    "process": "Designing architecture through letterforms, each stage echoed an architectural workflow: observation, structure, refinement, and material testing. Ensuring the typeface carried the integrity of its inspiration.",
+    "solution": "The Espacio Ideal Display Typeface is an all-caps system defined by linear precision, proportional discipline, and structural consistency. Designed to reflect the studio’s architectural approach, the typeface conveys confidence at large scales while revealing subtle craft and technical detail up close. Architectural grids and compositional logic informed these letterforms, giving rhythm and balance without compromising readability across applications. \n\nWhat began as a conceptual experiment became an essential part of Espacio Ideal’s renewed identity. The typeface now anchors logos, catalogues, and environmental graphics, uniting the studio’s design rigor with a contemporary typographic expression. Its structure allows for scalable growth, supporting future weights and variable font expansion, while performing seamlessly in print, digital, and environmental contexts.",
+    "impact": "The Espacio Ideal Display Typeface became more than a design exercise, it turned the studio’s architectural language into a functional, living typographic system. Grounded in proportion, rhythm, and structural logic, it now anchors their identity across print, digital, and environmental applications. \n\nThrough this project, I learned to translate expressive sketches into a scalable digital system, gaining hands-on experience with FontForge, document setups, and type design workflows. The process reinforced the value of restraint, iterative refinement, and attention to detail, showing how a thoughtfully crafted system can communicate intention, support adoption, and endure alongside the studio it represents.",
+    "technologies": [
+      "Design: Adobe Illustrator, FontForge, Procreate, Photoshop",
+      "Process Materials: Hand-rendered architectural drawings, vector grids, printed proofs",
+      "Testing Environments: Print proofs, on-screen mockups, brand collateral applications"
+    ],
     "role": "Typeface Designer",
-    "duration": "5 months",
-    "team": "1 designer",
-    "year": "2023",
+    "duration": "6 months",
+    "team": "Independent Designer",
+    "year": "2025",
     "category": "Typeface Design",
     "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     "images": [
-      "/projects/espacio-ideal/espacio-ideal-1.jpg",
-      "/projects/espacio-ideal/espacio-ideal-2.jpg"
+      "/projects/espacio-ideal-typeface/espacio-typeface-1.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-2.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-3.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-4.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-5.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-6.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-7.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-8.webp",
+      "/projects/espacio-ideal-typeface/espacio-typeface-9.webp"
     ],
-    "heroImage": 0,
+    "heroImage": 1,
+    "problemImage": 5,
+    "researchImage": 8,
     "processImage": 4,
-    "solutionImage": [2, 3]
+    "solutionImage": [2, 0, 3, 6]
   },
   "3": {
     "title": "Wine Bottles",
@@ -165,10 +180,7 @@
     "year": "2023",
     "category": "Digital Publishing",
     "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
-    "images": [
-      "/projects/poss-magazine/poss-2.jpg",
-      "/projects/poss-magazine/poss-3.jpg"
-    ],
+    "images": ["/projects/poss-magazine/poss-2.jpg", "/projects/poss-magazine/poss-3.jpg"],
     "heroImage": 0,
     "processImage": 4,
     "solutionImage": [2, 3]
@@ -206,7 +218,7 @@
   },
   "8": {
     "title": "Designing a Green Standards Toolkit for Sustainable & Accessible Urban Practice",
-    "content": "This is the Green Standards Toolkit project.",
+    "content": "Green Standards Toolkit for Weston Consulting.",
     "subtitle": "Weston Consulting",
     "overview": "The Green Standards Toolkit is a guide created to promote sustainable urban development through clear, engaging design. Developed in collaboration with a senior urban designer and an architect, the toolkit communicates complex ideas through layered diagrams, strategic layouts, and accessible formatting, all aligned with AODA standards to ensure broad usability. \n\nAs part of Weston Consulting’s initiative to unify its sustainable design practice, the Green Standards Toolkit was developed to guide internal teams of architects and urban designers toward a shared visual and technical language. This manual consolidates sustainable design standards, principles, and technical drawing conventions into a single, accessible framework, making it easier for teams to maintain visual consistency, clarity, and compliance across all projects.",
     "context": "The Green Standards Toolkit builds on Weston’s goal of aligning sustainability with visual communication. My focus was on translating technical information into a design system that feels approachable and cohesive. Using a the company’s existing typographic structure with Arial in varied weights, and a nature-inspired yet high-contrast colour palette, the toolkit showcases clarity with visual rhythm. \n\nThroughout development, I worked closely with the design team to refine plan markups, symbols, and diagrams, creating a unified visual logic that links environmental data, architectural detail, and spatial representation. The result is more than a manual, it’s a visual language that brings familiarity and ambiance to technical design, helping teams communicate sustainable principles with confidence and precision. The toolkit continues to be used today as a foundation for Weston’s sustainable design materials and internal standards.",
@@ -215,9 +227,11 @@
     "process": "Designing a toolkit that draws connection between disciplines.",
     "solution": "A unified visual and technical framework for sustainable design. The final Green Standards Toolkit establishes a shared design language that aligns technical drawing standards, accessibility principles, and sustainable design guidelines. It functions as both a visual system and a technical manual, ensuring that every diagram, layout, and illustration across Weston Consulting reflects clarity, sustainability, and compliance.",
     "impact": "The toolkit became a key internal reference for Weston Consulting, improving consistency across urban design and architecture projects while raising awareness of AODA standards. It strengthened collaboration between designers, architects, and planners, and laid the groundwork for future digital tools and training. \n\nThrough this process, I learned how design can translate technical information into something clear, accessible, and engaging. I discovered that translation goes beyond language, that consistency, sharpness, and purpose in design can create meaningful results and experiences. Aligning sustainability, accessibility, and visual precision turned the Green Standards Toolkit into more than a document, it became a shared language across disciplines. It also taught me to design for adoption, creating systems that others can use, expand, and evolve long after the project ends.",
-    "technologies": ["Design: Adobe InDesign, Adobe Illustrator, Adobe Photoshop, Procreate",
-                     "Accessibility & Standards: AODA, WCAG 2.1, Ontario Building Code", 
-                     "Visualization: AutoCAD (3D modeling, in collaboartion with Architect)"],    
+    "technologies": [
+      "Design: Adobe InDesign, Adobe Illustrator, Adobe Photoshop, Procreate",
+      "Accessibility & Standards: AODA, WCAG 2.1, Ontario Building Code",
+      "Visualization: AutoCAD (3D modeling, in collaboartion with Architect)"
+    ],
     "role": "Visual & Accesibility Designer",
     "duration": "5 months",
     "team": "Senior Urban Designer, Architect, Visual Designer",
@@ -236,7 +250,6 @@
       "/projects/green-toolkit/green-toolkit-9.webp",
       "/projects/green-toolkit/green-toolkit-10.webp",
       "/projects/green-toolkit/green-toolkit-11.webp"
-
     ],
     "heroImage": 0,
     "processImage": 4,
@@ -267,37 +280,64 @@
       "/projects/tote-bag/tote-2.jpg",
       "/projects/tote-bag/tote-3.jpg",
       "/projects/tote-bag/tote-4.jpg"
-      ],
-      "heroImage": 0,
-      "overviewImage": 1,
-      "processImage": 4,
-      "solutionImage": [2, 3]
-    },
-    "10": {
-      "title": "Paradigm Shift",
-      "content": "This is the Paradigm Shift project.",
-      "subtitle": "A bold poster design that challenges conventional thinking through striking visual communication.",
-      "overview": "A conceptual poster design that explores themes of transformation and change through bold typography and dynamic visual elements. The design serves as both a statement piece and a catalyst for reflection on shifting perspectives and new ways of thinking.",
-      "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
-      "problem": "Developed a bold typographic approach using custom letterforms and dynamic composition. Utilized contrasting elements and strategic use of negative space to create visual tension and interest. The color palette was carefully chosen to enhance readability while supporting the conceptual theme.",
-      "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-      "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-      "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-      "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-      "technologies": ["Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"],
-      "role": "Lead Designer",
-      "duration": "1 month",
-      "team": "1 Designer",
-      "year": "2023",
-      "category": "Poster Design",
-      "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
-      "images": [
-        "/projects/consultation-notice/notice-1.jpg",
-        "/projects/consultation-notice/notice-2.jpg",
-        "/projects/consultation-notice/notice-3.jpg"
-      ],
-      "heroImage": 0,
-      "processImage": 4,
-      "solutionImage": [2, 3]
-    }
+    ],
+    "heroImage": 0,
+    "overviewImage": 1,
+    "processImage": 4,
+    "solutionImage": [2, 3]
+  },
+  "10": {
+    "title": "Paradigm Shift",
+    "content": "This is the Paradigm Shift project.",
+    "subtitle": "A bold poster design that challenges conventional thinking through striking visual communication.",
+    "overview": "A conceptual poster design that explores themes of transformation and change through bold typography and dynamic visual elements. The design serves as both a statement piece and a catalyst for reflection on shifting perspectives and new ways of thinking.",
+    "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
+    "problem": "Developed a bold typographic approach using custom letterforms and dynamic composition. Utilized contrasting elements and strategic use of negative space to create visual tension and interest. The color palette was carefully chosen to enhance readability while supporting the conceptual theme.",
+    "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "technologies": ["Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"],
+    "role": "Lead Designer",
+    "duration": "1 month",
+    "team": "1 Designer",
+    "year": "2023",
+    "category": "Poster Design",
+    "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
+    "images": [
+      "/projects/consultation-notice/notice-1.jpg",
+      "/projects/consultation-notice/notice-2.jpg",
+      "/projects/consultation-notice/notice-3.jpg"
+    ],
+    "heroImage": 0,
+    "processImage": 4,
+    "solutionImage": [2, 3]
+  },
+  "11": {
+    "title": "Rebranding a Legacy Studio into a Curated Digital Experience",
+    "content": "This is the Paradigm Shift project.",
+    "subtitle": "Brand & Web Design for Espacio Ideal.",
+    "overview": "A conceptual poster design that explores themes of transformation and change through bold typography and dynamic visual elements. The design serves as both a statement piece and a catalyst for reflection on shifting perspectives and new ways of thinking.",
+    "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
+    "problem": "Developed a bold typographic approach using custom letterforms and dynamic composition. Utilized contrasting elements and strategic use of negative space to create visual tension and interest. The color palette was carefully chosen to enhance readability while supporting the conceptual theme.",
+    "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
+    "technologies": ["Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"],
+    "role": "Lead Designer",
+    "duration": "1 month",
+    "team": "1 Designer",
+    "year": "2023",
+    "category": "Poster Design",
+    "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
+    "images": [
+      "/projects/consultation-notice/notice-1.jpg",
+      "/projects/consultation-notice/notice-2.jpg",
+      "/projects/consultation-notice/notice-3.jpg"
+    ],
+    "heroImage": 0,
+    "processImage": 4,
+    "solutionImage": [2, 3]
+  }
 }

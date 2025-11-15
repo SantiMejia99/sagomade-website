@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ExternalLink} from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
@@ -14,7 +14,7 @@ type ProjectData = Record<
     content: string;
     subtitle: string;
     overview: string;
-    context:  string;
+    context: string;
     problem: string;
     research: string;
     process: string;
@@ -54,7 +54,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [, setIsLoading] = useState(true);
   const { id } = params;
-  
+
   console.log('ProjectPage rendered with id:', id);
   console.log('Available project IDs:', Object.keys(typedProjectData));
   console.log('Project data for this id:', typedProjectData[id]);
@@ -77,7 +77,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     project.category?.toLowerCase().includes('type') || project.title?.toLowerCase().includes('typography');
 
   return (
-    <div className='min-h-screen bg-background'>
+    <div className='bg-background'>
       <main className='container mx-auto pt-30 pb-16 px-4'>
         {/* Back Navigation */}
         <div className='mb-4'>
@@ -96,9 +96,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         >
           <div className='space-y-4'>
             <div className='space-y-2 text-center mb-20'>
-              <h1 className='text-4xl md:text-6xl font-bold tracking-tighter leading-tight'>
-                {project.title}
-              </h1>
+              <h1 className='text-4xl md:text-6xl font-bold tracking-tighter leading-tight'>{project.title}</h1>
               <div className='inline-flex items-center space-x-3 text-muted-foreground mt-4'>
                 <span>{project.subtitle}</span>
                 <span>•</span>
@@ -143,36 +141,30 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                     <div className='text-muted-foreground/60'>{project.duration}</div>
                   </div>
                   <div>
-                  <div className="font-bold mb-2 tracking-tight text-muted-foreground">
-                    Tools & Technologies
-                  </div>
+                    <div className='font-bold mb-2 tracking-tight text-muted-foreground'>Tools & Technologies</div>
 
-                  <div className="text-muted-foreground/60 space-y-2">
-                    {project.technologies.map((tech, index) => {
-                      const [category, ...details] = tech.split(":");
-                      return (
-                        <div key={index}>
-                          <span className="font-semibold text-muted-foreground">
-                            {category}:
-                          </span>{" "}
-                          {details.join(":").trim()}
-                        </div>
-                      );
-                    })}
+                    <div className='text-muted-foreground/60 space-y-2'>
+                      {project.technologies.map((tech, index) => {
+                        const [category, ...details] = tech.split(':');
+                        return (
+                          <div key={index}>
+                            <span className='font-semibold text-muted-foreground'>{category}:</span>{' '}
+                            {details.join(':').trim()}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Overview */}
-            
+
             <div className='space-y-6'>
               <div>
                 <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Overview</h2>
-                <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
-                  {project.overview}
-                </p>
+                <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.overview}</p>
               </div>
             </div>
           </div>
@@ -188,7 +180,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         {/* FULL WIDTH SECTIONS */}
         <section className='space-y-12 text-left'>
           <div>
-          {/* Overview Image */}
+            {/* Overview Image */}
             {project.overviewImage !== undefined && project.images[project.overviewImage] && (
               <Image
                 src={project.images[project.overviewImage]}
@@ -204,12 +196,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Context */}
           <div>
-            <h2 className="text-2xl font-bold mb-4 tracking-tight text-muted-foreground">
-              Context
-            </h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
-                {project.context}
-            </p> 
+            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Context</h2>
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.context}</p>
 
             {/* Context Image */}
             {project.contextImage !== undefined && project.images[project.contextImage] && (
@@ -231,7 +219,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Problem</h2>
             <p className='text-muted-foreground/60'>{project.problem}</p>
-            
+
             {/* Problem Image */}
             {project.problemImage !== undefined && project.images[project.problemImage] && (
               <div className='mt-6'>
@@ -251,9 +239,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Research & Insights*/}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
-                {project.research}
-            </p>            
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.research}</p>
             {/* Research Image */}
             {project.researchImage !== undefined && project.images[project.researchImage] && (
               <div className='mt-6'>
@@ -274,14 +260,14 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Process</h2>
             <p className='text-muted-foreground/60'>{project.process}</p>
-            
+
             {/* Process Image */}
             {project.processImage !== undefined && project.images[project.processImage] && (
               <div className='mt-6'>
                 <Image
                   src={project.images[project.processImage]}
                   alt={`${project.title} process`}
-                  aspectRatio= 'natural'
+                  aspectRatio='natural'
                   className='w-full h-200 object-cover rounded-none mt-10'
                 />
               </div>
@@ -294,22 +280,22 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Solution */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Solution</h2>
-            <p className='text-muted-foreground/60'>{project.solution}</p>
-            
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.solution}</p>
             {/* Solution Image */}
             {project.solutionImage !== undefined && project.solutionImage.length > 0 && (
               <div className='mt-20'>
-                {project.solutionImage.map((imageIndex, idx) => (
-                  project.images[imageIndex] && (
-                    <Image
-                      key={idx}
-                      src={project.images[imageIndex]}
-                      alt={`${project.title} solution ${idx + 1}`}
-                      aspectRatio='natural'
-                      className='w-full h-full object-cover rounded-none mt-4'
-                    />
-                  )
-                ))}
+                {project.solutionImage.map(
+                  (imageIndex, idx) =>
+                    project.images[imageIndex] && (
+                      <Image
+                        key={idx}
+                        src={project.images[imageIndex]}
+                        alt={`${project.title} solution ${idx + 1}`}
+                        aspectRatio='natural'
+                        className='w-full h-full object-cover rounded-none mt-4'
+                      />
+                    )
+                )}
               </div>
             )}
           </div>
@@ -320,9 +306,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Impact */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>
-                {project.impact}
-            </p>             
+            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.impact}</p>
             {/* Impact Image */}
             {project.impactImage !== undefined && project.images[project.impactImage] && (
               <div className='mt-6'>
@@ -335,7 +319,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
               </div>
             )}
           </div>
-          
+
           {/* Links */}
           <div className='space-y-3'>
             {project.liveUrl && (
@@ -345,7 +329,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 </a>
               </Button>
             )}
-          </div>          
+          </div>
         </section>
       </main>
     </div>

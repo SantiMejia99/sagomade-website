@@ -1,15 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, ChevronDown } from 'lucide-react';
-import {
-  LuType,
-  LuWine,
-  LuBeer,
-  LuMonitor,
-  LuBookOpen,
-  LuShirt,
-  LuLeaf,
-  LuShoppingBag,
-} from 'react-icons/lu';
+import { LuType, LuWine, LuBeer, LuMonitor, LuBookOpen, LuShirt, LuLeaf, LuShoppingBag } from 'react-icons/lu';
 import { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -25,7 +16,7 @@ export default function SagoNavigation() {
 
   const projects = [
     { name: 'Consultation Notice', href: '/projects/1' },
-    { name: 'Espacio Ideal', href: '/projects/2', icon: LuType },
+    { name: 'Espacio Ideal Typeface', href: '/projects/2', icon: LuType },
     { name: 'Wine Bottles', href: '/projects/3', icon: LuWine },
     { name: 'Burlington Co.', href: '/projects/4', icon: LuBeer },
     { name: 'Autonomous Standing Desk', href: '/projects/5', icon: LuMonitor },
@@ -33,11 +24,13 @@ export default function SagoNavigation() {
     { name: 'Run, Ride or Walk', href: '/projects/7', icon: LuShirt },
     { name: 'Green Standards Toolkit', href: '/projects/8', icon: LuLeaf },
     { name: 'Tote Bag', href: '/projects/9', icon: LuShoppingBag },
+    { name: 'Paradigm Shift', href: '/projects/10', icon: LuShoppingBag },
+    { name: 'Catalogue System', href: '/projects/11', icon: LuShoppingBag },
   ];
 
   const navItems = [
     { name: 'ABOUT', href: '/about' },
-    { name: 'CONTACT', href: '/contact' },
+    // { name: 'CONTACT', href: '/contact' },
   ];
 
   // Dropdown open/close with buffer
@@ -88,7 +81,7 @@ export default function SagoNavigation() {
         <Link to='/' className='flex items-center space-x-3 group'>
           <div className='h-auto w-24 flex items-center justify-center text-background font-semibold text-sm group-hover:scale-105 transition-transform duration-200'>
             <img src='/sago-logo.png' alt='Sago Design Logo' className='h-8 w-auto' />
-          </div>
+          </div>{' '}
         </Link>
 
         {/* Desktop Navigation */}
@@ -109,7 +102,9 @@ export default function SagoNavigation() {
               onMouseEnter={openWorkMenu}
               onMouseLeave={closeWorkMenu}
             >
-              <span className='relative z-10 group-hover:text-primary transition-colors font-bold duration-300'>WORK</span>
+              <span className='relative z-10 group-hover:text-primary transition-colors font-bold duration-300'>
+                WORK
+              </span>
               <ChevronDown
                 className={`h-4 w-4 ml-1 transition-transform duration-300 ${workMenuOpen ? 'rotate-180' : 'rotate-0'}`}
               />
@@ -125,7 +120,9 @@ export default function SagoNavigation() {
                 onMouseEnter={cancelCloseWorkMenu}
                 onMouseLeave={closeWorkMenu}
                 className={`absolute top-full left-1/2 -translate-x-1/2 w-96 rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 mt-6 ${
-                  workMenuOpen ? 'opacity-100 max-h-[600px] translate-y-0 scale-100' : 'opacity-0 max-h-0 -translate-y-2 scale-95'
+                  workMenuOpen
+                    ? 'opacity-100 max-h-[600px] translate-y-0 scale-100'
+                    : 'opacity-0 max-h-0 -translate-y-2 scale-95'
                 }`}
                 style={{
                   backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -234,8 +231,7 @@ export default function SagoNavigation() {
                               style={{ animationDelay: `${index * 50}ms` }}
                               onClick={() => setIsOpen(false)}
                             >
-                              <div className='h-7 w-7 flex items-center justify-center flex-shrink-0 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300'>
-                              </div>
+                              <div className='h-7 w-7 flex items-center justify-center flex-shrink-0 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300'></div>
                               <span className='text-left w-full transition-all duration-300 font-medium text-sm'>
                                 {project.name}
                               </span>
