@@ -22,16 +22,20 @@
     "category": "Product Design",
     "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
     "images": [
-      "/projects/consultation-notice/notice-1.jpg",
-      "/projects/consultation-notice/notice-2.jpg",
-      "/projects/consultation-notice/notice-3.jpg",
-      "/projects/consultation-notice/notice-4.jpg"
+      "/projects/consultation-notice/weston-notice-1.webp",
+      "/projects/consultation-notice/weston-notice-2.webp",
+      "/projects/consultation-notice/weston-notice-3.webp",
+      "/projects/consultation-notice/weston-notice-4.webp",
+      "/projects/consultation-notice/weston-notice-5.webp",
+      "/projects/consultation-notice/weston-notice-6.webp",
+      "/projects/consultation-notice/weston-notice-7.webp",
+      "/projects/consultation-notice/weston-notice-8.webp",
+      "/projects/consultation-notice/weston-notice-9.webp"
     ],
     "heroImage": 0,
-    "contextImage": 1,
-    "problemImage": 2,
-    "processImage": 3,
-    "solutionImage": [2, 3]
+    "problemImage": 7,
+    "processImage": 8,
+    "solutionImage": [4, 3, 5, 2, 1, 6]
   },
   "2": {
     "title": "Translating Architectural Lines into a Distinct Typographic Voice",
