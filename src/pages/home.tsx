@@ -18,6 +18,7 @@ const gifMap: Record<number, string> = {
   9: '/optimized/tote-bag.webp',
   10: '/optimized/paradigm-shift.webp',
   11: '/projects/espacio-ideal-catalogues/espacio-catalogues-placeholder-1.webp',
+  12: '/projects/espacio-ideal-website/espacio-website-placeholder.webp',
 };
 
 function getProjectGif(id: number) {

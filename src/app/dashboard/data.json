@@ -81,6 +81,14 @@
   },
   {
     "id": 11,
+    "header": "Catalogues that Reframed a Studio",
+    "type": "2025",
+    "status": "Done",
+    "target": "30",
+    "limit": "28"
+  },
+  {
+    "id": 12,
     "header": "A Curated Digital Experience",
     "type": "2025",
     "status": "Done",
