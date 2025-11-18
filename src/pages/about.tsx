@@ -6,7 +6,7 @@ export default function About() {
   const socialLinks = [
     {
       label: 'See my CV',
-      href: 'https://drive.google.com/file/d/1AENiTRBaTQ8Zh-0m69mwTVa0pGqXcDI0/view?usp=sharing',
+      href: 'https://drive.google.com/file/d/1leV0_WeJa1a1DA8DpO4m51QsKBEarzzP/view?usp=sharing',
     },
     {
       label: 'LinkedIn',

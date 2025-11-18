@@ -4,7 +4,6 @@ import projects from '../app/dashboard/data.json';
 
 const CARD_SIZE = 240;
 const GRID_GAP = 24;
-const VISIBLE_COLS = 6;
 
 const gifMap: Record<number, string> = {
   1: '/optimized/consultation-notice.webp',
@@ -25,8 +24,43 @@ function getProjectGif(id: number) {
   return gifMap[id] || undefined;
 }
 
-function mod(n: number, m: number) {
-  return ((n % m) + m) % m;
+// Seeded random function for consistent randomization
+function seededRandom(seed: number): number {
+  let hash = seed * 2654435761;
+  hash = (hash ^ (hash >>> 16)) * 0x85ebca6b;
+  hash = (hash ^ (hash >>> 13)) * 0xc2b2ae35;
+  hash = hash ^ (hash >>> 16);
+  return Math.abs(hash) / 2147483647;
+}
+
+// Get project index ensuring even distribution with no adjacent duplicates
+function getProjectIndex(row: number, col: number, projectsLength: number): number {
+  // Use a grid of 4x3 (12 cells) as our base pattern
+  // Each 4x3 region will contain all 12 projects exactly once
+  const patternCols = 4;
+  const patternRows = 3;
+
+  // Find which 4x3 tile we're in
+  const tileRow = Math.floor(row / patternRows);
+  const tileCol = Math.floor(col / patternCols);
+
+  // Position within the 4x3 tile (0-11)
+  const localRow = ((row % patternRows) + patternRows) % patternRows;
+  const localCol = ((col % patternCols) + patternCols) % patternCols;
+  const cellIndex = localRow * patternCols + localCol;
+
+  // Generate a unique shuffled arrangement for this tile
+  const tileSeed = tileRow * 92821 + tileCol * 93563;
+  const arrangement = Array.from({ length: projectsLength }, (_, i) => i);
+
+  // Fisher-Yates shuffle with seeded random
+  for (let i = projectsLength - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(tileSeed + i * 2654435761) * (i + 1));
+    [arrangement[i], arrangement[j]] = [arrangement[j], arrangement[i]];
+  }
+
+  // Return the project at this cell's position
+  return arrangement[cellIndex];
 }
 
 // Memoized card component to prevent unnecessary re-renders
@@ -419,17 +453,20 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
 
     for (let row = 0; row < visibleRows; row++) {
       for (let col = 0; col < visibleCols; col++) {
-        const projIdx = mod((startRow + row) * VISIBLE_COLS + (startCol + col), projects.length);
+        // Use seeded random to get a consistent random project for each grid position
+        const gridRow = startRow + row;
+        const gridCol = startCol + col;
+        const projIdx = getProjectIndex(gridRow, gridCol, projects.length);
         const project = projects[projIdx];
-        const baseX = (startCol + col) * (CARD_SIZE + GRID_GAP);
-        const baseY = (startRow + row) * (CARD_SIZE + GRID_GAP);
+        const baseX = gridCol * (CARD_SIZE + GRID_GAP);
+        const baseY = gridRow * (CARD_SIZE + GRID_GAP);
 
         const gif = getProjectGif(project.id);
         const isContentLoaded = gif ? loadedContent.has(gif) : true;
 
         cardElements.push(
           <ProjectCard
-            key={`${startRow + row}-${startCol + col}`}
+            key={`${gridRow}-${gridCol}`}
             project={project}
             baseX={baseX}
             baseY={baseY}
