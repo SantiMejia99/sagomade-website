@@ -12,7 +12,15 @@
 }
 
 :root {
-  font-family: 'aktiv-grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;  font-optical-sizing: auto;
+  font-family:
+    'aktiv-grotesk',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Arial,
+    sans-serif;
+  font-optical-sizing: auto;
   line-height: 1.5;
   font-weight: 400;
 
@@ -137,7 +145,15 @@ a:hover {
 }
 
 body {
-  font-family: 'aktiv-grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;}
+  font-family:
+    'aktiv-grotesk',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Arial,
+    sans-serif;
+}
 
 button {
   border-radius: 8px;
@@ -155,7 +171,7 @@ button:hover {
 
 @media (prefers-color-scheme: light) {
   :root {
-    background-color: #d60202;
+    background-color: #0d0d0d;
   }
   a:hover {
     color: #747bff;
