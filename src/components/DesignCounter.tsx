@@ -80,9 +80,9 @@ const DesignCounter = () => {
       <div className='w-full mx-auto'>
         <div className='rounded-xl shadow-xl'>
           <div className='flex items-center gap-3 mb-2'>
-            <h1 className='text-4xl font-bold'>Design Tracker</h1>
+            <h1 className='text-4xl font-bold'>Design Contributions</h1>
           </div>
-          <p className='text-start mb-8'>Tracking my design journey over the past year</p>
+          <p className='text-start mb-8'>Tracking my design progress, for consistency, to hold myself accountable.</p>
 
           <div className='mb-6'>
             <div className='w-full pb-4 pr-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
