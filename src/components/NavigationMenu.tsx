@@ -26,6 +26,7 @@ export default function SagoNavigation() {
     { name: 'Tote Bag', href: '/projects/9', icon: LuShoppingBag },
     { name: 'Paradigm Shift', href: '/projects/10', icon: LuShoppingBag },
     { name: 'Catalogue System', href: '/projects/11', icon: LuShoppingBag },
+    { name: 'Curated Digital Experience', href: '/projects/12', icon: LuShoppingBag },
   ];
 
   const navItems = [
