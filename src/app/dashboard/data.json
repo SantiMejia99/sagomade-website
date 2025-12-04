@@ -17,8 +17,8 @@
   },
   {
     "id": 3,
-    "header": "Weston Wine",
-    "type": "Package Design",
+    "header": "Designing a Wine Experience",
+    "type": "2023",
     "status": "Done",
     "target": "10",
     "limit": "13"
@@ -41,8 +41,8 @@
   },
   {
     "id": 6,
-    "header": "POSS Magazine",
-    "type": "Editorial Design",
+    "header": "Editorial Exploration of Urban Culture",
+    "type": "2020",
     "status": "Done",
     "target": "20",
     "limit": "8"

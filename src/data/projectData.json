@@ -135,16 +135,17 @@
       "/projects/burlington-co/burlington-beer-5.webp",
       "/projects/burlington-co/burlington-beer-6.webp",
       "/projects/burlington-co/burlington-beer-7.webp",
-      "/projects/burlington-co/burlington-beer-8.webp"
+      "/projects/burlington-co/burlington-beer-8.webp",
+      "/projects/burlington-co/burlington-beer-9.webp"
     ],
-    "heroImage": 0,
+    "heroImage": 8,
     "problemImage": 6,
     "processImage": 7,
-    "solutionImage": [5, 1, 2, 3, 4]
+    "solutionImage": [0, 5, 1, 2, 3, 4]
   },
   "5": {
     "title": "Autonomous X Artists: Transforming Workspaces Through Illustrated Design",
-    "content": "Autonomous.ai standing desk design",
+    "content": "Autonomous.ai standing desk project",
     "subtitle": "Autonomous.ai (Project A²)",
     "overview": "Autonomous.ai specializes in ergonomic office solutions, building standing desks and smart furniture designed to support healthier, more productive work environments. The Autonomous X Artists collaboration sought to bring creative expression into this utilitarian space, transforming their SmartDesk line into limited-edition art pieces through Project A². \n\nFor this project I developed an illustration that combined clean lines, vibrant colour palettes, and playful composition. My design was created as a fun addition to the desk surface. Ultimately demonstrating that workspace tools could serve as vehicles for personal expression. The project reinforced my belief that design can elevate everyday objects into meaningful experiences. By contributing to the Project A² collection, I participated in a broader conversation about the role of creativity in professional environments and the potential for art to make workspaces more personal, engaging, and inspiring.",
     "context": "The Autonomous X Artists collaboration emerged from Autonomous's vision to redefine the workspace through the integration of art and function. Project A² elevated the SmartDesk from a utilitarian object into a canvas for creative expression, partnering with emerging international artists to bring unique visual voices to everyday office furniture. The initiative aimed to challenge the traditional perception of work environments as sterile, impersonal spaces by introducing personalized, vibrant design into the fundamental tool of productivity: the standing desk. \n\nThis collaboration represented an opportunity to merge illustration with industrial design, transforming a mass-produced product into a limited-edition piece of functional art. The project culminated in a special edition auction and product line, positioning these illustrated desks as collectible objects. What began as a surface design challenge evolved into an exploration of how art can reshape the relationship between individuals and their workspaces.",
@@ -180,27 +181,40 @@
     "solutionImage": [5, 0, 2, 1, 3]
   },
   "6": {
-    "title": "POSS Magazine",
-    "content": "This is the POSS Magazine project.",
-    "subtitle": "A minimalist, art-driven magazine redefining urban expression through refined typography and imagery.",
-    "overview": "Product of a Sick Society Magazine is a thoughtfully designed publication that merges fashion, aesthetics, and minimalism into a printed art gallery. Inspired by a previous clothing brand project, it serves as a fresh platform for urban culture, art, music, and personal expression, delivered through clean layouts and a restrained color palette.",
-    "context": "The Green Standards Toolkit transforms dense technical documentation into a visually cohesive and accessible system for sustainable urban design. \n\nServing as both a reference and a teaching guide, it standardizes how Weston’s teams communicate concepts, from technical drawing conventions to visual language and accessibility integration, ensuring clarity and consistency across disciplines.",
-    "problem": "Utilized Blender to create custom 3D graphic assets and editorial mockups, adding dimensionality and visual depth to the magazine's clean aesthetic. Imagery was further refined in Photoshop using a restrained, minimalist color palette to maintain visual cohesion. Layouts and templates were designed in InDesign, prioritizing white space, grid structure, and typographic clarity. The overall system emphasized balance, ensuring each spread communicated a strong visual narrative without overwhelming the viewer.",
-    "research": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "process": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "solution": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "impact": "The layout was structured using accessible typography, a clear visual hierarchy, and a modular template to ensure consistency and efficient rollout. Visual elements, including a custom-designed map, were created to meet accessibility guidelines and enhance clarity. Integrated QR codes allow for extended digital engagement, and the final piece was printed on recyclable stock, reinforcing sustainable design practices.",
-    "technologies": ["Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign", "Blender"],
-    "role": "Lead Designer",
-    "duration": "5 Months",
-    "team": "2 Designers",
-    "year": "2023",
-    "category": "Digital Publishing",
+    "title": "POSS Magazine: A Minimalist Editorial Exploration of Urban Culture",
+    "content": "POSS Magazine project.",
+    "subtitle": "YGTUT, Humble Magazine",
+    "overview": "POSS Magazine operates as a curated editorial object where typography, imagery, and cultural narrative converge into a disciplined visual system. Rooted in my experience growing up in Colombia, the magazine draws from the rhythms, tensions, and aesthetics of urban life, translating them into a minimal, gallery-like print language. The goal was not only to showcase imagery, but to build a refined editorial framework capable of elevating everyday cultural expression into a contemplative visual experience. \n\nThe magazine functions as a series of controlled visual moments, balanced compositions, quiet grids, and measured contrasts, all working together to create an intentional narrative rhythm. Each spread serves as an independent visual object with its own tone and theme, yet all are unified through a shared aesthetic logic and layout. This systematic approach transformed the publication into more than a promotional artifact; POSS became a portable, minimal art piece that reflects both personal cultural perspective and contemporary urban movement.",
+    "context": "POSS Magazine began as a self-initiated exploration of urban culture, minimalism, and editorial design, inspired by the experiences and personal memories of my upbringing in Colombia. Unlike conventional fashion or lifestyle publications, it was conceived as a portable art object: a curated system where each spread is treated as a gallery-like composition with intentional pacing and rhythm. \n\nThe project emerged from early experiments with social media traction, validating the potential of this editorial approach and leading to opportunities for collaboration. The print templates were eventually acquired by Humble Magazine, a U.S-based virtual publication, and became a gateway to further creative projects, including marketing visual work for the rapper YGTUT. Programs such as Adobe Photoshop, Illustrator, and InDesign were leveraged to craft imagery, develop layouts, and maintain a consistent, minimalist aesthetic. The careful arrangement of typography, imagery, and spacing created an editorial framework that could flexibly communicate a variety of themes while maintaining cohesion and narrative clarity.",
+    "problem": "Urban visual culture often defaults to a loud, maximalist aesthetic: high saturation, dense compositions, and overwhelming layouts that value impact over intention. Having grown up surrounded by the textures and contradictions of Colombian urban life, I saw an opportunity to reinterpret this energy through a different lens: a form of disorderly minimalism. \n\nRather than silencing the urban essence, this approach aimed to refine it, maintaining its authenticity while removing unnecessary excess. The goal was to create a minimalist identity that still felt distinctly urban, where every element had purpose and tension. Existing publications in the space lacked this balance, relying on unrefined imagery, inconsistent typographic systems, and cluttered visual languages that diluted the message. POSS Magazine set out to redefine how urban culture could be expressed through print: intentional, measured, and visually restrained without compromising spirit.",
+    "research": "Early research into contemporary Colombian urban aesthetics showed a heavy reliance on saturation, layered effects, a maximalist approach that often diluted the authenticity of the message behind it. This contrast made it clear that POSS needed to pursue a different direction: a cleaner, sharper visual strategy capable of preserving urban identity without the surrounding noise. \n\nI explored minimalist editorial references, from Swiss and Bauhaus systems to high-fashion print structures (American and European styles) to understand how spacing, contrast, and typographic discipline could reframe urban expression. Through moodboards, typographic tests, and multiple refinements, I found that intentional minimialism was the correct approach, bringing clarity and emotional weight to the imagery. These insights established the foundation for POSS Magazine’s visual language: a restrained, precise system where urban culture is elevated through structure, rhythm, and visual silence.",
+    "process": "The creation of POSS Magazine unfolded over nine months, evolving from a conjunct editorial exploration with another designer into a multi-stage project involving publication and artist collaboration. The early months focused on research, experimentation, and developing a visual language. As the system matured, through iterations of layout, imagery treatment, and typographic refinement, the magazine took form as a cohesive, minimal editorial object grounded in clarity and cultural intent. \n\nOnce the magazine was completed, momentum grew through deliberate posting, visual teasers, and small social media experiments intended to build presence around the project. This effort led to a collaboration with Humble Magazine, who adapted the templates for their editorial use. The project expanded again when we reached out to YGTUT, an artist whose work had influenced me deeply. After sending samples, we began developing a collage-based campaign, working directly with his management and YGTUT himself. This final phase marked the shift from personal project to collaborative output.",
+    "solution": "The magazine emerged as a disciplined editorial system rooted from clarity, structure, and minimal visual language. The final publication operated less like a traditional magazine and more like a curated art object, conceived to be a piece that complements a space. This refined aesthetic became central to its impact. The cohesive template system translated smoothly into Humble Magazine’s editorial workflow, offering them a more structured and elevated visual direction for their content. The same design logic extended into digital and social formats, ultimately shaping the collage-driven campaign developed for YGTUT. Working with his management and securing direct approvals from the artist, the visuals maintained the magazine’s minimalist tension while adapting to a more expressive musical context. \n\nPOSS proved capable of moving across mediums: print, publication, social media, and artist promotional material, while consistently preserving the identity and restraint that defined its original concept. Its foundational principles of structure and measured composition now guide future applications.",
+    "impact": "POSS Magazine successfully reframed how urban culture could be presented, shifting from chaotic visuals to a curated system grounded in minimalism and structure. The unique visual identity proved to be a valuable asset, leading to the acquisition of its design templates by Humble Magazine. This collaboration achieved international traction, expanding the project's visibility into the U.S. creative and music spaces. The project also generated significant buzz, reaching 1,000+ engagements across social platforms. Most importantly, the established design credibility led to graphic collaboration with rapper YGTUT (30k+ audience), delivering design solutions that reached a significantly larger audience and solidified my professional brand within the music culture landscape. \n\nThe project reaffirmed the value of restraint and intentional reduction in editorial design. The process deepened my understanding of digital publications as a powerful communication medium. Beyond the technical skills, the work reinforced the importance of client-facing expertise: learning how to effectively sell a product, present complex ideas, and successfully navigate client meetings to secure buy-in and manage expectations. Rooted in the discipline of strong grid compositions, the work highlighted typography's emotional influence and reaffirmed that design, when executed with clarity, can simultaneously honour minimalism and expressive cultural storytelling.",
+    "technologies": [
+      "Design: Adobe InDesign, Adobe Photoshop, Adobe Illustrator, Figma",
+      "Production: Color palette studies, image treatment workflows, layout templates, marketing research",
+      "Process Materials: Moodboards, photography references, typographic & layout studies"
+    ],
+    "role": "Co-Creative Director & Lead Designer",
+    "duration": "9 Months",
+    "team": "Independent Designer, Design Partner, Magazine Editorial Team, Artist Management",
+    "year": "2020",
+    "category": "Digital Publishing & Marketing",
     "liveUrl": "https://drive.google.com/file/d/105iq7GqRNB3VJ241f1MK7e8-bKVw36Tc/view?usp=drive_link",
-    "images": ["/projects/poss-magazine/poss-2.jpg", "/projects/poss-magazine/poss-3.jpg"],
+    "images": [
+      "/projects/poss-magazine/poss-magazine-1.webp",
+      "/projects/poss-magazine/poss-magazine-2.webp",
+      "/projects/poss-magazine/poss-magazine-3.webp",
+      "/projects/poss-magazine/poss-magazine-4.webp",
+      "/projects/poss-magazine/poss-magazine-5.webp",
+      "/projects/poss-magazine/poss-magazine-6.webp",
+      "/projects/poss-magazine/poss-magazine-7.webp"
+    ],
     "heroImage": 0,
-    "processImage": 4,
-    "solutionImage": [2, 3]
+    "problemImage": 5,
+    "processImage": 6,
+    "solutionImage": [4, 1, 3, 2]
   },
   "7": {
     "title": "Run, Ride or Walk",
