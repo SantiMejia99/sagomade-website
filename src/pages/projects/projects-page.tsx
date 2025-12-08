@@ -99,9 +99,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
               <h1 className='text-4xl md:text-6xl font-bold tracking-tighter leading-tight'>{project.title}</h1>
               <div className='inline-flex items-center space-x-3 text-muted-foreground mt-4'>
                 <span>{project.subtitle}</span>
-                <span>•</span>
+                <span>■</span>
                 <span>{project.year}</span>
-                <span>•</span>
+                <span>■</span>
                 <span>{project.category}</span>
               </div>
             </div>
