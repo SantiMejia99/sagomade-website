@@ -9,7 +9,7 @@ import NotFound from './pages/NotFound';
 import { useParams } from 'react-router-dom';
 import CustomCursor from './components/CustomCursor';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 
 function ProjectPageWrapper() {
   const params = useParams<{ id: string }>();
