@@ -25,7 +25,7 @@
   },
   {
     "id": 4,
-    "header": "Burlington Co. Bottles",
+    "header": "Burlington Co. Beer Bottles",
     "type": "2020",
     "status": "Done",
     "target": "27",
@@ -66,7 +66,7 @@
   {
     "id": 9,
     "header": "Urban Planning Tote",
-    "type": "Product Design",
+    "type": "2023",
     "status": "Done",
     "target": "7",
     "limit": "23"

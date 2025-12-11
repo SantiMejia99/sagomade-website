@@ -325,7 +325,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             {project.liveUrl && (
               <Button asChild variant='outline' className='justify-start'>
                 <a href={project.liveUrl} target='_blank' rel='noopener noreferrer'>
-                  <ExternalLink className='h-4 w-4 mr-2' /> Read More
+                  <ExternalLink className='h-4 w-4 mr-2' /> View My Catalogue
                 </a>
               </Button>
             )}
