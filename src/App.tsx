@@ -7,7 +7,7 @@ import SagoNavigation from './components/NavigationMenu';
 import ProjectPage from './pages/projects/projects-page';
 import NotFound from './pages/NotFound';
 import { useParams } from 'react-router-dom';
-import CustomCursor from './components/CustomCursor';
+// import CustomCursor from './components/CustomCursor';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -21,7 +21,7 @@ function App() {
     <>
       <Analytics />
       <SpeedInsights />
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <Router basename='/'>
         <SagoNavigation />
         <Routes>

@@ -18,6 +18,7 @@ const gifMap: Record<number, string> = {
   10: '/optimized/paradigm-shift.webp',
   11: '/projects/espacio-ideal-catalogues/espacio-catalogues-placeholder-1.webp',
   12: '/projects/espacio-ideal-website/espacio-website-placeholder.webp',
+  13: '/projects/25-years/biglieri-25-years-ph.webp',
 };
 
 function getProjectGif(id: number) {

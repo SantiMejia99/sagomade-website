@@ -50,8 +50,8 @@ html::-webkit-scrollbar {
   color: #888;
 }
 
-html,
+/* html,
 body,
 #root {
   cursor: none !important;
-}
+} */

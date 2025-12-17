@@ -140,7 +140,12 @@ a {
   color: #ffffff;
   text-decoration: inherit;
 }
+
 a:hover {
+  color: #7e7f86;
+}
+
+button:hover {
   color: #7e7f86;
 }
 
@@ -155,7 +160,7 @@ body {
     sans-serif;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 0.6em;
@@ -165,9 +170,10 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #313131;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {

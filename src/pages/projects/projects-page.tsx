@@ -38,6 +38,7 @@ type ProjectData = Record<
     processImage?: number;
     solutionImage?: number[];
     impactImage?: number;
+    codeSnippet?: string;
   }
 >;
 
@@ -53,6 +54,7 @@ interface ProjectPageProps {
 export default function ProjectPage({ params }: ProjectPageProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [, setIsLoading] = useState(true);
+  const [isCodeExpanded, setIsCodeExpanded] = useState(false);
   const { id } = params;
 
   console.log('ProjectPage rendered with id:', id);
@@ -298,6 +300,46 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 )}
               </div>
             )}
+
+            {/* Code Snippet, rendered if codeSnippet exists */}
+            {project.codeSnippet && (
+              <div className='mt-12'>
+                {(() => {
+                  const maxHeight = isCodeExpanded ? 'max-h-none' : 'max-h-120';
+
+                  return (
+                    <div className='relative'>
+                      <div
+                        className={`relative rounded-lg border bg-muted/50 overflow-hidden ${maxHeight} transition-all duration-300`}
+                      >
+                        <div className='px-4 py-2 border-b text-xs font-mono text-muted-foreground'>python</div>
+                        <pre className='overflow-x-auto p-4'>
+                          <code className='font-mono text-sm text-foreground whitespace-pre'>
+                            {project.codeSnippet}
+                          </code>
+                        </pre>
+                      </div>
+
+                      {/* Gradient overlay when collapsed */}
+                      {!isCodeExpanded && (
+                        <div className='absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none' />
+                      )}
+
+                      {/* Expand/Collapse button */}
+                      <div className='mt-4'>
+                        <Button
+                          variant='outline'
+                          className='justify-start'
+                          onClick={() => setIsCodeExpanded(!isCodeExpanded)}
+                        >
+                          {isCodeExpanded ? 'Show less' : 'Expand to read more'}
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
           </div>
 
           {/* Divider */}
@@ -325,7 +367,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             {project.liveUrl && (
               <Button asChild variant='outline' className='justify-start'>
                 <a href={project.liveUrl} target='_blank' rel='noopener noreferrer'>
-                  <ExternalLink className='h-4 w-4 mr-2' /> View My Catalogue
+                  <ExternalLink className='h-4 w-4' /> Download My Catalogue
                 </a>
               </Button>
             )}
