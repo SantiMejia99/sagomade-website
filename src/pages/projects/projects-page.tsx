@@ -34,7 +34,7 @@ type ProjectData = Record<
     galleryImages?: number[];
     contextImage?: number;
     problemImage?: number;
-    researchImage?: number;
+    researchImage?: number[];
     processImage?: number;
     solutionImage?: number[];
     impactImage?: number;
@@ -243,14 +243,20 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
             <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.research}</p>
             {/* Research Image */}
-            {project.researchImage !== undefined && project.images[project.researchImage] && (
-              <div className='mt-6'>
-                <Image
-                  src={project.images[project.researchImage]}
-                  alt={`${project.title} research`}
-                  aspectRatio='natural'
-                  className='w-full h-200 object-cover rounded-none mt-10'
-                />
+            {project.researchImage !== undefined && project.researchImage.length > 0 && (
+              <div className='mt-20'>
+                {project.researchImage.map(
+                  (imageIndex, idx) =>
+                    project.images[imageIndex] && (
+                      <Image
+                        key={idx}
+                        src={project.images[imageIndex]}
+                        alt={`${project.title} solution ${idx + 1}`}
+                        aspectRatio='natural'
+                        className='w-full h-full object-cover rounded-none mt-4'
+                      />
+                    )
+                )}
               </div>
             )}
           </div>

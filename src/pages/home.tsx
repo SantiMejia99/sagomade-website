@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
 
+const projectsArray = Object.values(projects);
+
 const CARD_SIZE = 240;
 const GRID_GAP = 24;
 
@@ -19,6 +21,7 @@ const gifMap: Record<number, string> = {
   11: '/projects/espacio-ideal-catalogues/espacio-catalogues-placeholder-1.webp',
   12: '/projects/espacio-ideal-website/espacio-website-placeholder.webp',
   13: '/projects/25-years/biglieri-25-years-ph.webp',
+  14: '/projects/biglieri-rebrand/biglieri-bph.webp',
 };
 
 function getProjectGif(id: number) {
@@ -36,16 +39,14 @@ function seededRandom(seed: number): number {
 
 // Get project index ensuring even distribution with no adjacent duplicates
 function getProjectIndex(row: number, col: number, projectsLength: number): number {
-  // Use a grid of 4x3 (12 cells) as our base pattern
-  // Each 4x3 region will contain all 12 projects exactly once
-  const patternCols = 4;
-  const patternRows = 3;
+  const patternCols = 6;
+  const patternRows = 4;
 
-  // Find which 4x3 tile we're in
+  // Find title
   const tileRow = Math.floor(row / patternRows);
   const tileCol = Math.floor(col / patternCols);
 
-  // Position within the 4x3 tile (0-11)
+  // Position within the tile
   const localRow = ((row % patternRows) + patternRows) % patternRows;
   const localCol = ((col % patternCols) + patternCols) % patternCols;
   const cellIndex = localRow * patternCols + localCol;
@@ -61,7 +62,7 @@ function getProjectIndex(row: number, col: number, projectsLength: number): numb
   }
 
   // Return the project at this cell's position
-  return arrangement[cellIndex];
+  return arrangement[cellIndex % projectsLength];
 }
 
 // Memoized card component to prevent unnecessary re-renders
@@ -457,8 +458,8 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         // Use seeded random to get a consistent random project for each grid position
         const gridRow = startRow + row;
         const gridCol = startCol + col;
-        const projIdx = getProjectIndex(gridRow, gridCol, projects.length);
-        const project = projects[projIdx];
+        const projIdx = getProjectIndex(gridRow, gridCol, projectsArray.length);
+        const project = projectsArray[projIdx];
         const baseX = gridCol * (CARD_SIZE + GRID_GAP);
         const baseY = gridRow * (CARD_SIZE + GRID_GAP);
 

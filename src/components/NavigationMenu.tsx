@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, ChevronDown } from 'lucide-react';
-import { LuType, LuWine, LuBeer, LuMonitor, LuBookOpen, LuShirt, LuLeaf, LuShoppingBag } from 'react-icons/lu';
 import { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -16,17 +15,19 @@ export default function SagoNavigation() {
 
   const projects = [
     { name: 'Consultation Notice', href: '/projects/1' },
-    { name: 'Espacio Ideal Typeface', href: '/projects/2', icon: LuType },
-    { name: 'Wine Bottles', href: '/projects/3', icon: LuWine },
-    { name: 'Burlington Co.', href: '/projects/4', icon: LuBeer },
-    { name: 'Autonomous Standing Desk', href: '/projects/5', icon: LuMonitor },
-    { name: 'POSS Magazine', href: '/projects/6', icon: LuBookOpen },
-    { name: 'Run, Ride or Walk', href: '/projects/7', icon: LuShirt },
-    { name: 'Green Standards Toolkit', href: '/projects/8', icon: LuLeaf },
-    { name: 'Tote Bag', href: '/projects/9', icon: LuShoppingBag },
-    { name: 'Paradigm Shift', href: '/projects/10', icon: LuShoppingBag },
-    { name: 'Catalogue System', href: '/projects/11', icon: LuShoppingBag },
-    { name: 'Curated Digital Experience', href: '/projects/12', icon: LuShoppingBag },
+    { name: 'Espacio Ideal Typeface', href: '/projects/2' },
+    { name: 'Wine Bottles', href: '/projects/3' },
+    { name: 'Burlington Co. Beers', href: '/projects/4' },
+    { name: 'Autonomous Standing Desk', href: '/projects/5' },
+    { name: 'POSS Magazine', href: '/projects/6' },
+    { name: 'Run, Ride or Walk', href: '/projects/7' },
+    { name: 'Green Standards Toolkit', href: '/projects/8' },
+    { name: 'Urban Planning Tote Bag', href: '/projects/9' },
+    { name: 'Paradigm Shift', href: '/projects/10' },
+    { name: 'Catalogues that Reframed a Studio', href: '/projects/11' },
+    { name: 'A Curated Digital Experience', href: '/projects/12' },
+    { name: '25 Years of Growth', href: '/projects/13' },
+    { name: 'A Smarter Design Ecosystem', href: '/projects/14' },
   ];
 
   const navItems = [
