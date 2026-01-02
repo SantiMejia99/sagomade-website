@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
+import LoadingScreen from '../components/LoadingScreen';
 
 const projectsArray = Object.values(projects);
 
@@ -521,7 +522,17 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
 export default function Home() {
   const [loadedContent, setLoadedContent] = useState<Set<string>>(new Set());
   const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
-  const preloadedRef = useRef(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [hasSeenLoading, setHasSeenLoading] = useState(false);
+
+  // Check if user has already seen the loading screen in this session
+  useEffect(() => {
+    const seen = sessionStorage.getItem('hasSeenHomeLoading');
+    if (seen === 'true') {
+      setShowLoading(false);
+      setHasSeenLoading(true);
+    }
+  }, []);
 
   // Track page visibility at the top level too
   useEffect(() => {
@@ -533,10 +544,9 @@ export default function Home() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  // Only preload images when page is visible
+  // Preload images (for cards that appear after loading screen)
   useEffect(() => {
-    if (!isPageVisible || preloadedRef.current) return;
-    preloadedRef.current = true;
+    if (!isPageVisible || hasSeenLoading) return;
 
     const preload = () => {
       Object.values(gifMap).forEach(src => {
@@ -553,10 +563,18 @@ export default function Home() {
     } else {
       setTimeout(preload, 100);
     }
-  }, [isPageVisible]);
+  }, [isPageVisible, hasSeenLoading]);
+
+  const handleLoadingComplete = () => {
+    setShowLoading(false);
+    sessionStorage.setItem('hasSeenHomeLoading', 'true');
+  };
+
+  const imageSources = Object.values(gifMap);
 
   return (
     <div className='bg-background'>
+      {showLoading && <LoadingScreen imageSources={imageSources} onComplete={handleLoadingComplete} />}
       <InfinitePlaygroundGrid loadedContent={loadedContent} />
     </div>
   );
