@@ -570,11 +570,9 @@ export default function Home() {
     sessionStorage.setItem('hasSeenHomeLoading', 'true');
   };
 
-  const imageSources = Object.values(gifMap);
-
   return (
     <div className='bg-background'>
-      {showLoading && <LoadingScreen imageSources={imageSources} onComplete={handleLoadingComplete} />}
+      {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}{' '}
       <InfinitePlaygroundGrid loadedContent={loadedContent} />
     </div>
   );
