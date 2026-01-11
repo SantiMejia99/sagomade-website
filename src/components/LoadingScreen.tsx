@@ -60,7 +60,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   return (
     <div
       ref={containerRef}
-      className='fixed inset-0 z-50 bg-[#0d0d0d] p-4 flex items-center justify-center overflow-auto text-mono'
+      className='fixed inset-0 z-50 bg-[#0d0d0d]/100 p-4 flex items-center justify-center overflow-auto text-mono'
       style={{ pointerEvents: 'auto' }}
     >
       <Terminal className='w-full max-w-3xl font-mono text-left flex flex-col'>
@@ -78,7 +78,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         <AnimatedSpan className='text-[#999999] pl-6'>📁 About loaded</AnimatedSpan>
 
         <TypingAnimation className='text-[#98ce81] font-bold' duration={TYPING_SPEED}>
-          ℹ Move, drag, scroll anywhere you like.
+          ℹ Move, drag, scroll anywhere you like. For as long as you'd like.
         </TypingAnimation>
 
         <LoadingBar />

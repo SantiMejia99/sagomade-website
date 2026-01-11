@@ -104,9 +104,7 @@ export default function SagoNavigation() {
               onMouseEnter={openWorkMenu}
               onMouseLeave={closeWorkMenu}
             >
-              <span className='relative z-10 group-hover:text-primary transition-colors font-bold duration-300'>
-                WORK
-              </span>
+              <span className='relative z-10 group-hover:text-primary font-bold duration-300'>WORK</span>
               <ChevronDown
                 className={`h-4 w-4 ml-1 transition-transform duration-300 ${workMenuOpen ? 'rotate-180' : 'rotate-0'}`}
               />
@@ -179,7 +177,7 @@ export default function SagoNavigation() {
               <Button
                 variant='ghost'
                 size='icon'
-                className='h-9 w-9 rounded-full bg-primary/10 hover:bg-primary/20 transition-all duration-300 hover:scale-105'
+                className='h-9 w-9 rounded-full transition-all duration-300 hover:scale-105'
               >
                 <Menu className='h-4 w-4 text-primary' />
               </Button>

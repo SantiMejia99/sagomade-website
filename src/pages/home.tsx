@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
-import LoadingScreen from '../components/LoadingScreen';
+import LoadingScreenV2 from '../components/LoadingScreen-v2';
 
 const projectsArray = Object.values(projects);
 
@@ -572,7 +572,7 @@ export default function Home() {
 
   return (
     <div className='bg-background'>
-      {showLoading && <LoadingScreen onComplete={handleLoadingComplete} />}{' '}
+      {showLoading && <LoadingScreenV2 onComplete={handleLoadingComplete} />}{' '}
       <InfinitePlaygroundGrid loadedContent={loadedContent} />
     </div>
   );

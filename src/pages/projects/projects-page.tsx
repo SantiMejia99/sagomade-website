@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
 import TypographyPlayground from '@/components/ui/font-playground';
 import projectData from '@/data/projectData.json';
+import { ProgressiveBlur } from '@/components/ui/progressive-blur';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 // Define the TypeScript type
 type ProjectData = Record<
@@ -82,7 +84,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     <div className='bg-background'>
       <main className='container mx-auto pt-30 pb-16 px-4'>
         {/* Back Navigation */}
-        <div className='mb-4'>
+        <div className='mb-4 flex justify-center'>
           <Link
             to='/'
             className='inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-200 group'
@@ -354,7 +356,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Impact */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.impact}</p>
+            <p className='text-muted-foreground/60 mb-16 leading-relaxed whitespace-pre-line'>{project.impact}</p>
             {/* Impact Image */}
             {project.impactImage !== undefined && project.images[project.impactImage] && (
               <div className='mt-6'>
@@ -369,17 +371,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           </div>
 
           {/* Links */}
-          <div className='space-y-3'>
-            {project.liveUrl && (
-              <Button asChild variant='outline' className='justify-start'>
-                <a href={project.liveUrl} target='_blank' rel='noopener noreferrer'>
-                  <ExternalLink className='h-4 w-4' /> Download My Catalogue
-                </a>
-              </Button>
-            )}
+          <div className='space-y-3 flex justify-center'>
+            {project.liveUrl && <InteractiveHoverButton>Download My Catalogue</InteractiveHoverButton>}
           </div>
         </section>
       </main>
+      {/* Blur overlay */}
+      <ProgressiveBlur position='bottom' height='10%' className='fixed bottom-0 left-0 right-0 pointer-events-none' />
     </div>
   );
 }
