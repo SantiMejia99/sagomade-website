@@ -1,12 +1,12 @@
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function InteractiveHoverButton({
-  children,
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
+interface InteractiveHoverButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  href?: string;
+}
+
+export function InteractiveHoverButton({ children, className, href, ...props }: InteractiveHoverButtonProps) {
+  const button = (
     <button
       className={cn(
         'group relative w-auto cursor-pointer overflow-hidden rounded-full border p-2 px-6 text-center font-semibold bg-[var(--ihb-bg)]',
@@ -14,9 +14,9 @@ export function InteractiveHoverButton({
       )}
       style={
         {
-          '--ihb-bg': 'white', // button background
-          '--ihb-primary': 'black', // dot color
-          '--ihb-foreground': 'white', // hover text color (inverted)
+          '--ihb-bg': 'white',
+          '--ihb-primary': 'black',
+          '--ihb-foreground': 'white',
           ...((props as any).style || {}),
         } as React.CSSProperties
       }
@@ -24,7 +24,7 @@ export function InteractiveHoverButton({
     >
       {/* Default layer */}
       <div className='flex items-center gap-2'>
-        <div className='bg-[var(--ihb-primary)] h-2 w-2 rounded-full transition-all duration-300 group-hover:scale-[100.8]'></div>
+        <div className='bg-[var(--ihb-primary)] h-2 w-2 rounded-full transition-all duration-300 group-hover:scale-[100.8]' />
         <span className='text-[var(--ihb-primary)] transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0'>
           {children}
         </span>
@@ -36,5 +36,13 @@ export function InteractiveHoverButton({
         <ArrowRight className='h-4 w-4 text-[var(--ihb-foreground)]' />
       </div>
     </button>
+  );
+
+  if (!href) return button;
+
+  return (
+    <a href={href} target='_blank' rel='noopener noreferrer' className='inline-block'>
+      {button}
+    </a>
   );
 }

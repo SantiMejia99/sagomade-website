@@ -370,9 +370,11 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             )}
           </div>
 
-          {/* Links */}
+          {/* Link to Portfolio */}
           <div className='space-y-3 flex justify-center mb-6'>
-            {project.liveUrl && <InteractiveHoverButton>Download My Catalogue</InteractiveHoverButton>}
+            {project.liveUrl && (
+              <InteractiveHoverButton href={project.liveUrl}>Download My Catalogue</InteractiveHoverButton>
+            )}
           </div>
         </section>
       </main>
