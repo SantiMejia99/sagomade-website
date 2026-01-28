@@ -27,9 +27,9 @@ export default function About() {
             {/* Left Column - Description */}
             <div className='space-y-6 mask-r-from-35%'>
               <p className='text-4xl text-muted-foreground tracking-tighter leading-tight text-left'>
-                I am a visual designer with 5 years of experience specializing in branding, design flexibility, and
-                automation systems. Merging minimalism with structured design to build timeless, accessible, and
-                reusable solutions.
+                I am a multidisciplinary designer with 5+ years of experience specializing in branding, design
+                flexibility, and automation systems. Merging minimalism with structured design to build timeless,
+                accessible, and reusable solutions.
               </p>
             </div>
 
