@@ -7,6 +7,7 @@ import TypographyPlayground from '@/components/ui/font-playground';
 import projectData from '@/data/projectData.json';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 // Define the TypeScript type
 type ProjectData = Record<
@@ -15,13 +16,13 @@ type ProjectData = Record<
     title: string;
     content: string;
     subtitle: string;
-    overview: string;
-    context: string;
-    problem: string;
-    research: string;
-    process: string;
-    solution: string;
-    impact: string;
+    overview?: string; // Optional
+    context: string[];
+    problem?: string; // Optional
+    research: string[];
+    process?: string; // Optional
+    solution: string[];
+    impact: string[];
     technologies: string[];
     role: string;
     duration: string;
@@ -41,6 +42,22 @@ type ProjectData = Record<
     solutionImage?: number[];
     impactImage?: number;
     codeSnippet?: string;
+    accordionContextData?: {
+      title: string;
+      content: string;
+    }[];
+    accordionResearchData?: {
+      title: string;
+      content: string;
+    }[];
+    accordionSolutionData?: {
+      title: string;
+      content: string;
+    }[];
+    accordionImpactData?: {
+      title: string;
+      content: string;
+    }[];
   }
 >;
 
@@ -201,8 +218,43 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Context */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Context</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.context}</p>
-
+            <ul className='space-y-4 mb-8 list-none mt-6'>
+              {project.context.map((point, index) => (
+                <li key={index} className='flex items-start gap-3'>
+                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                    ■
+                  </span>
+                  <div
+                    className='text-muted-foreground/60 leading-relaxed [&>strong]:text-foreground [&>strong]:font-bold'
+                    dangerouslySetInnerHTML={{ __html: point }}
+                  />{' '}
+                </li>
+              ))}
+            </ul>
+            {/* Accordion Context Section */}
+            {project.accordionContextData && (
+              <div className='mb-8'>
+                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
+                  {project.accordionContextData.map((item, index) => (
+                    <AccordionItem
+                      value={`item-${index}`}
+                      key={index}
+                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
+                    >
+                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
+                        {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
+                        <div
+                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            )}
             {/* Context Image */}
             {project.contextImage !== undefined && project.images[project.contextImage] && (
               <div className='mt-6'>
@@ -226,12 +278,12 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
             {/* Problem Image */}
             {project.problemImage !== undefined && project.images[project.problemImage] && (
-              <div className='mt-6'>
+              <div className='mt-2'>
                 <Image
                   src={project.images[project.problemImage]}
                   alt={`${project.title} problem`}
                   aspectRatio='natural'
-                  className='w-full h-200 object-cover rounded-none mt-10'
+                  className='w-full h-200 object-cover rounded-none'
                 />
               </div>
             )}
@@ -243,10 +295,46 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Research & Insights*/}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.research}</p>
+            <ul className='space-y-4 mb-8 list-none mt-6'>
+              {project.research.map((point, index) => (
+                <li key={index} className='flex items-start gap-3'>
+                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                    ■
+                  </span>
+                  <div
+                    className='text-muted-foreground/60 leading-relaxed [&>strong]:text-foreground [&>strong]:font-bold'
+                    dangerouslySetInnerHTML={{ __html: point }}
+                  />{' '}
+                </li>
+              ))}
+            </ul>
+            {/* Accordion Context Section */}
+            {project.accordionResearchData && (
+              <div className='mb-8'>
+                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
+                  {project.accordionResearchData.map((item, index) => (
+                    <AccordionItem
+                      value={`item-${index}`}
+                      key={index}
+                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
+                    >
+                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
+                        {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
+                        <div
+                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            )}
             {/* Research Image */}
             {project.researchImage !== undefined && project.researchImage.length > 0 && (
-              <div className='mt-20'>
+              <div className='mt-10'>
                 {project.researchImage.map(
                   (imageIndex, idx) =>
                     project.images[imageIndex] && (
@@ -273,7 +361,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
             {/* Process Image */}
             {project.processImage !== undefined && project.images[project.processImage] && (
-              <div className='mt-6'>
+              <div className='mt-2'>
                 <Image
                   src={project.images[project.processImage]}
                   alt={`${project.title} process`}
@@ -290,10 +378,46 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Solution */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Solution</h2>
-            <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.solution}</p>
+            <ul className='space-y-4 mb-8 list-none mt-6'>
+              {project.solution.map((point, index) => (
+                <li key={index} className='flex items-start gap-3'>
+                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                    ■
+                  </span>
+                  <div
+                    className='text-muted-foreground/60 leading-relaxed [&>strong]:text-foreground [&>strong]:font-bold'
+                    dangerouslySetInnerHTML={{ __html: point }}
+                  />{' '}
+                </li>
+              ))}
+            </ul>
+            {/* Accordion Context Section */}
+            {project.accordionSolutionData && (
+              <div className='mb-8'>
+                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
+                  {project.accordionSolutionData.map((item, index) => (
+                    <AccordionItem
+                      value={`item-${index}`}
+                      key={index}
+                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
+                    >
+                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
+                        {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
+                        <div
+                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            )}
             {/* Solution Image */}
             {project.solutionImage !== undefined && project.solutionImage.length > 0 && (
-              <div className='mt-20'>
+              <div className='mt-2'>
                 {project.solutionImage.map(
                   (imageIndex, idx) =>
                     project.images[imageIndex] && (
@@ -356,7 +480,43 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Impact */}
           <div>
             <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
-            <p className='text-muted-foreground/60 mb-16 leading-relaxed whitespace-pre-line'>{project.impact}</p>
+            <ul className='space-y-4 mb-8 list-none mt-6'>
+              {project.impact.map((point, index) => (
+                <li key={index} className='flex items-start gap-3'>
+                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                    ■
+                  </span>
+                  <div
+                    className='text-muted-foreground/60 leading-relaxed [&>strong]:text-foreground [&>strong]:font-bold'
+                    dangerouslySetInnerHTML={{ __html: point }}
+                  />{' '}
+                </li>
+              ))}
+            </ul>
+            {/* Accordion Context Section */}
+            {project.accordionImpactData && (
+              <div className='mb-8'>
+                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
+                  {project.accordionImpactData.map((item, index) => (
+                    <AccordionItem
+                      value={`item-${index}`}
+                      key={index}
+                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
+                    >
+                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
+                        {item.title}
+                      </AccordionTrigger>
+                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
+                        <div
+                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            )}{' '}
             {/* Impact Image */}
             {project.impactImage !== undefined && project.images[project.impactImage] && (
               <div className='mt-6'>

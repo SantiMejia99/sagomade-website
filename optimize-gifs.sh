@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Create optimized videos directory
-mkdir -p public/videos
-
 echo "Converting GIFs to optimized WebM videos..."
 
 # Convert each GIF to WebM with optimization
