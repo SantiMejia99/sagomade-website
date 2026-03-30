@@ -7,7 +7,7 @@ import TypographyPlayground from '@/components/ui/font-playground';
 import projectData from '@/data/projectData.json';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { DetailDialog } from '@/components/ui/detail-dialog';
 
 // Define the TypeScript type
 type ProjectData = Record<
@@ -99,7 +99,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className='bg-background'>
-      <main className='container mx-auto pt-30 pb-16 px-4'>
+      <main className='container mx-auto pt-24 pb-16 px-4'>
         {/* Back Navigation */}
         <div className='mb-4 flex justify-center'>
           <Link
@@ -116,13 +116,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           className={`mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className='space-y-4'>
-            <div className='space-y-2 text-center mb-20'>
-              <h1 className='text-4xl md:text-6xl font-bold tracking-tighter leading-tight'>{project.title}</h1>
-              <div className='inline-flex items-center space-x-3 text-muted-foreground mt-4'>
+            <div className='space-y-2 text-center mb-16'>
+              <h1 className='text-4xl font-bold tracking-tighter leading-tight'>{project.title}</h1>
+              <div className='inline-flex items-center space-x-3 text-muted-foreground mt-2'>
                 <span>{project.subtitle}</span>
-                <span>■</span>
+                <span className='text-sm'>■</span>
                 <span>{project.year}</span>
-                <span>■</span>
+                <span className='text-sm'>■</span>
                 <span>{project.category}</span>
               </div>
             </div>
@@ -217,11 +217,21 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Context */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Context</h2>
-            <ul className='space-y-4 mb-8 list-none mt-6'>
+            <div className='flex items-center justify-between w-full'>
+              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>The Vision</h2>
+              {/* Dialog Context Section */}
+              {project.accordionContextData && (
+                <div className='mb-4 space-y-2'>
+                  {project.accordionContextData.map((item, index) => (
+                    <DetailDialog key={index} item={item} />
+                  ))}
+                </div>
+              )}
+            </div>
+            <ul className='space-y-6 mb-8 list-none mt-6 text-base'>
               {project.context.map((point, index) => (
                 <li key={index} className='flex items-start gap-3'>
-                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                  <span className='text-xs text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
                     ■
                   </span>
                   <div
@@ -231,30 +241,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 </li>
               ))}
             </ul>
-            {/* Accordion Context Section */}
-            {project.accordionContextData && (
-              <div className='mb-8'>
-                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
-                  {project.accordionContextData.map((item, index) => (
-                    <AccordionItem
-                      value={`item-${index}`}
-                      key={index}
-                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
-                    >
-                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
-                        {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
-                        <div
-                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                        />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            )}
             {/* Context Image */}
             {project.contextImage !== undefined && project.images[project.contextImage] && (
               <div className='mt-6'>
@@ -294,11 +280,21 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Research & Insights*/}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
-            <ul className='space-y-4 mb-8 list-none mt-6'>
+            <div className='flex items-center justify-between w-full'>
+              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
+              {/* Dialog Context Section */}
+              {project.accordionResearchData && (
+                <div className='mb-4 space-y-2'>
+                  {project.accordionResearchData.map((item, index) => (
+                    <DetailDialog key={index} item={item} />
+                  ))}
+                </div>
+              )}
+            </div>
+            <ul className='space-y-6 mb-8 list-none mt-6 text-base'>
               {project.research.map((point, index) => (
                 <li key={index} className='flex items-start gap-3'>
-                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                  <span className='text-xs text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
                     ■
                   </span>
                   <div
@@ -308,30 +304,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 </li>
               ))}
             </ul>
-            {/* Accordion Context Section */}
-            {project.accordionResearchData && (
-              <div className='mb-8'>
-                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
-                  {project.accordionResearchData.map((item, index) => (
-                    <AccordionItem
-                      value={`item-${index}`}
-                      key={index}
-                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
-                    >
-                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
-                        {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
-                        <div
-                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                        />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            )}
             {/* Research Image */}
             {project.researchImage !== undefined && project.researchImage.length > 0 && (
               <div className='mt-10'>
@@ -377,11 +349,21 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Solution */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Solution</h2>
-            <ul className='space-y-4 mb-8 list-none mt-6'>
+            <div className='flex items-center justify-between w-full'>
+              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Solution</h2>
+              {/* Dialog Context Section */}
+              {project.accordionSolutionData && (
+                <div className='mb-4 space-y-2'>
+                  {project.accordionSolutionData.map((item, index) => (
+                    <DetailDialog key={index} item={item} />
+                  ))}
+                </div>
+              )}
+            </div>
+            <ul className='space-y-6 mb-8 list-none mt-6 text-base'>
               {project.solution.map((point, index) => (
                 <li key={index} className='flex items-start gap-3'>
-                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                  <span className='text-xs text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
                     ■
                   </span>
                   <div
@@ -391,30 +373,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 </li>
               ))}
             </ul>
-            {/* Accordion Context Section */}
-            {project.accordionSolutionData && (
-              <div className='mb-8'>
-                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
-                  {project.accordionSolutionData.map((item, index) => (
-                    <AccordionItem
-                      value={`item-${index}`}
-                      key={index}
-                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
-                    >
-                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
-                        {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
-                        <div
-                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                        />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            )}
             {/* Solution Image */}
             {project.solutionImage !== undefined && project.solutionImage.length > 0 && (
               <div className='mt-2'>
@@ -479,44 +437,30 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Impact */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
-            <ul className='space-y-4 mb-8 list-none mt-6'>
+            <div className='flex items-center justify-between w-full'>
+              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
+              {/* Dialog Context Section */}
+              {project.accordionResearchData && (
+                <div className='mb-4 space-y-2'>
+                  {project.accordionResearchData.map((item, index) => (
+                    <DetailDialog key={index} item={item} />
+                  ))}
+                </div>
+              )}
+            </div>
+            <ul className='space-y-6 mb-8 list-none mt-6 text-base'>
               {project.impact.map((point, index) => (
                 <li key={index} className='flex items-start gap-3'>
-                  <span className='text-[10px] text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
+                  <span className='text-xs text-muted-foreground/40 shrink-0 flex items-center justify-center h-6 w-4'>
                     ■
                   </span>
                   <div
                     className='text-muted-foreground/60 leading-relaxed [&>strong]:text-foreground [&>strong]:font-bold'
                     dangerouslySetInnerHTML={{ __html: point }}
-                  />{' '}
+                  />
                 </li>
               ))}
             </ul>
-            {/* Accordion Context Section */}
-            {project.accordionImpactData && (
-              <div className='mb-8'>
-                <Accordion type='single' collapsible className='w-full bg-[#1A1A1A] px-6 rounded-md '>
-                  {project.accordionImpactData.map((item, index) => (
-                    <AccordionItem
-                      value={`item-${index}`}
-                      key={index}
-                      className='border-b border-gray-300/20 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] data-[state=open]:bg-[#242424] -mx-6 px-6 rounded-md'
-                    >
-                      <AccordionTrigger className='text-muted-foreground hover:text-foreground py-6 text-lg font-bold'>
-                        {item.title}
-                      </AccordionTrigger>
-                      <AccordionContent className='text-muted-foreground/60 leading-relaxed pb-6 text-sm'>
-                        <div
-                          className='[&>strong]:text-foreground [&>strong]:font-bold whitespace-pre-wrap'
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                        />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            )}{' '}
             {/* Impact Image */}
             {project.impactImage !== undefined && project.images[project.impactImage] && (
               <div className='mt-6'>

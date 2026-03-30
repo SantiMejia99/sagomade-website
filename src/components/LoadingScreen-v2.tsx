@@ -6,8 +6,8 @@ interface LoadingScreenV2Props {
   onComplete: () => void;
 }
 
-const TOTAL_DURATION = 4800;
-const FADE_OUT_DURATION = 0.6;
+const TOTAL_DURATION = 2900;
+const FADE_OUT_DURATION = 0.8;
 
 const LoadingScreenV2: React.FC<LoadingScreenV2Props> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,12 +32,11 @@ const LoadingScreenV2: React.FC<LoadingScreenV2Props> = ({ onComplete }) => {
     <div ref={containerRef} className='fixed inset-0 z-50 flex items-center justify-center bg-black text-white'>
       <div className='text-center'>
         <TypingAnimation
-          words={['Welcome! 👋', 'Move, drag or scroll anywhere.']}
+          words={['MOVE, DRAG OR SCROLL ANYWHERE.']}
           cursorStyle='block'
           typeSpeed={60}
-          deleteSpeed={50}
           pauseDelay={400}
-          className='font-mono text-[28px] md:text-[16px]'
+          className='font-semibold text-[28px] md:text-[16px]'
         />
       </div>
     </div>
