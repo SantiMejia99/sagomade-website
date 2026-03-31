@@ -29,14 +29,19 @@ const LoadingScreenV2: React.FC<LoadingScreenV2Props> = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <div ref={containerRef} className='fixed inset-0 z-50 flex items-center justify-center bg-black text-white'>
+    <div
+      ref={containerRef}
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black text-white'
+      style={{ height: '100dvh' }}
+    >
+      {' '}
       <div className='text-center'>
         <TypingAnimation
           words={['MOVE, DRAG OR SCROLL ANYWHERE.']}
           cursorStyle='block'
           typeSpeed={60}
           pauseDelay={400}
-          className='font-semibold text-[28px] md:text-[16px]'
+          className='font-semibold text-[14px] md:text-[16px]'
         />
       </div>
     </div>
