@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import DesignCounter from '@/components/DesignCounter';
 import { CalendarHeatmap } from '@/components/calendar-heatmap';
 
 function useMonths() {
@@ -68,30 +67,31 @@ export default function About() {
       <main className='container mx-auto pt-30 pb-5'>
         {/* Hero Section - 2 Column Grid */}
         <section className='mb-20'>
-          <div className='grid md:grid-cols-[2fr_1fr] gap-2 items-start'>
+          <div className='grid md:grid-cols-[3.2fr_1fr] gap-2 items-start'>
             {/* Left Column - Description */}
             <div className='space-y-6'>
-              <p className='text-4xl font-sans text-left uppercase'>
-                I am a multidisciplinary designer with 5+ years of experience specializing in branding, design
-                flexibility, and automation systems. Merging minimalism with structured design to build timeless,
-                accessible, and reusable solutions.
+              <p className='text-3xl font-sans text-left leading font-normal'>
+                I am a multidisciplinary designer specializing in branding, design flexibility, and automation systems.
+                By merging minimalism with structured design, I build timeless and accessible solutions that are
+                inherently reusable. I craft bold, scalable brand identities and automate the boring stuff, slashing
+                production time so we can focus on the magic.
               </p>
             </div>
 
             {/* Right Column - Social Links */}
-            <div className='flex flex-col items-end'>
-              <div className='items-start space-y-6'>
-                <h3 className='text-sm uppercase tracking-wider text-muted-foreground/60 mb-6 font-normal'>
+            <div className='md:flex md:flex-col md:items-end mt-6 md:mt-0'>
+              <div className='items-start'>
+                <h3 className='text-sm uppercase tracking-wider text-muted-foreground/60 mb-4 md:mb-6 font-normal'>
                   Find me online
                 </h3>
-                <div className='space-y-3'>
+                <div className='flex flex-row flex-wrap gap-x-5 gap-y-1 md:flex-col md:space-y-2'>
                   {socialLinks.map(link => (
                     <a
                       key={link.label}
                       target='_blank'
                       href={link.href}
                       rel='noopener noreferrer'
-                      className='block text-foreground/70 hover:text-foreground transition-colors duration-200 group'
+                      className='text-foreground/70 hover:text-foreground transition-colors duration-200 group'
                     >
                       <span className='flex gap-2'>
                         {link.label}
@@ -108,7 +108,7 @@ export default function About() {
         </section>
 
         {/* Calendar Heatmap Section */}
-        <section className='mt-5 border border-gray-400/30 px-10 py-10 rounded-4xl'>
+        <section className='mt-5 border border-gray-400/30 px-5 py-5 sm:px-5 sm:py-5 md:px-10 md:py-10 rounded-4xl'>
           <h3 className='text-sm uppercase text-muted-foreground/60 mb-4 font-bold'>Design Uptime</h3>
           <div className='flex justify-center mb-1'>
             <CalendarHeatmap
@@ -118,17 +118,6 @@ export default function About() {
             />
           </div>
         </section>
-
-        {/* Divider */}
-        <div className='w-full h-px my-10 bg-gray-300 opacity-30 '></div>
-
-        {/* Design Activity Section */}
-        <section className='mt-10'>
-          <DesignCounter />
-        </section>
-
-        {/* Divider */}
-        <div className='w-full h-px my-10 bg-gray-300 opacity-30 '></div>
       </main>
     </div>
   );
