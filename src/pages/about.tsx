@@ -74,7 +74,7 @@ export default function About() {
 
   return (
     <div className='bg-background'>
-      <main className='container mx-auto pt-30 pb-5'>
+      <main className='container mx-auto pt-20 md:pt-30 pb-5'>
         {/* Hero Section */}
         <section className='mb-20'>
           <div className='grid md:grid-cols-[3.2fr_1fr] gap-2 items-start'>
