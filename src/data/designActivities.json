@@ -1,143 +1,703 @@
-{
-  "2025-01-15": 3,
-  "2025-01-16": 2,
-  "2025-01-18": 5,
-  "2025-01-22": 4,
-  "2025-02-01": 6,
-  "2025-02-02": 3,
-  "2025-02-05": 2,
-  "2025-02-08": 4,
-  "2025-02-12": 5,
-  "2025-03-01": 3,
-  "2025-03-03": 7,
-  "2025-03-10": 4,
-  "2025-03-15": 2,
-  "2025-03-20": 5,
-  "2025-04-02": 3,
-  "2025-04-05": 6,
-  "2025-04-12": 4,
-  "2025-09-02": 2,
-  "2025-09-05": 1,
-  "2025-10-10": 2,
-  "2025-10-28": 5,
-  "2025-10-29": 3,
-  "2025-10-30": 4,
-  "2025-11-01": 6,
-  "2025-11-02": 1,
-  "2025-11-04": 3,
-  "2025-11-05": 2,
-  "2025-11-06": 5,
-  "2025-11-07": 1,
-  "2025-11-08": 5,
-  "2025-11-11": 4,
-  "2025-11-12": 6,
-  "2025-11-14": 2,
-  "2025-11-15": 4,
-  "2025-11-16": 4,
-  "2025-11-17": 3,
-  "2025-11-18": 1,
-  "2025-11-19": 2,
-  "2025-11-20": 2,
-  "2025-11-21": 2,
-  "2025-11-22": 3,
-  "2025-11-24": 3,
-  "2025-11-25": 6,
-  "2025-11-26": 2,
-  "2025-11-27": 4,
-  "2025-11-28": 3,
-  "2025-11-29": 4,
-  "2025-12-01": 5,
-  "2025-12-02": 2,
-  "2025-12-03": 4,
-  "2025-12-04": 5,
-  "2025-12-05": 1,
-  "2025-12-06": 5,
-  "2025-12-07": 2,
-  "2025-12-08": 2,
-  "2025-12-09": 1,
-  "2025-12-10": 3,
-  "2025-12-11": 3,
-  "2025-12-12": 1,
-  "2025-12-13": 5,
-  "2025-12-14": 1,
-  "2025-12-15": 2,
-  "2025-12-16": 3,
-  "2025-12-17": 2,
-  "2025-12-18": 3,
-  "2025-12-19": 3,
-  "2025-12-21": 4,
-  "2025-12-22": 4,
-  "2025-12-23": 2,
-  "2025-12-24": 4,
-  "2025-12-25": 3,
-  "2025-12-26": 2,
-  "2025-12-27": 1,
-  "2025-12-28": 5,
-  "2025-12-29": 2,
-  "2025-12-30": 2,
-  "2025-12-31": 1,
-  "2026-01-01": 4,
-  "2026-01-02": 2,
-  "2026-01-03": 3,
-  "2026-01-04": 2,
-  "2026-01-05": 5,
-  "2026-01-06": 3,
-  "2026-01-07": 3,
-  "2026-01-08": 1,
-  "2026-01-10": 4,
-  "2026-01-11": 4,
-  "2026-01-12": 3,
-  "2026-01-13": 3,
-  "2026-01-14": 2,
-  "2026-01-15": 5,
-  "2026-01-16": 2,
-  "2026-01-17": 4,
-  "2026-01-18": 5,
-  "2026-01-19": 6,
-  "2026-01-20": 7,
-  "2026-01-21": 3,
-  "2026-01-22": 3,
-  "2026-01-23": 4,
-  "2026-01-24": 4,
-  "2026-01-25": 4,
-  "2026-01-26": 3,
-  "2026-01-27": 3,
-  "2026-01-28": 2,
-  "2026-01-29": 2,
-  "2026-01-30": 1,
-  "2026-01-31": 1,
-  "2026-02-01": 5,
-  "2026-02-02": 2,
-  "2026-02-03": 3,
-  "2026-02-04": 4,
-  "2026-02-05": 3,
-  "2026-02-06": 1,
-  "2026-02-07": 3,
-  "2026-02-08": 5,
-  "2026-02-09": 1,
-  "2026-02-10": 1,
-  "2026-02-11": 2,
-  "2026-02-12": 4,
-  "2026-02-13": 5,
-  "2026-02-14": 4,
-  "2026-02-15": 2,
-  "2026-02-16": 2,
-  "2026-02-17": 2,
-  "2026-02-18": 3,
-  "2026-02-19": 4,
-  "2026-02-20": 3,
-  "2026-02-21": 2,
-  "2026-02-22": 3,
-  "2026-02-23": 2,
-  "2026-02-24": 2,
-  "2026-02-25": 4,
-  "2026-02-26": 4,
-  "2026-02-27": 1,
-  "2026-02-28": 3,
-  "2026-03-01": 4,
-  "2026-03-02": 1,
-  "2026-03-03": 2,
-  "2026-03-04": 2,
-  "2026-03-05": 1,
-  "2026-03-06": 1
-}
+[
+  {
+    "date": "2025-01-15",
+    "weight": 3,
+    "entry": "Revisited a brand identity project — refined the logo mark and tested it across mockups."
+  },
+  {
+    "date": "2025-01-16",
+    "weight": 2,
+    "entry": "Light session reviewing typography choices and adjusting type scale for a client deck."
+  },
+  {
+    "date": "2025-01-18",
+    "weight": 5,
+    "entry": "Full day deep work on a brand system. Locked in color palette, type pairing, and spacing rules."
+  },
+  {
+    "date": "2025-01-22",
+    "weight": 4,
+    "entry": "Built out a component library structure in Figma — variants, states, and auto-layout configurations."
+  },
+  {
+    "date": "2025-02-01",
+    "weight": 6,
+    "entry": "Intensive branding sprint — delivered three logo directions with rationale for client review."
+  },
+  {
+    "date": "2025-02-02",
+    "weight": 3,
+    "entry": "Incorporated feedback from yesterday's presentation. Refined one direction and expanded its system."
+  },
+  {
+    "date": "2025-02-05",
+    "weight": 2,
+    "entry": "Worked on iconography — started a custom icon set aligned to the brand's geometric language."
+  },
+  {
+    "date": "2025-02-08",
+    "weight": 4,
+    "entry": "Designed a pitch deck template with the new brand system applied across 20 slide layouts."
+  },
+  {
+    "date": "2025-02-12",
+    "weight": 5,
+    "entry": "Completed brand guidelines document. Covered logo usage, color, type, photography, and tone."
+  },
+  {
+    "date": "2025-03-01",
+    "weight": 3,
+    "entry": "Started a new project — mood board research and competitive landscape for a fintech brand."
+  },
+  {
+    "date": "2025-03-03",
+    "weight": 7,
+    "entry": "Biggest session of the week — full brand strategy workshop output translated into initial visual directions."
+  },
+  {
+    "date": "2025-03-10",
+    "weight": 4,
+    "entry": "Worked on a UI design system — built the button, input, and card components with full state coverage."
+  },
+  {
+    "date": "2025-03-15",
+    "weight": 2,
+    "entry": "Quick pass on accessibility — checked contrast ratios and updated a few color tokens to meet WCAG AA."
+  },
+  {
+    "date": "2025-03-20",
+    "weight": 5,
+    "entry": "Designed a full landing page in Figma — hero, feature sections, testimonials, and CTA blocks."
+  },
+  {
+    "date": "2025-04-02",
+    "weight": 3,
+    "entry": "Explored motion principles — drafted easing curves and transition timing for a mobile onboarding flow."
+  },
+  {
+    "date": "2025-04-05",
+    "weight": 6,
+    "entry": "Delivered a complete app redesign proposal — new IA, updated visual language, and annotated handoff file."
+  },
+  {
+    "date": "2025-04-12",
+    "weight": 4,
+    "entry": "Built reusable Figma templates for social media — stories, posts, and covers in brand-consistent layouts."
+  },
+  {
+    "date": "2025-09-02",
+    "weight": 2,
+    "entry": "Back at it after a break — reviewed ongoing projects and sketched initial concepts for a packaging brief."
+  },
+  {
+    "date": "2025-09-05",
+    "weight": 1,
+    "entry": "Short session — organized Figma files, archived completed projects, and updated naming conventions."
+  },
+  {
+    "date": "2025-10-10",
+    "weight": 2,
+    "entry": "Started ideation for a new personal project — exploring a minimal portfolio layout system."
+  },
+  {
+    "date": "2025-10-28",
+    "weight": 5,
+    "entry": "Heavy work session — built out three full page layouts for the portfolio site and stress-tested responsiveness."
+  },
+  {
+    "date": "2025-10-29",
+    "weight": 3,
+    "entry": "Refined the portfolio typography system and adjusted the grid for better content hierarchy."
+  },
+  {
+    "date": "2025-10-30",
+    "weight": 4,
+    "entry": "Designed the case study page template — project overview, process, and outcome sections."
+  },
+  {
+    "date": "2025-11-01",
+    "weight": 6,
+    "entry": "Long creative session — completed three case study layouts and built the project card component system."
+  },
+  {
+    "date": "2025-11-02",
+    "weight": 1,
+    "entry": "Light review day — gathered feedback from peers on the portfolio and noted revision priorities."
+  },
+  {
+    "date": "2025-11-04",
+    "weight": 3,
+    "entry": "Implemented portfolio revisions — updated hero section and improved mobile layout breakpoints."
+  },
+  {
+    "date": "2025-11-05",
+    "weight": 2,
+    "entry": "Worked on micro-interactions — designed hover states and transition behaviors for portfolio navigation."
+  },
+  {
+    "date": "2025-11-06",
+    "weight": 5,
+    "entry": "Built the about page layout — bio, timeline, and skills sections. Focused on clean information hierarchy."
+  },
+  {
+    "date": "2025-11-07",
+    "weight": 1,
+    "entry": "Short session — minor copy edits and image optimization for the portfolio case studies."
+  },
+  {
+    "date": "2025-11-08",
+    "weight": 5,
+    "entry": "Designed a dark mode variant for the portfolio — adjusted all color tokens and tested visual consistency."
+  },
+  {
+    "date": "2025-11-11",
+    "weight": 4,
+    "entry": "Worked on a freelance brand identity — developed the wordmark and explored three visual directions."
+  },
+  {
+    "date": "2025-11-12",
+    "weight": 6,
+    "entry": "Full brand system delivery — logo suite, color palette, typography, and brand application mockups."
+  },
+  {
+    "date": "2025-11-14",
+    "weight": 2,
+    "entry": "Post-delivery cleanup — archived deliverables, organized the client folder, and wrote a project summary."
+  },
+  {
+    "date": "2025-11-15",
+    "weight": 4,
+    "entry": "Focused on the design system — built the form component library with all input states and validation styles."
+  },
+  {
+    "date": "2025-11-16",
+    "weight": 4,
+    "entry": "Extended the component library — added navigation, modal, and toast components with dark mode support."
+  },
+  {
+    "date": "2025-11-17",
+    "weight": 3,
+    "entry": "Documented the design system — wrote usage guidelines and annotated component specs for developers."
+  },
+  {
+    "date": "2025-11-18",
+    "weight": 1,
+    "entry": "Short session — reviewed design tokens and cleaned up inconsistencies in the spacing scale."
+  },
+  {
+    "date": "2025-11-19",
+    "weight": 2,
+    "entry": "Explored new typeface combinations for an upcoming project — tested pairings across heading and body sizes."
+  },
+  {
+    "date": "2025-11-20",
+    "weight": 2,
+    "entry": "Worked on a social media kit — designed branded templates for announcements and content series."
+  },
+  {
+    "date": "2025-11-21",
+    "weight": 2,
+    "entry": "Refined the social kit — added seasonal variants and a story format set."
+  },
+  {
+    "date": "2025-11-22",
+    "weight": 3,
+    "entry": "Reviewed competitor brand systems for research — documented patterns in layout, color, and voice."
+  },
+  {
+    "date": "2025-11-24",
+    "weight": 3,
+    "entry": "Started ideating on an automation tool for design exports — sketched the workflow and listed requirements."
+  },
+  {
+    "date": "2025-11-25",
+    "weight": 6,
+    "entry": "Deep work on the automation tool — built a working prototype that batches Figma exports by component group."
+  },
+  {
+    "date": "2025-11-26",
+    "weight": 2,
+    "entry": "Tested the export tool across different file structures and fixed edge cases in the naming logic."
+  },
+  {
+    "date": "2025-11-27",
+    "weight": 4,
+    "entry": "Designed a print-ready brand collateral set — business cards, letterhead, and envelope template."
+  },
+  {
+    "date": "2025-11-28",
+    "weight": 3,
+    "entry": "Worked on motion design — created a logo animation sequence with smooth entrance and exit transitions."
+  },
+  {
+    "date": "2025-11-29",
+    "weight": 4,
+    "entry": "Extended the motion work — animated three UI components and exported them as Lottie files."
+  },
+  {
+    "date": "2025-12-01",
+    "weight": 5,
+    "entry": "Started December strong — completed a full UI audit for a SaaS product and mapped out a redesign plan."
+  },
+  {
+    "date": "2025-12-02",
+    "weight": 2,
+    "entry": "Worked on the SaaS redesign — rebuilt the dashboard layout with improved data hierarchy and scannability."
+  },
+  {
+    "date": "2025-12-03",
+    "weight": 4,
+    "entry": "Designed new onboarding screens for the SaaS product — step-by-step flow with progress indicators."
+  },
+  {
+    "date": "2025-12-04",
+    "weight": 5,
+    "entry": "Completed the SaaS onboarding flow and handed off annotated specs to the dev team."
+  },
+  {
+    "date": "2025-12-05",
+    "weight": 1,
+    "entry": "Light day — reviewed developer implementation and flagged a few spacing inconsistencies to fix."
+  },
+  {
+    "date": "2025-12-06",
+    "weight": 5,
+    "entry": "Designed a comprehensive icon set — 40 icons across four categories, all at 24px with consistent stroke weight."
+  },
+  {
+    "date": "2025-12-07",
+    "weight": 2,
+    "entry": "Refined the icon set — adjusted optical sizing and ensured visual consistency across the full library."
+  },
+  {
+    "date": "2025-12-08",
+    "weight": 2,
+    "entry": "Explored illustration styles for a brand — tested line art, flat, and semi-flat approaches."
+  },
+  {
+    "date": "2025-12-09",
+    "weight": 1,
+    "entry": "Short session — sketched rough concepts for a new logotype and let ideas rest before refining."
+  },
+  {
+    "date": "2025-12-10",
+    "weight": 3,
+    "entry": "Returned to the logotype — digitized the strongest sketch and tested it at multiple scales."
+  },
+  {
+    "date": "2025-12-11",
+    "weight": 3,
+    "entry": "Developed the logotype further — adjusted letterform spacing and created a stacked variant."
+  },
+  {
+    "date": "2025-12-12",
+    "weight": 1,
+    "entry": "Quick review session — gathered feedback on the logotype and planned the next round of refinements."
+  },
+  {
+    "date": "2025-12-13",
+    "weight": 5,
+    "entry": "Major refinement session — locked the logotype, built the full logo suite, and tested across applications."
+  },
+  {
+    "date": "2025-12-14",
+    "weight": 1,
+    "entry": "Short wrap-up — exported final logo files in all formats and organized the delivery package."
+  },
+  {
+    "date": "2025-12-15",
+    "weight": 2,
+    "entry": "Started a new year-end retrospective project — designed a personal 2025 design year-in-review layout."
+  },
+  {
+    "date": "2025-12-16",
+    "weight": 3,
+    "entry": "Continued the year-in-review — added project highlights, stats, and a timeline of key milestones."
+  },
+  {
+    "date": "2025-12-17",
+    "weight": 2,
+    "entry": "Refined the retrospective layout — improved visual rhythm and added pull quotes from client feedback."
+  },
+  {
+    "date": "2025-12-18",
+    "weight": 3,
+    "entry": "Worked on a holiday campaign for a client — designed a themed email header and social post series."
+  },
+  {
+    "date": "2025-12-19",
+    "weight": 3,
+    "entry": "Extended the holiday campaign — added animated banner variants and a gift guide layout template."
+  },
+  {
+    "date": "2025-12-21",
+    "weight": 4,
+    "entry": "Designed a new website section — a skills and tools showcase with visual hierarchy and icon integration."
+  },
+  {
+    "date": "2025-12-22",
+    "weight": 4,
+    "entry": "Continued the website work — built the projects grid with filter states and hover interactions."
+  },
+  {
+    "date": "2025-12-23",
+    "weight": 2,
+    "entry": "Light design session before the holidays — refined a few portfolio pieces and updated image crops."
+  },
+  {
+    "date": "2025-12-24",
+    "weight": 4,
+    "entry": "Surprise productive day — designed a full email newsletter template system with modular content blocks."
+  },
+  {
+    "date": "2025-12-25",
+    "weight": 3,
+    "entry": "Holiday session — sketched concepts for a new passion project and wrote design brief notes."
+  },
+  {
+    "date": "2025-12-26",
+    "weight": 2,
+    "entry": "Continued sketching the passion project — refined the concept direction and started a mood board."
+  },
+  {
+    "date": "2025-12-27",
+    "weight": 1,
+    "entry": "Short end-of-year review — reflected on the year's work and set design goals for 2026."
+  },
+  {
+    "date": "2025-12-28",
+    "weight": 5,
+    "entry": "Built a personal design system for 2026 — tokens, components, and templates to start the year organized."
+  },
+  {
+    "date": "2025-12-29",
+    "weight": 2,
+    "entry": "Documented the 2026 design system — wrote component usage notes and set up the Figma file structure."
+  },
+  {
+    "date": "2025-12-30",
+    "weight": 2,
+    "entry": "Wrapped up the year — final file organization, backup, and a clean slate prepared for January."
+  },
+  {
+    "date": "2025-12-31",
+    "weight": 1,
+    "entry": "Last session of 2025 — reviewed the year in numbers and felt good about the consistency built."
+  },
+  {
+    "date": "2026-01-01",
+    "weight": 4,
+    "entry": "New year, new energy — started a brand identity project that had been planned for months."
+  },
+  {
+    "date": "2026-01-02",
+    "weight": 2,
+    "entry": "Continued the new brand — developed the mood board and aligned on visual direction."
+  },
+  {
+    "date": "2026-01-03",
+    "weight": 3,
+    "entry": "Logo exploration day — sketched 12 concepts and digitized the three strongest directions."
+  },
+  {
+    "date": "2026-01-04",
+    "weight": 2,
+    "entry": "Refined two logo directions based on internal review — tightened proportions and tested on backgrounds."
+  },
+  {
+    "date": "2026-01-05",
+    "weight": 5,
+    "entry": "Productive day — finalized the logo direction and began building out the full brand system."
+  },
+  {
+    "date": "2026-01-06",
+    "weight": 3,
+    "entry": "Built the color palette — primary, secondary, and neutral scales with light and dark mode variants."
+  },
+  {
+    "date": "2026-01-07",
+    "weight": 3,
+    "entry": "Defined the typography system — selected typefaces, set the scale, and documented usage rules."
+  },
+  {
+    "date": "2026-01-08",
+    "weight": 1,
+    "entry": "Short session — created a few brand application mockups to test the system in context."
+  },
+  {
+    "date": "2026-01-10",
+    "weight": 4,
+    "entry": "Worked on brand collateral — stationery set, presentation template, and social media kit."
+  },
+  {
+    "date": "2026-01-11",
+    "weight": 4,
+    "entry": "Extended the collateral — added email signature, document template, and brand pattern system."
+  },
+  {
+    "date": "2026-01-12",
+    "weight": 3,
+    "entry": "Started the brand guidelines document — structured chapters and filled in the logo and color sections."
+  },
+  {
+    "date": "2026-01-13",
+    "weight": 3,
+    "entry": "Continued guidelines — completed typography, imagery, and tone of voice sections."
+  },
+  {
+    "date": "2026-01-14",
+    "weight": 2,
+    "entry": "Reviewed and edited the full guidelines document — improved clarity and added do/don't examples."
+  },
+  {
+    "date": "2026-01-15",
+    "weight": 5,
+    "entry": "Delivered the complete brand package — guidelines, asset library, and all collateral files."
+  },
+  {
+    "date": "2026-01-16",
+    "weight": 2,
+    "entry": "Post-delivery day — client walkthrough of the brand system and answered implementation questions."
+  },
+  {
+    "date": "2026-01-17",
+    "weight": 4,
+    "entry": "Started a UI project — designed the core screen layouts for a productivity app."
+  },
+  {
+    "date": "2026-01-18",
+    "weight": 5,
+    "entry": "Deep UI work — completed the main app screens with full component coverage and interaction notes."
+  },
+  {
+    "date": "2026-01-19",
+    "weight": 6,
+    "entry": "Intensive session — built the full design system for the productivity app and documented every component."
+  },
+  {
+    "date": "2026-01-20",
+    "weight": 7,
+    "entry": "Peak day — completed the app prototype with linked interactions, handed off to development with full specs."
+  },
+  {
+    "date": "2026-01-21",
+    "weight": 3,
+    "entry": "Post-handoff review — addressed dev questions and made minor adjustments to component specs."
+  },
+  {
+    "date": "2026-01-22",
+    "weight": 3,
+    "entry": "Switched gears — worked on a personal branding refresh for my own portfolio and presence."
+  },
+  {
+    "date": "2026-01-23",
+    "weight": 4,
+    "entry": "Explored new directions for personal branding — tested three visual identities and evaluated each."
+  },
+  {
+    "date": "2026-01-24",
+    "weight": 4,
+    "entry": "Committed to a personal brand direction — built the core visual elements and applied them to the portfolio."
+  },
+  {
+    "date": "2026-01-25",
+    "weight": 4,
+    "entry": "Updated the portfolio site design — new color scheme, updated layout, and improved case study format."
+  },
+  {
+    "date": "2026-01-26",
+    "weight": 3,
+    "entry": "Refined portfolio case studies — rewrote project descriptions and improved visual presentation."
+  },
+  {
+    "date": "2026-01-27",
+    "weight": 3,
+    "entry": "Worked on the portfolio about page — redesigned the layout and updated the bio and skills section."
+  },
+  {
+    "date": "2026-01-28",
+    "weight": 2,
+    "entry": "Light session — gathered feedback on the updated portfolio and listed final adjustments."
+  },
+  {
+    "date": "2026-01-29",
+    "weight": 2,
+    "entry": "Applied portfolio feedback — fixed spacing issues and improved the mobile layout."
+  },
+  {
+    "date": "2026-01-30",
+    "weight": 1,
+    "entry": "Short session — final review of the portfolio before publishing the updates."
+  },
+  {
+    "date": "2026-01-31",
+    "weight": 1,
+    "entry": "Published the portfolio updates — small but satisfying milestone to close out January."
+  },
+  {
+    "date": "2026-02-01",
+    "weight": 5,
+    "entry": "Strong start to February — began a packaging design project with an extensive dieline system."
+  },
+  {
+    "date": "2026-02-02",
+    "weight": 2,
+    "entry": "Continued packaging — refined the dieline and began applying brand graphics to the structure."
+  },
+  {
+    "date": "2026-02-03",
+    "weight": 3,
+    "entry": "Designed the front and back panel artwork — balanced information hierarchy with visual impact."
+  },
+  {
+    "date": "2026-02-04",
+    "weight": 4,
+    "entry": "Completed the packaging design — all panels done, mockups rendered, and print specs prepared."
+  },
+  {
+    "date": "2026-02-05",
+    "weight": 3,
+    "entry": "Worked on a typographic poster series — exploring expressive layout and editorial design principles."
+  },
+  {
+    "date": "2026-02-06",
+    "weight": 1,
+    "entry": "Short session — sketched concepts for the next poster in the series and researched references."
+  },
+  {
+    "date": "2026-02-07",
+    "weight": 3,
+    "entry": "Designed two more posters — experimented with grid disruption and layered typographic compositions."
+  },
+  {
+    "date": "2026-02-08",
+    "weight": 5,
+    "entry": "Completed the poster series — six prints total, each exploring a different typographic principle."
+  },
+  {
+    "date": "2026-02-09",
+    "weight": 1,
+    "entry": "Rest and reflect day — reviewed the poster work and wrote notes on what I'd do differently."
+  },
+  {
+    "date": "2026-02-10",
+    "weight": 1,
+    "entry": "Light session — started researching UX writing principles to strengthen design documentation skills."
+  },
+  {
+    "date": "2026-02-11",
+    "weight": 2,
+    "entry": "Applied UX writing learnings — rewrote microcopy for a product I designed last quarter."
+  },
+  {
+    "date": "2026-02-12",
+    "weight": 4,
+    "entry": "Worked on a dashboard redesign — rebuilt the data visualization components with clearer hierarchy."
+  },
+  {
+    "date": "2026-02-13",
+    "weight": 5,
+    "entry": "Intensive dashboard session — completed all screen states including empty, loading, and error."
+  },
+  {
+    "date": "2026-02-14",
+    "weight": 4,
+    "entry": "Handed off the dashboard redesign — delivered annotated Figma file and a recorded walkthrough."
+  },
+  {
+    "date": "2026-02-15",
+    "weight": 2,
+    "entry": "Took stock of February's work — updated my project tracker and planned the next two weeks."
+  },
+  {
+    "date": "2026-02-16",
+    "weight": 2,
+    "entry": "Explored AI tools for design — tested generative image tools and evaluated their role in my workflow."
+  },
+  {
+    "date": "2026-02-17",
+    "weight": 2,
+    "entry": "Continued AI tool exploration — documented use cases where automation can accelerate ideation phases."
+  },
+  {
+    "date": "2026-02-18",
+    "weight": 3,
+    "entry": "Started a wayfinding and signage design project — mapped the environment and defined the sign types needed."
+  },
+  {
+    "date": "2026-02-19",
+    "weight": 4,
+    "entry": "Designed the signage system — primary, secondary, and directional signs with full specification sheets."
+  },
+  {
+    "date": "2026-02-20",
+    "weight": 3,
+    "entry": "Applied the signage system to environmental mockups — tested legibility across distances and lighting."
+  },
+  {
+    "date": "2026-02-21",
+    "weight": 2,
+    "entry": "Refined signage based on mockup review — adjusted type size and increased contrast on key signs."
+  },
+  {
+    "date": "2026-02-22",
+    "weight": 3,
+    "entry": "Worked on a brand refresh for an existing client — updated their color system to feel more modern."
+  },
+  {
+    "date": "2026-02-23",
+    "weight": 2,
+    "entry": "Continued brand refresh — updated the typography and rebuilt key collateral with the new system."
+  },
+  {
+    "date": "2026-02-24",
+    "weight": 2,
+    "entry": "Finalized the refresh — delivered updated brand assets and a change summary for the client."
+  },
+  {
+    "date": "2026-02-25",
+    "weight": 4,
+    "entry": "Worked on this website — built the calendar heatmap section and started the design uptime tracker."
+  },
+  {
+    "date": "2026-02-26",
+    "weight": 4,
+    "entry": "Continued website development — improved the about page layout and refined the hero section."
+  },
+  {
+    "date": "2026-02-27",
+    "weight": 1,
+    "entry": "Short session — fixed a few responsive layout issues on the portfolio site across breakpoints."
+  },
+  {
+    "date": "2026-02-28",
+    "weight": 3,
+    "entry": "Wrapped up February — reviewed the month's output and felt good about the consistency maintained."
+  },
+  {
+    "date": "2026-03-01",
+    "weight": 4,
+    "entry": "March kickoff — started a new brand identity with a focus on geometric reduction and bold simplicity."
+  },
+  {
+    "date": "2026-03-02",
+    "weight": 1,
+    "entry": "Short ideation session — sketched mark concepts and explored grid-based construction approaches."
+  },
+  { "date": "2026-03-03", "weight": 2, "entry": "Digitized the strongest mark concepts and began testing at scale." },
+  {
+    "date": "2026-03-04",
+    "weight": 2,
+    "entry": "Refined the mark — adjusted proportions, tested reversed versions, and built initial lockup options."
+  },
+  {
+    "date": "2026-03-05",
+    "weight": 1,
+    "entry": "Review session — presented early concepts internally and gathered directional feedback."
+  },
+  {
+    "date": "2026-03-06",
+    "weight": 1,
+    "entry": "Applied feedback to the mark — small but meaningful adjustments to weight and spacing."
+  }
+]

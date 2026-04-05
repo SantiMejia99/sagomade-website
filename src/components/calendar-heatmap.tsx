@@ -32,6 +32,8 @@ type VariantDatesInput = OneOf<[IDatesPerVariant, IWeightedDatesEntry]>;
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   variantClassnames: Classname[];
+  onDayMouseEnter?: (day: Date) => void;
+  onDayMouseLeave?: () => void;
 } & VariantDatesInput;
 
 // utility functions
@@ -83,6 +85,9 @@ function CalendarHeatmap({
   className,
   classNames,
   showOutsideDays = true,
+  onDayMouseEnter,
+  onDayMouseLeave,
+  components: externalComponents,
   ...props
 }: CalendarProps) {
   const noOfVariants = variantClassnames.length;
@@ -100,27 +105,27 @@ function CalendarHeatmap({
         showOutsideDays={showOutsideDays}
         className={cn('p-3', className)}
         classNames={{
-          months: 'flex flex-unwrap gap-6 justify-center px-8',
+          months: 'flex flex-nowrap gap-4 justify-center px-12',
           month: 'space-y-2',
           month_caption: 'flex justify-center pt-1 relative items-center mb-2',
           caption_label: 'text-sm font-medium',
           nav: 'flex items-center justify-between w-full absolute top-1/2 -translate-y-1/2 left-0 pointer-events-none',
           button_previous: cn(
             buttonVariants({ variant: 'ghost' }),
-            'h-8 w-4 p-0 opacity-50 hover:opacity-100 pointer-events-auto'
+            'h-8 w-8 p-0 opacity-50 hover:opacity-100 pointer-events-auto rounded-full border'
           ),
           button_next: cn(
             buttonVariants({ variant: 'ghost' }),
-            'h-8 w-4 p-0 opacity-50 hover:opacity-100 pointer-events-auto'
+            'h-8 w-8 p-0 opacity-50 hover:opacity-100 pointer-events-auto rounded-full border'
           ),
           month_grid: 'w-full border-collapse',
-          weekdays: 'flex',
-          weekday: 'text-muted-foreground w-9 font-normal text-[0.8rem] text-center',
-          week: 'flex w-full mt-1',
-          day: 'w-9 h-9 flex items-center justify-center p-0 relative focus-within:relative focus-within:z-20',
+          weekdays: 'flex gap-1',
+          weekday: 'text-muted-foreground w-8 font-normal text-[0.8rem] text-center',
+          week: 'flex w-full mt-1 gap-1',
+          day: 'w-8 h-8 flex items-center rounded-md justify-center p-0 hover:bg-[#282828] relative focus-within:relative focus-within:z-20',
           day_button: cn(
             buttonVariants({ variant: 'ghost' }),
-            'h-9 w-9 p-0 font-normal rounded-md transition-colors duration-150 hover:bg-accent hover:text-accent-foreground aria-selected:opacity-100'
+            'h-8 w-8 p-0 font-normal rounded-md transition-colors duration-150 hover:text-accent-foreground aria-selected:opacity-100'
           ),
           range_end: 'day-range-end',
           today: 'bg-accent text-accent-foreground rounded-md',
@@ -133,6 +138,17 @@ function CalendarHeatmap({
         components={{
           Chevron: ({ orientation }) =>
             orientation === 'left' ? <ChevronLeft className='h-4 w-4' /> : <ChevronRight className='h-4 w-4' />,
+          Day: ({ day, className: dayClassName, ...dayProps }) => (
+            <td
+              {...dayProps}
+              className={dayClassName}
+              onMouseEnter={() => {
+                console.log('Day hovered:', day.date);
+                onDayMouseEnter?.(day.date);
+              }}
+              onMouseLeave={() => onDayMouseLeave?.()}
+            />
+          ),
         }}
         {...props}
       />
