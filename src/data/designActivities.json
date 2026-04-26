@@ -779,5 +779,205 @@
     "date": "2026-03-10",
     "weight": 4,
     "entry": "Working on website nav — fixing navigation and responsiveness throughout devices."
+  },
+  {
+    "date": "2026-03-14",
+    "weight": 1,
+    "entry": "Professional portfolio review - Meeting with senior designer for an in-depth portfolio review"
+  },
+  {
+    "date": "2026-03-15",
+    "weight": 4,
+    "entry": "Started portfolio revisions - rewriting my case studies"
+  },
+  {
+    "date": "2026-03-16",
+    "weight": 2,
+    "entry": "Deep Dive - research on progressive disclosure"
+  },
+  {
+    "date": "2026-03-17",
+    "weight": 5,
+    "entry": "Deep Dive Pop-up - Creating pop-up component to portfolio"
+  },
+  {
+    "date": "2026-03-18",
+    "weight": 1,
+    "entry": "Deep Dive Pop-up - Creating pop-up component to portfolio"
+  },
+  {
+    "date": "2026-03-19",
+    "weight": 3,
+    "entry": "Deep Dive Writeup - Writing session, creating progressive disclosure content for portfolio"
+  },
+  {
+    "date": "2026-03-20",
+    "weight": 5,
+    "entry": "Bullet points writeup - Creating condensed content to showcase on portfolio case studies"
+  },
+  {
+    "date": "2026-03-22",
+    "weight": 2,
+    "entry": "Bullet points Implementation - Adding all writen content to json file"
+  },
+  {
+    "date": "2026-03-24",
+    "weight": 3,
+    "entry": "About page update - Personalizing page, it should be a reflection of me"
+  },
+  {
+    "date": "2026-03-25",
+    "weight": 4,
+    "entry": "Bento grid - decided creating small component to showecase who I am is the best and most fun way to proceed"
+  },
+  {
+    "date": "2026-03-26",
+    "weight": 5,
+    "entry": "Writing new tracker - Want to expand on my design day-to-day, drafting design for new tracker component"
+  },
+  {
+    "date": "2026-03-26",
+    "weight": 6,
+    "entry": "Writing new tracker - Want to expand on my design day-to-day, drafting design for new tracker component"
+  },
+  {
+    "date": "2026-03-26",
+    "weight": 2,
+    "entry": "Creating new json - plugin new json structure to tracker"
+  },
+  {
+    "date": "2026-03-28",
+    "weight": 4,
+    "entry": "MSX initial conversation - Meeting with Sanin, discussing the possibility of a digital agency, sharing experiences and aspirations"
+  },
+  {
+    "date": "2026-03-30",
+    "weight": 3,
+    "entry": "Vitale Website - Meeting with Sanin, Figma prototyping session, wireframing client's website, ideating a design system"
+  },
+  {
+    "date": "2026-03-31",
+    "weight": 2,
+    "entry": "Vitale Prototype - Meeting with Sanin, polishing landing page and services page design, creating low fidelity design to share with client"
+  },
+  {
+    "date": "2026-04-01",
+    "weight": 1,
+    "entry": "MSX Logo - Bought domain and logo drafting session, creating a few icons with the discussed aesthetic"
+  },
+  {
+    "date": "2026-04-02",
+    "weight": 3,
+    "entry": "MSX Logo - Polishing company logo, creating and inserting 3D elements, meeting with Sanin to create Linkedin Profile + Notion board"
+  },
+  {
+    "date": "2026-04-03",
+    "weight": 1,
+    "entry": "MSX Initial Tasks - Polishing company logo, creating and inserting 3D elements, meeting with Sanin to create Linkedin Profile + Notion board"
+  },
+  {
+    "date": "2026-04-04",
+    "weight": 1,
+    "entry": "GBS Corp Call - Client call, new brochure and website venture"
+  },
+  {
+    "date": "2026-04-05",
+    "weight": 3,
+    "entry": "GBS Brochures - Organizing and researching new content and visual identity for GBS"
+  },
+  {
+    "date": "2026-04-06",
+    "weight": 4,
+    "entry": "GBS Landscaping Brochure - Created intial copy option for client, visual identity brainstorming session"
+  },
+  {
+    "date": "2026-04-07",
+    "weight": 3,
+    "entry": "GBS Landscaping Brochure - Applying typographic and colour findings to visual comapny's identity"
+  },
+  {
+    "date": "2026-04-08",
+    "weight": 4,
+    "entry": "GBS Landscaping Brochure V1 - Created first brochure design option using copy and new branding created"
+  },
+  {
+    "date": "2026-04-09",
+    "weight": 2,
+    "entry": "GBS Landscaping Brochure V2 - Created second brochure design option using copy and new branding created"
+  },
+  {
+    "date": "2026-04-10",
+    "weight": 1,
+    "entry": "GBS Landscaping Brochure V3 - Created third brochure design option using copy and new branding created"
+  },
+  {
+    "date": "2026-04-11",
+    "weight": 2,
+    "entry": "GBS Brochure Mockups - Created mockups for clients ease of ideation, sent final desing and materials for client's approval"
+  },
+  {
+    "date": "2026-04-12",
+    "weight": 3,
+    "entry": "Typography Weekly Update - Meeting with Leo about typography progress discussing kerning and fontforge setup"
+  },
+  {
+    "date": "2026-04-13",
+    "weight": 4,
+    "entry": "Implementing typography changes - Creating a type grid and anatomy marker for each individual letter"
+  },
+  {
+    "date": "2026-04-14",
+    "weight": 6,
+    "entry": "Portfolio Catalogue V1 - Re-opened InDesign portfolio, started making changes to layout and content structure"
+  },
+  {
+    "date": "2026-04-15",
+    "weight": 2,
+    "entry": "Portfolio Catalogue V2 - Using project information and imagery from website, repopulated this document, adjusted layout"
+  },
+  {
+    "date": "2026-04-16",
+    "weight": 1,
+    "entry": "Portfolio Catalogue V3 - Updating table of contents, logos and broken links throughout document, adjusting master pages"
+  },
+  {
+    "date": "2026-04-17",
+    "weight": 4,
+    "entry": "Portfolio Catalogue V4 - Creating problem section icons and inserting throughout all projects"
+  },
+  {
+    "date": "2026-04-19",
+    "weight": 2,
+    "entry": "Portfolio Catalogue V5 - Readjusting type system throughout the portflio, creating new character and paragraph styles"
+  },
+  {
+    "date": "2026-04-19",
+    "weight": 1,
+    "entry": "Portfolio Catalogue V6 - Polishing colours and minor layout adjustments for consistency, exported and linked to portfolio website"
+  },
+  {
+    "date": "2026-04-20",
+    "weight": 1,
+    "entry": "GBS Approval - Follow up call with client, printing approved concept and discussing next steps"
+  },
+  {
+    "date": "2026-04-21",
+    "weight": 1,
+    "entry": "GBS Website - Meeting with client regarding their current website and giving my professional review"
+  },
+  {
+    "date": "2026-04-22",
+    "weight": 2,
+    "entry": "MSX Weekly Meeting - Meeting with Sanin, discussing possibility of freelance and non-profit sample work"
+  },
+  {
+    "date": "2026-04-24",
+    "weight": 4,
+    "entry": "MSX & Astro - Researching digital agencies and possible competitors, discussing possibility of using Astro instead of Vite as framework"
+  },
+  {
+    "date": "2026-04-26",
+    "weight": 3,
+    "entry": "Astro Research - Looking at differences and similarities between Astro and Vite, researching benefits of adhering to new framework and long term investment"
   }
 ]
