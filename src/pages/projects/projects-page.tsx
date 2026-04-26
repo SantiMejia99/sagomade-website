@@ -483,7 +483,11 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         </section>
       </main>
       {/* Blur overlay */}
-      <ProgressiveBlur position='bottom' height='10%' className='fixed bottom-0 left-0 right-0 pointer-events-none' />
+      <ProgressiveBlur
+        position='bottom'
+        height='10%'
+        className='fixed bottom-0 left-0 right-0 pointer-events-none hidden lg:block'
+      />
     </div>
   );
 }
