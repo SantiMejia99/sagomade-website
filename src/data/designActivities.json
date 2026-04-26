@@ -7,12 +7,12 @@
   {
     "date": "2025-01-16",
     "weight": 2,
-    "entry": "Light session reviewing typography choices and adjusting type scale for a client deck."
+    "entry": "Light session reviewing typography choices and adjusting type scale for a client."
   },
   {
     "date": "2025-01-18",
     "weight": 5,
-    "entry": "Full day deep work on a brand system. Locked in color palette, type pairing, and spacing rules."
+    "entry": "Full day deep work on a brand system. Created color palette, type pairing, and spacing rules."
   },
   {
     "date": "2025-01-22",
@@ -87,22 +87,82 @@
   {
     "date": "2025-09-02",
     "weight": 2,
-    "entry": "Back at it after a break — reviewed ongoing projects and sketched initial concepts for a packaging brief."
+    "entry": "Back at it after a break — reviewed ongoing projects and sketched initial concepts for a personal portfolio."
   },
   {
     "date": "2025-09-05",
-    "weight": 1,
-    "entry": "Short session — organized Figma files, archived completed projects, and updated naming conventions."
+    "weight": 2,
+    "entry": "Short session — organized Notion files, archived completed projects, and updated naming conventions."
   },
   {
     "date": "2025-10-10",
     "weight": 2,
-    "entry": "Started ideation for a new personal project — exploring a minimal portfolio layout system."
+    "entry": "Started ideation for a new projects to include — exploring a minimal portfolio layout system."
+  },
+  {
+    "date": "2025-10-11",
+    "weight": 4,
+    "entry": "Organizing Notion Board - Crating project structure and checklist."
+  },
+  {
+    "date": "2025-10-12",
+    "weight": 1,
+    "entry": "Started writing process - Writing draft for first project of portfolio."
+  },
+  {
+    "date": "2025-10-13",
+    "weight": 5,
+    "entry": "Heavy writing session - Finalized 3 project writeups."
+  },
+  {
+    "date": "2025-10-14",
+    "weight": 6,
+    "entry": "Gathering imagery - Compiling all imagery related to these 3 projects for mockups"
+  },
+  {
+    "date": "2025-10-14",
+    "weight": 3,
+    "entry": "Switched up tasks - drafting initial versions of infinite grid home page"
+  },
+  {
+    "date": "2025-10-15",
+    "weight": 4,
+    "entry": "Continued coding home page - decided typescript might be the best option for me, continued working on component"
+  },
+  {
+    "date": "2025-10-16",
+    "weight": 1,
+    "entry": "Stumbled upon bugs and large chunks - Optimizing current version of home page"
+  },
+  {
+    "date": "2025-10-18",
+    "weight": 3,
+    "entry": "Research into WEBP format - Converting all current imagery, gifs and visuals to .webp format"
+  },
+  {
+    "date": "2025-10-19",
+    "weight": 2,
+    "entry": "Started working on Figma - Creating case study graphics, ideation session"
+  },
+  {
+    "date": "2025-10-20",
+    "weight": 5,
+    "entry": "Continued with Case Study graphics - Creating timeline Figma component"
+  },
+  {
+    "date": "2025-10-21",
+    "weight": 4,
+    "entry": "Font and colour palette research - Looking into aesthetic to present on portfolio and graphics"
+  },
+  {
+    "date": "2025-10-23",
+    "weight": 5,
+    "entry": "Creating full graphic set for first project - Creating timeline, icons and draft user flow"
   },
   {
     "date": "2025-10-28",
-    "weight": 5,
-    "entry": "Heavy work session — built out three full page layouts for the portfolio site and stress-tested responsiveness."
+    "weight": 6,
+    "entry": "Heavy work session — built out template layouts for the portfolio project page and stress-tested responsiveness."
   },
   {
     "date": "2025-10-29",
@@ -112,7 +172,7 @@
   {
     "date": "2025-10-30",
     "weight": 4,
-    "entry": "Designed the case study page template — project overview, process, and outcome sections."
+    "entry": "Designed the case study page template — project overview, process, and outcome sections, story telling."
   },
   {
     "date": "2025-11-01",
@@ -122,12 +182,12 @@
   {
     "date": "2025-11-02",
     "weight": 1,
-    "entry": "Light review day — gathered feedback from peers on the portfolio and noted revision priorities."
+    "entry": "Light review day — gathered feedback from friends on the portfolio and noted revision priorities."
   },
   {
     "date": "2025-11-04",
     "weight": 3,
-    "entry": "Implemented portfolio revisions — updated hero section and improved mobile layout breakpoints."
+    "entry": "Implemented portfolio revisions — updated about section and improved mobile layout breakpoints."
   },
   {
     "date": "2025-11-05",
@@ -697,7 +757,27 @@
   },
   {
     "date": "2026-03-06",
-    "weight": 1,
-    "entry": "Applied feedback to the mark — small but meaningful adjustments to weight and spacing."
+    "weight": 3,
+    "entry": "Conducting typography research - downloading and organizing findings."
+  },
+  {
+    "date": "2026-03-07",
+    "weight": 4,
+    "entry": "Updating typography project — fixing numbers and final adjustments to letters."
+  },
+  {
+    "date": "2026-03-08",
+    "weight": 3,
+    "entry": "Working on website about page — fixing intro text and buttons."
+  },
+  {
+    "date": "2026-03-09",
+    "weight": 4,
+    "entry": "Working on website nav — fixing navigation and responsiveness throughout devices."
+  },
+  {
+    "date": "2026-03-10",
+    "weight": 4,
+    "entry": "Working on website nav — fixing navigation and responsiveness throughout devices."
   }
 ]
