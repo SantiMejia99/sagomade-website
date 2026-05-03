@@ -979,5 +979,45 @@
     "date": "2026-04-26",
     "weight": 3,
     "entry": "Astro Research - Looking at differences and similarities between Astro and Vite, researching benefits of adhering to new framework and long term investment"
+  },
+  {
+    "date": "2026-04-27",
+    "weight": 2,
+    "entry": "GBS Second Brochure - Working on client request, creating style system, icons and colour palette"
+  },
+  {
+    "date": "2026-04-28",
+    "weight": 3,
+    "entry": "Mixed Sprint - Expanding Astro research and creating mock site, Writing and structuring brochure content, Website Samples Research, Writing new cases study"
+  },
+  {
+    "date": "2026-04-29",
+    "weight": 1,
+    "entry": "GBS Second Brochure V2 - Started brochure layout, incorporating new colour palette and icons created"
+  },
+  {
+    "date": "2026-04-29",
+    "weight": 3,
+    "entry": "MSX Moodboarding Session - Meeting with Sanin regarding brand standards and questions, brainstorming session on website design, aesthetic and approach"
+  },
+  {
+    "date": "2026-04-30",
+    "weight": 3,
+    "entry": "Typography Study - fine tuning typograhy study with Leo, incorporating revised designs and revising bearing measurements, assigning tasks for next week"
+  },
+  {
+    "date": "2026-04-30",
+    "weight": 1,
+    "entry": "Typorgaphy Naming Session - Quick brainstorming session regarding type names, presentation and storytelling"
+  },
+  {
+    "date": "2026-05-01",
+    "weight": 2,
+    "entry": "Vitale Website - Meeting with Sanin regarding Vitale website update, components and design additions as well as sharing Astro research findings"
+  },
+  {
+    "date": "2026-05-02",
+    "weight": 4,
+    "entry": "GBS Second Brochure V3 - Finalizing brochure design and text, incorporating new writen material within layout, image editing, exporting and sent out for client's review"
   }
 ]
