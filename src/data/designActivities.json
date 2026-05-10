@@ -1019,5 +1019,45 @@
     "date": "2026-05-02",
     "weight": 4,
     "entry": "GBS Second Brochure V3 - Finalizing brochure design and text, incorporating new writen material within layout, image editing, exporting and sent out for client's review"
+  },
+  {
+    "date": "2026-05-03",
+    "weight": 2,
+    "entry": "Vitale Website - Coding Hero + Nav - Astro Practice"
+  },
+  {
+    "date": "2026-05-04",
+    "weight": 1,
+    "entry": "Professional Development - Interesting Conversation"
+  },
+  {
+    "date": "2026-05-05",
+    "weight": 3,
+    "entry": "Meeting with Leo - Finalized Display Type base + name discussion, conversation about illustration stage"
+  },
+  {
+    "date": "2026-05-06",
+    "weight": 1,
+    "entry": "Professional Development - Interesting Conversation V2"
+  },
+  {
+    "date": "2026-05-07",
+    "weight": 1,
+    "entry": "Canuck Display Font - Started illustration draft - Avro Arrow"
+  },
+  {
+    "date": "2026-05-08",
+    "weight": 4,
+    "entry": "MSX Meeting - Code review, revising coded sections and Astro settup + assigning new tasks"
+  },
+  {
+    "date": "2026-05-09",
+    "weight": 2,
+    "entry": "MSX - Astro boiler research + Setting up branding systems"
+  },
+  {
+    "date": "2026-05-10",
+    "weight": 3,
+    "entry": "MSX - Setting up branding systems, Figma optimization"
   }
 ]
