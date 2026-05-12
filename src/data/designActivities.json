@@ -1062,7 +1062,12 @@
   },
   {
     "date": "2026-05-11",
-    "weight": 3,
+    "weight": 2,
     "entry": "Studying Design Systems + Website Updates & Transition research"
+  },
+  {
+    "date": "2026-05-12",
+    "weight": 4,
+    "entry": "Studying Design Systems + Creating pixel transition component & layout wrapper for Portfolio"
   }
 ]
