@@ -17,7 +17,7 @@ export function InteractiveHoverButton({ children, className, href, ...props }: 
           '--ihb-bg': 'white',
           '--ihb-primary': 'black',
           '--ihb-foreground': 'white',
-          ...((props as any).style || {}),
+          ...props.style,
         } as React.CSSProperties
       }
       {...props}

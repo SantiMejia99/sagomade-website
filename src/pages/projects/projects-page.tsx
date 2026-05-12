@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// import { ArrowLeft } from 'lucide-react';
+// import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
 import TypographyPlayground from '@/components/ui/font-playground';
@@ -99,8 +99,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div className='bg-background'>
-      <main className='container mx-auto pt-24 pb-16 px-4'>
-        {/* Back Navigation */}
+      <main className='container mx-auto pt-22 md:pt-30 pb-16 px-4'>
+        {/* Back Navigation
         <div className='mb-4 flex justify-center'>
           <Link
             to='/'
@@ -109,7 +109,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <ArrowLeft className='h-4 w-4 transform group-hover:-translate-x-1 transition-transform duration-200' />
             <span>Back to work</span>
           </Link>
-        </div>
+        </div> */}
 
         {/* Hero Section */}
         <section

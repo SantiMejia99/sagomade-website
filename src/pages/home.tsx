@@ -2,6 +2,13 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom';
 import projects from '../app/dashboard/data.json';
 import LoadingScreenV2 from '../components/LoadingScreen-v2';
+import { transitionRef } from '../components/transitionRef';
+
+type Project = {
+  id: number;
+  header: string;
+  type: string;
+};
 
 const projectsArray = Object.values(projects);
 
@@ -23,6 +30,23 @@ const gifMap: Record<number, string> = {
   12: '/projects/espacio-ideal-website/espacio-website-placeholder.webp',
   13: '/projects/25-years/biglieri-25-years-ph.webp',
   14: '/projects/biglieri-rebrand/biglieri-bph.webp',
+};
+
+const colorMap: Record<number, string> = {
+  1: '#839262',
+  2: '#C38145',
+  3: '#3975A3',
+  4: '#363636',
+  5: '#D38D6E',
+  6: '#7D8088',
+  7: '#4B97B1',
+  8: '#ACBB74',
+  9: '#E3D4BE',
+  10: '#07222B',
+  11: '#DD9028',
+  12: '#9B8502',
+  13: '#42ADE2',
+  14: '#184173',
 };
 
 function getProjectGif(id: number) {
@@ -78,7 +102,7 @@ const ProjectCard = React.memo(
     hasMoved,
     onNavigate,
   }: {
-    project: any;
+    project: Project;
     baseX: number;
     baseY: number;
     gif: string | undefined;
@@ -478,7 +502,12 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
             isDragging={isDragging}
             isPageVisible={isPageVisible}
             hasMoved={hasMoved.current}
-            onNavigate={() => navigate(`/projects/${project.id}`)}
+            onNavigate={() =>
+              transitionRef.current?.navigate(
+                () => navigate(`/projects/${project.id}`),
+                colorMap[project.id] ?? '#f5f5f5'
+              )
+            }
           />
         );
       }
