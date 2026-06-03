@@ -10,7 +10,7 @@ import { buttonVariants } from '@/components/ui/button';
 // type utilities
 type UnionKeys<T> = T extends T ? keyof T : never;
 type Expand<T> = T extends T ? { [K in keyof T]: T[K] } : never;
-type OneOf<T extends {}[]> = {
+type OneOf<T extends object[]> = {
   [K in keyof T]: Expand<T[K] & Partial<Record<Exclude<UnionKeys<T[number]>, keyof T[K]>, never>>>;
 }[number];
 
@@ -87,7 +87,6 @@ function CalendarHeatmap({
   showOutsideDays = true,
   onDayMouseEnter,
   onDayMouseLeave,
-  components: externalComponents,
   ...props
 }: CalendarProps) {
   const noOfVariants = variantClassnames.length;
@@ -97,6 +96,11 @@ function CalendarHeatmap({
 
   const [modifiers, modifiersClassNames] = useModifiers(variantClassnames, datesPerVariant);
 
+  const defaultMonth = React.useMemo(() => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() - 3, 1);
+  }, []);
+
   return (
     <div className='relative'>
       <DayPicker
@@ -104,6 +108,7 @@ function CalendarHeatmap({
         modifiersClassNames={modifiersClassNames}
         showOutsideDays={showOutsideDays}
         className={cn('p-3', className)}
+        defaultMonth={defaultMonth}
         classNames={{
           months: 'flex flex-nowrap gap-4 justify-center px-12',
           month: 'space-y-2',

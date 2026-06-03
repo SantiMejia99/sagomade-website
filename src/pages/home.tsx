@@ -33,20 +33,20 @@ const gifMap: Record<number, string> = {
 };
 
 const colorMap: Record<number, string> = {
-  1: '#839262',
-  2: '#C38145',
-  3: '#3975A3',
-  4: '#363636',
-  5: '#D38D6E',
-  6: '#7D8088',
-  7: '#4B97B1',
-  8: '#ACBB74',
-  9: '#E3D4BE',
-  10: '#07222B',
-  11: '#DD9028',
-  12: '#9B8502',
-  13: '#42ADE2',
-  14: '#184173',
+  1: '#0d0d0d',
+  2: '#0d0d0d',
+  3: '#0d0d0d',
+  4: '#0d0d0d',
+  5: '#0d0d0d',
+  6: '#0d0d0d',
+  7: '#0d0d0d',
+  8: '#0d0d0d',
+  9: '#0d0d0d',
+  10: '#0d0d0d',
+  11: '#0d0d0d',
+  12: '#0d0d0d',
+  13: '#0d0d0d',
+  14: '#0d0d0d',
 };
 
 function getProjectGif(id: number) {
@@ -505,7 +505,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
             onNavigate={() =>
               transitionRef.current?.navigate(
                 () => navigate(`/projects/${project.id}`),
-                colorMap[project.id] ?? '#f5f5f5'
+                colorMap[project.id] ?? '#0d0d0d'
               )
             }
           />

@@ -12,7 +12,7 @@ export default function Layout() {
   }, []);
 
   return (
-    <PixelPageTransition ref={ref} gridSize={12} animationStepDuration={0.6} pixelColor='#2F2F2F'>
+    <PixelPageTransition ref={ref} gridSize={12} animationStepDuration={0.6} pixelColor='#0d0d0d'>
       <SagoNavigation />
       <Outlet />
     </PixelPageTransition>
