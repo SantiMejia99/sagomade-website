@@ -1112,8 +1112,8 @@
   },
   {
     "date": "2026-05-21",
-    "weight": 1,
-    "entry": "XXXXX"
+    "weight": 2,
+    "entry": "Started working on second illustration - Letter B"
   },
   {
     "date": "2026-05-22",
@@ -1122,7 +1122,37 @@
   },
   {
     "date": "2026-05-23",
+    "weight": 3,
+    "entry": "Meeting with Sanin regarding new page wireframes and high fidelity design - Assigning development tasks"
+  },
+  {
+    "date": "2026-05-24",
+    "weight": 1,
+    "entry": "Revisiting basics - Figma Prototyping"
+  },
+  {
+    "date": "2026-05-25",
     "weight": 2,
-    "entry": "XXXXX"
+    "entry": "Revisiting basics - Figma Components & Libraries"
+  },
+  {
+    "date": "2026-05-26",
+    "weight": 4,
+    "entry": "Revisiting basics - Testing libraries and basic design systems"
+  },
+  {
+    "date": "2026-05-27",
+    "weight": 1,
+    "entry": "Start of break"
+  },
+  {
+    "date": "2026-06-02",
+    "weight": 3,
+    "entry": "Watching and reading Figma Design Systems course"
+  },
+  {
+    "date": "2026-06-03",
+    "weight": 3,
+    "entry": "Continued working on Vitale's website - Started laying out basics for services pages"
   }
 ]
