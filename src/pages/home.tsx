@@ -147,10 +147,13 @@ const ProjectCard = React.memo(
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className='relative w-full h-full rounded-xl overflow-hidden bg-neutral-900 shadow-md cursor-pointer touch-manipulation'
+          className='relative w-full h-full overflow-hidden touch-manipulation'
           style={{
             // Disable transitions when page is not visible
             transition: isPageVisible ? 'transform 200ms' : 'none',
+            backgroundColor: '#0d0d0d',
+            WebkitMaskImage: 'radial-gradient(ellipse 65% 65% at center, #000 60%, transparent 100%)',
+            maskImage: 'radial-gradient(ellipse 65% 65% at center, #000 60%, transparent 100%)',
           }}
         >
           {gif && isContentLoaded ? (
@@ -171,13 +174,13 @@ const ProjectCard = React.memo(
           <div
             className='absolute inset-0 group-hover:bg-black/30'
             style={{
-              transition: isPageVisible ? 'all 200ms' : 'none',
+              transition: isPageVisible ? 'background-color 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
             }}
           />
           <div
             className='absolute inset-0 flex flex-col justify-center items-starts text-white p-4 opacity-0 group-hover:opacity-100'
             style={{
-              transition: isPageVisible ? 'all 200ms' : 'none',
+              transition: isPageVisible ? 'opacity 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
             }}
           >
             <h3 className='text-xl font-bold mb-1 text-center'>{project.header}</h3>
@@ -460,9 +463,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
   // Cleanup
   useEffect(() => {
     return () => {
-      if (rafIdRef.current !== null) {
-        cancelAnimationFrame(rafIdRef.current);
-      }
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
     };
   }, []);
 
@@ -524,6 +525,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
         touchAction: 'none',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',
+        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       <div

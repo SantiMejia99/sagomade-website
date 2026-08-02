@@ -77,21 +77,13 @@ export default function About() {
       <main className='container mx-auto pt-20 md:pt-30 pb-5'>
         {/* Hero Section */}
         <section className='mb-20'>
-          <div className='grid md:grid-cols-[3.2fr_1fr] gap-2 items-start'>
-            <div className='space-y-6'>
-              <p className='text-2xl md:text-3xl font-sans text-left leading font-normal'>
-                I am a multidisciplinary designer specializing in branding, design flexibility, and automation systems.
-                By merging minimalism with structured design, I build timeless and accessible solutions that are
-                inherently reusable. I craft bold, scalable brand identities and automate the boring stuff, slashing
-                production time so we can focus on the magic.
-              </p>
-            </div>
-            <div className='md:flex md:flex-col md:items-end mt-6 md:mt-0'>
+          <div className='flex flex-row items-start'>
+            <div className='md:flex md:items-end mt-6 md:mt-0'>
               <div className='items-start'>
                 <h3 className='text-sm uppercase tracking-wider text-muted-foreground/60 mb-4 md:mb-6 font-normal'>
                   Find me online
                 </h3>
-                <div className='flex flex-row flex-wrap gap-x-5 gap-y-1 md:flex-col md:space-y-2'>
+                <div className='space-x-6 md:flex-col md:space-y-2'>
                   {socialLinks.map(link => (
                     <a
                       key={link.label}
@@ -100,9 +92,9 @@ export default function About() {
                       rel='noopener noreferrer'
                       className='text-foreground/70 hover:text-foreground transition-colors duration-200 group'
                     >
-                      <span className='flex gap-2'>
+                      <span className='gap-10'>
                         {link.label}
-                        <span className='transform group-hover:translate-x-1 transition-transform duration-200'>
+                        <span className='p-2 transform group-hover:translate-x-1 transition-transform duration-200'>
                           ↗
                         </span>
                       </span>
