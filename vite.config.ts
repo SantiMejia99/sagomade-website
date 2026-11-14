@@ -17,7 +17,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           // This will create a separate 'vendor.js' for these libraries
-          vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+          vendor: ['react', 'react-dom', 'react-router-dom', 'motion'],
         },
       },
     },

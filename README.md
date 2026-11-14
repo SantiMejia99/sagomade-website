@@ -21,21 +21,18 @@ https://github.com/SantiMejia99/sagomade-website
 Below is an overview of the important files and folders:
 
 - **`/public`**  
-  Contains static assets such as fonts, images, GIFs, and videos. Includes the `index.html` file, which serves as the entry point of the app. Files in this folder are publicly accessible and bypass the build process.  
+  Contains static assets such as fonts and images. Includes the `index.html` file, which serves as the entry point of the app. Files in this folder are publicly accessible and bypass the build process.  
   - **`/fonts`**: Custom fonts like `Espacio Ideal.otf`.  
-  - **`/gifs`**: Original and optimized GIFs for the project.  
-  - **`/videos`**: Optimized video files converted from GIFs.  
   - **`/projects`**: Project-specific images.  
 
 - **`/src`**  
   The main source folder where all React and TypeScript code resides. Key subfolders include:  
   - **`App.tsx`**: The root component that defines the app's structure and page routing.  
   - **`main.tsx`**: The entry file that renders the React app into the DOM.  
-  - **`/components`**: Contains reusable components like `NavigationMenu`, `CustomCursor`, and UI elements such as `Button`, `Carousel`, and `Table`.  
+  - **`/components`**: Contains reusable components like `NavigationMenu`, `Layout`, and UI elements such as `Button` and `DetailDialog`.  
   - **`/pages`**: High-level page components such as `Home`, `About`, `Contact`, and `Project-page`.  
   - **`/app`**: Includes dashboard-related data like `data.json`.  
   - **`/lib`**: Utility functions, such as `cn` for merging class names.  
-  - **`/hooks`**: Custom React hooks for managing state and mobile behavior.  
 
 - **`package.json`**  
   Defines project dependencies, scripts, and metadata. Includes React, TypeScript, React Router, and animation libraries.  
