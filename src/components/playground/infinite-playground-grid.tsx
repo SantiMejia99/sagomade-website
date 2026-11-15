@@ -7,7 +7,7 @@ import {
   CARD_SIZE,
   GRID_GAP,
   colorMap,
-  getProjectGif,
+  getProjectMedia,
   getProjectIndex,
   projectsArray,
 } from '@/components/playground/grid-data';
@@ -366,7 +366,7 @@ export default function InfinitePlaygroundGrid() {
             type={project.type}
             baseX={gridCol * CELL}
             baseY={gridRow * CELL}
-            gif={getProjectGif(project.id)}
+            media={getProjectMedia(project.id)}
             isPageVisible={isPageVisible}
             hasMoved={hasMoved}
             onNavigate={handleNavigate}
