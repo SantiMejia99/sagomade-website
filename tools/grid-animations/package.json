@@ -1,0 +1,9 @@
+{
+  "name": "grid-animations",
+  "private": true,
+  "description": "Deterministic renderers for the playground grid animations (projects 11-14). See README.md.",
+  "type": "commonjs",
+  "dependencies": {
+    "three": "0.170.0"
+  }
+}

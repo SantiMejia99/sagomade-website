@@ -1,0 +1,202 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Espacio Ideal Chair</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    background: #0d0d0d;
+    overflow: hidden;
+  }
+</style>
+<script type="importmap">
+  { "imports": { "three": "../node_modules/three/build/three.module.js" } }
+</script>
+<script type="module">
+  // 12 · ESPACIO IDEAL CHAIR. "ESP" and "CIO" stay put; the chair standing in for the A cycles through five
+  // tubular-steel classics, each held ~1.3 s and swapped with a quick blocky pixel dissolve. The fifth dissolve
+  // lands back on the Wassily exactly at the loop point.
+  //
+  // The Wassily is the original artwork's own pixels (?wassily=3d swaps in the 3D model for comparison). The
+  // others are three.js tube models, rendered once at the original's 3000 px scale through a stipple filter that
+  // maps shading onto the original's three tones (olive, pale highlight, near-black), then downsampled like the
+  // original was. All share the camera fitted to the Wassily's frame, so they sit at the same 3/4 angle and scale.
+  import * as THREE from 'three';
+  import {
+    FPS,
+    ORIG_H,
+    ORIG_W,
+    SCALE,
+    defineScene,
+    fillBackground,
+    loadImage,
+    makeCanvas,
+    params,
+    resetTransform,
+    rng,
+  } from './common.js';
+  import { CHAIRS, buildChair } from './chairs.js';
+
+  const SEGMENT = 45; // frames per chair (1.5 s)
+  const DISSOLVE = 7; // frames of each swap, at the end of the segment
+  const BLOCK = 6; // dissolve block, in output px at 1x (retro, chunky)
+  const CAMERA_FIT = {
+    rotvec: [-9.224149218423316, -28.955217353009743, -3.434086057456606],
+    t: [4.119926023689903, -26.842918673487535, -247.03444756943168],
+    f: 1928.844055874498,
+  };
+  const OLIVE = [0x9d, 0x88, 0x00];
+  const HIGHLIGHT = [0xf8, 0xf8, 0xd8];
+  const DARK = [0x0d, 0x0d, 0x0d];
+  const LETTERS = { esp: { x: 405, y: 995 }, cio: { x: 1915, y: 995 } };
+  const WASSILY_AT = { x: 1100, y: 785 };
+
+  let composites = []; // per chair: output-size canvas with background, letters and that chair
+
+  // Shading pass: red = light intensity, green = material (1 metal, 0 fabric). Stylized afterwards in JS.
+  function shadeMaterial(metal) {
+    return new THREE.ShaderMaterial({
+      uniforms: { metal: { value: metal ? 1 : 0 } },
+      side: THREE.DoubleSide,
+      vertexShader: `
+        varying vec3 vN; varying vec3 vV;
+        void main() {
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vN = normalize(normalMatrix * normal); vV = -mv.xyz;
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        uniform float metal; varying vec3 vN; varying vec3 vV;
+        void main() {
+          vec3 n = normalize(vN); vec3 v = normalize(vV);
+          if (dot(n, v) < 0.0) n = -n; // double-sided bands
+          vec3 l = normalize(vec3(-0.35, 0.55, 0.8));
+          float lam = max(dot(n, l), 0.0);
+          float s;
+          if (metal > 0.5) {
+            float spec = pow(max(dot(n, normalize(l + v)), 0.0), 10.0);
+            float rim = pow(1.0 - max(dot(n, v), 0.0), 2.0);
+            s = 0.45 + 0.25 * lam + 0.8 * spec - 0.75 * rim;
+          } else {
+            s = 0.38 + 0.75 * lam;
+          }
+          gl_FragColor = vec4(clamp(s, 0.0, 1.0), metal, 0.0, 1.0);
+        }`,
+    });
+  }
+
+  function hash(x, y) {
+    let h = Math.imul(x, 374761393) + Math.imul(y, 668265263);
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  }
+
+  // Maps the shading pass to the original's three tones with a fixed stipple (2 px cells at the original's
+  // resolution, like its print texture).
+  function stylize(src, fabric = { noise: 0.22, threshold: 0.4 }) {
+    const out = new ImageData(src.width, src.height);
+    const s = src.data;
+    const o = out.data;
+    for (let y = 0; y < src.height; y++) {
+      for (let x = 0; x < src.width; x++) {
+        const i = (y * src.width + x) * 4;
+        if (s[i + 3] < 128) continue;
+        const shade = s[i] / 255;
+        const metal = s[i + 1] > 127;
+        const n = hash(x >> 1, y >> 1) - 0.5;
+        let c;
+        if (metal) {
+          const v = shade + n * 0.3;
+          c = v > 0.8 ? HIGHLIGHT : v > 0.3 ? OLIVE : DARK;
+        } else {
+          // Lit fabric stays flat olive; stipple only appears as the shading falls into shadow.
+          const v = shade + n * fabric.noise;
+          c = v > fabric.threshold ? OLIVE : DARK;
+        }
+        o[i] = c[0];
+        o[i + 1] = c[1];
+        o[i + 2] = c[2];
+        o[i + 3] = 255;
+      }
+    }
+    return out;
+  }
+
+  // Renders one chair at the original's resolution and returns it stylized, as a canvas in original pixels.
+  function renderChair(index, renderer, camera, materials) {
+    const scene = new THREE.Scene();
+    const chair = buildChair(index, materials);
+    const posed = new THREE.Group();
+    const [rx, ry, rz] = CAMERA_FIT.rotvec;
+    const angle = Math.hypot(rx, ry, rz);
+    posed.quaternion.setFromAxisAngle(new THREE.Vector3(rx / angle, ry / angle, rz / angle), angle);
+    posed.position.set(...CAMERA_FIT.t);
+    posed.add(chair);
+    scene.add(posed);
+    renderer.render(scene, camera);
+
+    const read = document.createElement('canvas');
+    read.width = ORIG_W;
+    read.height = ORIG_H;
+    const rctx = read.getContext('2d', { willReadFrequently: true });
+    rctx.drawImage(renderer.domElement, 0, 0);
+    const styled = stylize(rctx.getImageData(0, 0, ORIG_W, ORIG_H), CHAIRS[index].fabric);
+    rctx.clearRect(0, 0, ORIG_W, ORIG_H);
+    rctx.putImageData(styled, 0, 0);
+    return read;
+  }
+
+  defineScene({
+    frames: SEGMENT * CHAIRS.length,
+    async setup() {
+      const [esp, cio, wassily] = await Promise.all([
+        loadImage('../assets/chair-esp.png'),
+        loadImage('../assets/chair-cio.png'),
+        loadImage('../assets/chair-wassily.png'),
+      ]);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1);
+      renderer.setSize(ORIG_W, ORIG_H, false);
+      renderer.setClearColor(0x000000, 0);
+      renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+      const vfov = (2 * Math.atan(ORIG_H / 2 / CAMERA_FIT.f) * 180) / Math.PI;
+      const camera = new THREE.PerspectiveCamera(vfov, ORIG_W / ORIG_H, 1, 2000);
+      const materials = { metal: shadeMaterial(true), fabric: shadeMaterial(false) };
+
+      const use3dWassily = params.get('wassily') === '3d';
+      for (let i = 0; i < CHAIRS.length; i++) {
+        const { canvas, ctx } = makeCanvas();
+        fillBackground(ctx);
+        ctx.drawImage(esp, LETTERS.esp.x, LETTERS.esp.y);
+        ctx.drawImage(cio, LETTERS.cio.x, LETTERS.cio.y);
+        ctx.imageSmoothingQuality = 'high';
+        if (i === 0 && !use3dWassily) ctx.drawImage(wassily, WASSILY_AT.x, WASSILY_AT.y);
+        else ctx.drawImage(renderChair(i, renderer, camera, materials), 0, 0);
+        composites.push(canvas);
+      }
+      renderer.dispose();
+      const out = makeCanvas({ attach: true });
+      window.__out = out;
+    },
+    async render(frame) {
+      const { canvas, ctx } = window.__out;
+      const k = Math.floor(frame / SEGMENT);
+      const local = frame % SEGMENT;
+      resetTransform(ctx, false);
+      ctx.drawImage(composites[k], 0, 0);
+      const into = local - (SEGMENT - DISSOLVE); // 0..DISSOLVE-1 while dissolving
+      if (into < 0) return;
+      // Blocky dissolve to the next chair: each block flips once its seeded threshold is passed.
+      const next = composites[(k + 1) % CHAIRS.length];
+      const progress = (into + 1) / (DISSOLVE + 1);
+      const rand = rng(1000 + k);
+      const b = BLOCK * SCALE;
+      for (let y = 0; y < canvas.height; y += b) {
+        for (let x = 0; x < canvas.width; x += b) {
+          if (rand() < progress) ctx.drawImage(next, x, y, b, b, x, y, b, b);
+        }
+      }
+    },
+  });
+</script>

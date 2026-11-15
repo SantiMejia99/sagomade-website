@@ -1,0 +1,122 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>25 Big Years</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    background: #0d0d0d;
+    overflow: hidden;
+  }
+</style>
+<script type="module">
+  // 13 · 25 BIG YEARS. The blue square with its type stays still; the four rotated outline squares behind it
+  // are un-drawn one after another by a pen (the tail chases round the perimeter) while turning slightly,
+  // then redrawn in the same order at their rest angles. The loop starts and ends fully drawn, which is the
+  // original artwork, and every square is invisible when its rotation snaps back, so frame N flows into 0.
+  import {
+    FPS,
+    applyGrain,
+    defineScene,
+    easeInOut,
+    fillBackground,
+    loadImage,
+    makeCanvas,
+    phase,
+  } from './common.js';
+
+  const LOOP = 6; // seconds
+  // Measured from the original (see README): centre, half-side of the stroke centreline, stroke width.
+  const CX = 1499.5;
+  const CY = 1175;
+  const HALF = 491.5;
+  const STROKE = 13.5;
+  const LINE = '#629bb7';
+  const ANGLES = [18, 36, 54, 72]; // degrees, drawn and erased in this order
+  const SQUARE = { x: 1004, y: 680 };
+
+  const HOLD_START = 0.8; // first erase starts
+  const DRAW_START = 3.0; // first redraw starts
+  const STAGGER = 0.35; // seconds between squares
+  const STROKE_TIME = 0.9; // seconds to trace one perimeter
+  const ERASE_TURN = 8; // degrees each square turns while being erased
+
+  let square, grain, out, layer;
+
+  // The square's corners, starting at the corner the pen sets off from, going clockwise.
+  function corners(deg) {
+    const r = HALF * Math.SQRT2;
+    return [0, 1, 2, 3].map(k => {
+      const a = ((deg + 45 + 90 * k - 90) * Math.PI) / 180;
+      return [CX + r * Math.cos(a), CY + r * Math.sin(a)];
+    });
+  }
+
+  // Strokes the stretch of the perimeter between fractions a and b (0..1).
+  function strokeSpan(ctx, deg, a, b) {
+    if (b - a <= 1e-4) return;
+    const pts = corners(deg);
+    const at = f => {
+      const s = f * 4;
+      const i = Math.min(3, Math.floor(s));
+      const u = s - i;
+      const p = pts[i];
+      const q = pts[(i + 1) % 4];
+      return [p[0] + (q[0] - p[0]) * u, p[1] + (q[1] - p[1]) * u];
+    };
+    ctx.beginPath();
+    const start = at(a);
+    ctx.moveTo(start[0], start[1]);
+    for (let k = 1; k <= 4; k++) if (k / 4 > a && k / 4 < b) ctx.lineTo(...pts[k % 4]);
+    const end = at(b);
+    ctx.lineTo(end[0], end[1]);
+    if (a === 0 && b === 1) ctx.closePath();
+    ctx.stroke();
+  }
+
+  // Visible span and rotation of square i at time t.
+  function state(i, t) {
+    const erase = phase(t, HOLD_START + i * STAGGER, HOLD_START + i * STAGGER + STROKE_TIME);
+    const draw = phase(t, DRAW_START + i * STAGGER, DRAW_START + i * STAGGER + STROKE_TIME);
+    if (t < DRAW_START + i * STAGGER) {
+      // Being erased (or still whole): the tail runs from 0 to 1, the square turns as it goes.
+      const e = easeInOut(erase);
+      return { a: e, b: 1, deg: ANGLES[i] + ERASE_TURN * e };
+    }
+    // Being redrawn at the rest angle: the pen runs from 0 to 1.
+    return { a: 0, b: easeInOut(draw), deg: ANGLES[i] };
+  }
+
+  defineScene({
+    frames: LOOP * FPS,
+    async setup() {
+      [square, grain] = await Promise.all([loadImage('../assets/years-square.png'), loadImage('../assets/grain.png')]);
+      out = makeCanvas({ attach: true });
+      layer = makeCanvas();
+    },
+    async render(frame, t) {
+      const l = layer.ctx;
+      l.save();
+      l.setTransform(1, 0, 0, 1, 0, 0);
+      l.clearRect(0, 0, l.canvas.width, l.canvas.height);
+      l.restore();
+      l.strokeStyle = LINE;
+      l.lineWidth = STROKE;
+      l.lineJoin = 'miter';
+      l.lineCap = 'butt';
+      ANGLES.forEach((_, i) => {
+        const s = state(i, t);
+        strokeSpan(l, s.deg, s.a, s.b);
+      });
+      applyGrain(l, grain);
+
+      const o = out.ctx;
+      fillBackground(o);
+      o.save();
+      o.setTransform(1, 0, 0, 1, 0, 0);
+      o.drawImage(layer.canvas, 0, 0);
+      o.restore();
+      o.drawImage(square, SQUARE.x, SQUARE.y);
+    },
+  });
+</script>

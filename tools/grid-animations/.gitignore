@@ -1,0 +1,4 @@
+node_modules/
+out/
+# Generated from the originals in git by prep/prepare_assets.py
+assets/

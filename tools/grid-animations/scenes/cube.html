@@ -1,0 +1,94 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Biglieri Cube</title>
+<style>
+  html,
+  body {
+    margin: 0;
+    background: #0d0d0d;
+    overflow: hidden;
+  }
+</style>
+<script type="importmap">
+  { "imports": { "three": "../node_modules/three/build/three.module.js" } }
+</script>
+<script type="module">
+  // 14 · BIGLIERI CUBE. A flat-coloured (unlit) cube, posed and projected to match the original artwork, turning
+  // at constant speed about its own body diagonal.
+  //
+  // Faces: white on +X, +Y, -Z (around corner B = (1, 1, -1)), navy on -X, -Y, +Z. A 120° turn about the B
+  // diagonal permutes the white faces among themselves and the navy faces among themselves, so after one loop the
+  // cube looks exactly as it did at frame 0. The two navy faces meeting at the front corner have no visible edge
+  // between them, which matches the original (it is unlit).
+  //
+  // Pose: fitted to the seven visible corners of the original by least squares (worst corner 13 px of 3000;
+  // see README). The camera's principal point is offset from the frame centre, reproduced with setViewOffset.
+  import * as THREE from 'three';
+  import { FPS, ORIG_H, ORIG_W, SCALE, W, H, applyGrain, defineScene, fillBackground, loadImage, makeCanvas } from './common.js';
+
+  const LOOP = 8; // seconds for one 120° turn
+  const FIT = {
+    rotvec: [-0.5737868053215451, -1.1346034342961941, 0.060507524767761826],
+    t: [-0.06088032399839617, -0.5588927182680942, -7.859091858968621],
+    f: 3561.442877065324, // focal length in original pixels
+    pp: [1521.092893606387, 972.6142501100301], // principal point in original pixels
+  };
+  const WHITE = '#ffffff';
+  const NAVY = '#1b426e';
+  const AXIS = new THREE.Vector3(1, 1, -1).normalize();
+
+  let renderer, scene, camera, cube, baseQuat, grain, out, layer;
+
+  function quatFromRotvec([x, y, z]) {
+    const angle = Math.hypot(x, y, z);
+    return new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(x / angle, y / angle, z / angle), angle);
+  }
+
+  defineScene({
+    frames: LOOP * FPS,
+    async setup() {
+      grain = await loadImage('../assets/grain.png');
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(SCALE);
+      renderer.setSize(W, H, false);
+      renderer.setClearColor(0x000000, 0);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      const vfov = (2 * Math.atan(ORIG_H / 2 / FIT.f) * 180) / Math.PI;
+      camera = new THREE.PerspectiveCamera(vfov, ORIG_W / ORIG_H, 0.1, 100);
+      // Shift the frustum so the principal point lands where the fit put it.
+      camera.setViewOffset(ORIG_W, ORIG_H, ORIG_W / 2 - FIT.pp[0], ORIG_H / 2 - FIT.pp[1], ORIG_W, ORIG_H);
+
+      const mat = c => new THREE.MeshBasicMaterial({ color: new THREE.Color(c) });
+      // BoxGeometry material order: +X, -X, +Y, -Y, +Z, -Z
+      cube = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), [mat(WHITE), mat(NAVY), mat(WHITE), mat(NAVY), mat(NAVY), mat(WHITE)]);
+      cube.position.set(...FIT.t);
+      baseQuat = quatFromRotvec(FIT.rotvec);
+      scene = new THREE.Scene();
+      scene.add(cube);
+
+      out = makeCanvas({ attach: true });
+      layer = makeCanvas();
+    },
+    async render(frame) {
+      const angle = ((2 * Math.PI) / 3) * (frame / (LOOP * FPS)); // constant speed, no easing
+      cube.quaternion.copy(baseQuat).multiply(new THREE.Quaternion().setFromAxisAngle(AXIS, angle));
+      renderer.render(scene, camera);
+
+      const l = layer.ctx;
+      l.save();
+      l.setTransform(1, 0, 0, 1, 0, 0);
+      l.clearRect(0, 0, l.canvas.width, l.canvas.height);
+      l.drawImage(renderer.domElement, 0, 0, l.canvas.width, l.canvas.height);
+      l.restore();
+      applyGrain(l, grain);
+
+      const o = out.ctx;
+      fillBackground(o);
+      o.save();
+      o.setTransform(1, 0, 0, 1, 0, 0);
+      o.drawImage(layer.canvas, 0, 0);
+      o.restore();
+    },
+  });
+</script>
