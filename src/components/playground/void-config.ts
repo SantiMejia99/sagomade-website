@@ -25,8 +25,9 @@ export const VOID = {
     edgeChance: 0.32,
     // Chance that a cell also gets one longer link to a cell a knight's move away (it passes between cards).
     longChance: 1 / 12,
-    // Each end stops this fraction of CARD_SIZE short of the card centre, so lines never reach the media.
-    trim: 0.42,
+    // Each end stops this fraction of CARD_SIZE short of the card centre: 0.5 is the card edge, so lines stay clear of
+    // the media's feathered rim.
+    trim: 0.5,
     color: '#f4efe9',
     opacity: 0.07,
     width: 1, // px
