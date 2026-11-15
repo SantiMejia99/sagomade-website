@@ -1,5 +1,13 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { transitionRef } from './transitionRef';
+import { VOID } from './playground/void-config';
+
+// On the home route the nav sits on the grid's curved CRT glass. A true barrel would bend it into a slight arch, but
+// filtering the pills with a displacement map bends only their contents, not their backdrop-blurred glass (a visible
+// double edge), so this approximates the curvature with a real transform instead: a small shrink plus a tilt with the
+// top receding. Blur and hit-testing stay exact. Strength follows the grid's k (VOID.crt).
+const crt = VOID.crt.k * VOID.crt.navStrength;
+const HOME_NAV_TRANSFORM = `perspective(1000px) rotateX(${(40 * crt).toFixed(2)}deg) scale(${(1 - 0.3 * crt).toFixed(4)})`;
 
 export default function SagoNavigation() {
   const location = useLocation();
@@ -11,7 +19,10 @@ export default function SagoNavigation() {
   };
 
   return (
-    <header className='fixed top-4 lg:top-8 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 transition-all duration-500'>
+    <header
+      className='fixed top-4 lg:top-8 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 transition-all duration-500'
+      style={{ transform: location.pathname === '/' ? HOME_NAV_TRANSFORM : undefined }}
+    >
       {/* Logo Pill */}
       <div className='rounded-full shadow-xl bg-background/80 backdrop-blur-lg border border-gray-400/30 px-6 lg:px-8 py-3 flex items-start justify-center md:justify-start transition-all duration-500 min-w-[100px] lg:min-w-[800px]'>
         <button onClick={() => goTo('/')} className='flex group cursor-pointer'>
