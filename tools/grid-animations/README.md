@@ -26,8 +26,24 @@ the original pixels, for comparison.
 `assets/` is generated (and git-ignored): run the prep step once before rendering.
 
 The site's clips in `public/videos/grid/` were encoded from 2x renders with the same settings as the other grid videos:
-Lanczos to 480x376, BT.709 limited range, VP9 CRF 34 (`.webm`), H.264 High CRF 21 with `+faststart` (`.mp4`), and a q75
-webp poster from frame 0.
+
+```sh
+ffmpeg -framerate 30 -i out/<scene>/%04d.png \
+  -vf "scale=480:376:flags=lanczos:out_color_matrix=bt709:out_range=tv,format=yuv420p" \
+  -colorspace bt709 -color_primaries bt709 -color_trc iec61966-2-1 -color_range tv \
+  -c:v libvpx-vp9 -b:v 0 -crf 34 -row-mt 1 -an <name>.webm
+# same input and -vf, then:
+  -c:v libx264 -profile:v high -preset slow -crf 21 -pix_fmt yuv420p -movflags +faststart \
+  -colorspace bt709 -color_primaries bt709 -color_trc iec61966-2-1 -color_range tv -an <name>.mp4
+```
+
+Poster: frame 0 scaled to 480x376 (Lanczos), webp q75.
+
+**Tag the transfer as sRGB (`iec61966-2-1`), not `bt709`.** The frames are sRGB pixels put through the BT.709 matrix;
+they never pass through a BT.709 transfer curve. Tagged `bt709` (or untagged), Chrome converts the curve and renders the
+`#0d0d0d` background as `#090909`, a visibly darker disc against the void. Tagged sRGB it renders `#0d0d0d` exactly. To
+fix an existing file without re-encoding: `ffmpeg -i in -c copy -color_trc iec61966-2-1 out` (for mp4 also
+`-bsf:v h264_metadata=transfer_characteristics=13`).
 
 ## Matching the originals
 
