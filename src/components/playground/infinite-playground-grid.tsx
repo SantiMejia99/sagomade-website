@@ -2,7 +2,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallba
 import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { transitionRef } from '@/components/transitionRef';
-import NeuronLinks from '@/components/playground/neuron-links';
 import ProjectCard from '@/components/playground/project-card';
 import { VOID } from '@/components/playground/void-config';
 import '@/components/playground/playground.css';
@@ -405,7 +404,6 @@ export default function InfinitePlaygroundGrid() {
           willChange: isPageVisible ? 'transform' : 'auto',
         }}
       >
-        {isPageVisible && <NeuronLinks cellWindow={cellWindow} />}
         {cards}
       </div>
       <div

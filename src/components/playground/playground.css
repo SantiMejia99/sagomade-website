@@ -1,5 +1,5 @@
-/* Playground "void": per-project drift and neuron-link pulses. Values come from void-config.ts via custom
-   properties set inline on each element. Pure CSS, so nothing runs per frame in JS. */
+/* Playground "void": per-project drift. Values come from void-config.ts via custom properties set inline on each
+   card. Pure CSS, so nothing runs per frame in JS. */
 
 .void-drift-x {
   animation: void-drift-x var(--drift-x-dur) ease-in-out var(--drift-x-delay) infinite alternate;
@@ -27,41 +27,9 @@
   }
 }
 
-/* A short dash runs from one end of the link to the other in the first 16% of the cycle, fading in and out, then
-   rests for the remainder. */
-.neuron-pulse {
-  opacity: 0;
-  animation: neuron-pulse var(--pulse-cycle) linear var(--pulse-delay) infinite;
-}
-
-@keyframes neuron-pulse {
-  0% {
-    stroke-dashoffset: var(--pulse-from);
-    opacity: 0;
-  }
-  2% {
-    opacity: var(--pulse-opacity);
-  }
-  14% {
-    opacity: var(--pulse-opacity);
-  }
-  16% {
-    stroke-dashoffset: var(--pulse-to);
-    opacity: 0;
-  }
-  100% {
-    stroke-dashoffset: var(--pulse-to);
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .void-drift-x,
   .void-drift-y {
     animation: none;
-  }
-
-  .neuron-pulse {
-    display: none;
   }
 }
