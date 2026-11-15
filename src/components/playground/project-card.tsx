@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { CARD_SIZE, type GridMedia } from '@/components/playground/grid-data';
-import { useImageReady, useInView } from '@/components/playground/use-in-view';
+import { useInView } from '@/components/playground/use-in-view';
 
 // Start loading (and playing) a card's media when it is within about one card of the viewport.
 const IN_VIEW_ROOT_MARGIN = `${CARD_SIZE}px`;
@@ -34,14 +34,10 @@ const ProjectCard = React.memo(
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const inView = useInView(cardRef, IN_VIEW_ROOT_MARGIN);
-    const isVideo = media?.kind === 'video';
 
-    // Latches true the first time the card comes near the viewport: video sources are attached and still images
-    // start loading only from then on.
+    // Latches true the first time the card comes near the viewport: video sources are attached only from then on.
     const [activated, setActivated] = useState(false);
     if (inView && !activated) setActivated(true);
-
-    const isImageReady = useImageReady(media?.kind === 'image' ? media.src : undefined, activated);
 
     // Play while near the viewport and the tab is visible; pause otherwise.
     useEffect(() => {
@@ -100,8 +96,8 @@ const ProjectCard = React.memo(
             maskImage: 'radial-gradient(ellipse 65% 65% at center, #000 60%, transparent 100%)',
           }}
         >
-          {isVideo ? (
-            // object-fit: cover + centered matches the bg-cover/bg-center the still images use. The poster shows
+          {media ? (
+            // object-fit: cover, centered, fills the square card like the original artwork. The poster shows
             // until the first frame; sources are attached only once activated, so preload='none' fetches nothing
             // before then. Source order lets each browser pick a format it hardware-decodes.
             <video
@@ -124,16 +120,6 @@ const ProjectCard = React.memo(
                 </>
               )}
             </video>
-          ) : media?.kind === 'image' && isImageReady ? (
-            <div
-              className='absolute inset-0 bg-cover bg-center'
-              style={{
-                backgroundImage: `url(${media.src})`,
-                aspectRatio: '1/1',
-                width: '100%',
-                height: '100%',
-              }}
-            />
           ) : (
             <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
               {header?.[0] || '?'}

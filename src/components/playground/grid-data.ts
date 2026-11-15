@@ -11,9 +11,10 @@ export const projectsArray = Object.values(projects);
 export const CARD_SIZE = 240;
 export const GRID_GAP = 24;
 
-export type GridMedia = { kind: 'video'; webm: string; mp4: string; poster: string } | { kind: 'image'; src: string };
+export type GridMedia = { kind: 'video'; webm: string; mp4: string; poster: string };
 
-// 30 fps looping clips for the animated projects (see public/videos/grid); stills for the rest.
+// 30 fps looping clips for every project (see public/videos/grid). 11-14 are rendered from code in
+// tools/grid-animations.
 const video = (name: string): GridMedia => ({
   kind: 'video',
   webm: `/videos/grid/${name}.webm`,
@@ -32,10 +33,10 @@ export const mediaMap: Record<number, GridMedia> = {
   8: video('green-standards-toolkit'),
   9: video('tote-bag'),
   10: video('paradigm-shift'),
-  11: { kind: 'image', src: '/projects/espacio-ideal-catalogues/espacio-catalogues-placeholder-1.webp' },
-  12: { kind: 'image', src: '/projects/espacio-ideal-website/espacio-website-placeholder.webp' },
-  13: { kind: 'image', src: '/projects/25-years/biglieri-25-years-ph.webp' },
-  14: { kind: 'image', src: '/projects/biglieri-rebrand/biglieri-bph.webp' },
+  11: video('espacio-catalogues'),
+  12: video('espacio-website'),
+  13: video('biglieri-25-years'),
+  14: video('biglieri-cube'),
 };
 
 export const colorMap: Record<number, string> = {
