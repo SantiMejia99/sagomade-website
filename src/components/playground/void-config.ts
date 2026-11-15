@@ -22,7 +22,7 @@ export const VOID = {
   hover: {
     liftScale: 1.06,
     liftBrightness: 1.08,
-    dimOpacity: 0.7,
+    dimOpacity: 0.4,
     durationMs: 400,
     easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
   },
@@ -42,6 +42,12 @@ export const VOID = {
     glyphs: '░▒▓/\\|_-=+*#<>01',
     fadeOutMs: 150,
     cursorBlinkMs: 1000,
+    // Halo: a feathered patch of void behind the text so it never sits directly on a neighbour's artwork. No edge:
+    // it is opaque through the text and eases to nothing across the padding.
+    haloPadding: 48, // px beyond the text on each side (the side facing the project is clamped; see haloNear)
+    haloOpacity: 0.92,
+    haloFalloff: 1, // fraction of the padding the fade spans (1 = the whole padding; smaller = solid nearer the edge)
+    haloFadeInMs: 150, // fades in as the typing starts; fades out with the readout (fadeOutMs)
     bright: '#f4efe9', // Sago paper-50: title, command, values
     dim: '#969695', // Sago paper-500: prompt, labels, dot leaders, [CLICK]
   },

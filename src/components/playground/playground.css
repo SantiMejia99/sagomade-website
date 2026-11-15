@@ -109,6 +109,67 @@
   text-align: right;
 }
 
+/* Halo: void colour behind the text, feathered to nothing on every side (two intersected gradient masks, eased stops),
+   so there is no edge. It is inside the readout's stacking context: above the neighbouring cards, below the text. The
+   side facing the project uses the clamped --pg-halo-near padding. */
+.pg-readout::before {
+  --pg-halo-left: var(--pg-halo-near);
+  --pg-halo-right: var(--pg-halo-pad);
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--pg-halo-pad) * -1);
+  bottom: calc(var(--pg-halo-pad) * -1);
+  left: calc(var(--pg-halo-left) * -1);
+  right: calc(var(--pg-halo-right) * -1);
+  background: rgb(13 13 13 / var(--pg-halo-opacity));
+  --pg-fx-l: calc(var(--pg-halo-left) * var(--pg-halo-falloff));
+  --pg-fx-r: calc(var(--pg-halo-right) * var(--pg-halo-falloff));
+  --pg-fy: calc(var(--pg-halo-pad) * var(--pg-halo-falloff));
+  --pg-halo-x: linear-gradient(
+    to right,
+    transparent 0,
+    rgb(0 0 0 / 0.16) calc(var(--pg-fx-l) * 0.25),
+    rgb(0 0 0 / 0.5) calc(var(--pg-fx-l) * 0.5),
+    rgb(0 0 0 / 0.84) calc(var(--pg-fx-l) * 0.75),
+    #000 var(--pg-fx-l),
+    #000 calc(100% - var(--pg-fx-r)),
+    rgb(0 0 0 / 0.84) calc(100% - var(--pg-fx-r) * 0.75),
+    rgb(0 0 0 / 0.5) calc(100% - var(--pg-fx-r) * 0.5),
+    rgb(0 0 0 / 0.16) calc(100% - var(--pg-fx-r) * 0.25),
+    transparent 100%
+  );
+  --pg-halo-y: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgb(0 0 0 / 0.16) calc(var(--pg-fy) * 0.25),
+    rgb(0 0 0 / 0.5) calc(var(--pg-fy) * 0.5),
+    rgb(0 0 0 / 0.84) calc(var(--pg-fy) * 0.75),
+    #000 var(--pg-fy),
+    #000 calc(100% - var(--pg-fy)),
+    rgb(0 0 0 / 0.84) calc(100% - var(--pg-fy) * 0.75),
+    rgb(0 0 0 / 0.5) calc(100% - var(--pg-fy) * 0.5),
+    rgb(0 0 0 / 0.16) calc(100% - var(--pg-fy) * 0.25),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--pg-halo-x), var(--pg-halo-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--pg-halo-x), var(--pg-halo-y);
+  mask-composite: intersect;
+  animation: pg-halo-in var(--pg-halo-in-ms) ease-out;
+}
+
+.pg-readout[data-side='left']::before {
+  --pg-halo-left: var(--pg-halo-pad);
+  --pg-halo-right: var(--pg-halo-near);
+}
+
+@keyframes pg-halo-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .pg-readout[data-leaving] {
   opacity: 0;
 }
@@ -137,7 +198,8 @@
     transition: none;
   }
 
-  .pg-cursor {
+  .pg-cursor,
+  .pg-readout::before {
     animation: none;
   }
 }

@@ -20,6 +20,13 @@ type CellWindow = { startRow: number; startCol: number; rows: number; cols: numb
 
 const CELL = CARD_SIZE + GRID_GAP;
 
+// The halo's padding on the side facing the project stops at the lifted media's rim, so it can reach the media's
+// transparent feather but never darken the lit project.
+const HALO_NEAR = Math.max(
+  0,
+  Math.min(VOID.readout.haloPadding, VOID.readout.offset * CARD_SIZE - (CARD_SIZE / 2) * VOID.hover.liftScale)
+);
+
 // Hover and readout tunables (void-config.ts) as CSS custom properties for playground.css.
 const HOVER_VARS = {
   '--pg-lift-scale': VOID.hover.liftScale,
@@ -35,6 +42,11 @@ const HOVER_VARS = {
   '--pg-readout-dim': VOID.readout.dim,
   '--pg-readout-fade-ms': `${VOID.readout.fadeOutMs}ms`,
   '--pg-cursor-ms': `${VOID.readout.cursorBlinkMs}ms`,
+  '--pg-halo-pad': `${VOID.readout.haloPadding}px`,
+  '--pg-halo-near': `${HALO_NEAR}px`,
+  '--pg-halo-opacity': VOID.readout.haloOpacity,
+  '--pg-halo-falloff': VOID.readout.haloFalloff,
+  '--pg-halo-in-ms': `${VOID.readout.haloFadeInMs}ms`,
 } as React.CSSProperties;
 
 // The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side.
