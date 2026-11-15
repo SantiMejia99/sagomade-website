@@ -118,8 +118,9 @@ const ProjectCard = React.memo(
             >
               {activated && (
                 <>
-                  <source src={media.webm} type='video/webm' />
-                  <source src={media.mp4} type='video/mp4' />
+                  {/* Codecs match the encodes: VP9 profile 0, and H.264 High@L3.0 (avc1.64001E). */}
+                  <source src={media.webm} type='video/webm; codecs="vp9"' />
+                  <source src={media.mp4} type='video/mp4; codecs="avc1.64001E"' />
                 </>
               )}
             </video>
