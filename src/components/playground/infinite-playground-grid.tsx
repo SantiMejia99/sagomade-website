@@ -2,7 +2,15 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallba
 import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { transitionRef } from '@/components/transitionRef';
-import { setActiveCard } from '@/components/playground/active-card';
+import {
+  gridMotionEnded,
+  gridMotionStarted,
+  pointerEnterCard,
+  pointerLeaveCard,
+  getActiveCard,
+  resetCardState,
+  setActiveCard,
+} from '@/components/playground/active-card';
 import ProjectCard from '@/components/playground/project-card';
 import { VOID } from '@/components/playground/void-config';
 import '@/components/playground/playground.css';
@@ -34,6 +42,9 @@ const HOVER_VARS = {
   '--pg-dim-opacity': VOID.hover.dimOpacity,
   '--pg-hover-ms': `${VOID.hover.durationMs}ms`,
   '--pg-hover-ease': VOID.hover.easing,
+  '--pg-pass-brightness': VOID.hover.passBrightness,
+  '--pg-pass-ms': `${VOID.hover.passEaseMs}ms`,
+  '--pg-exit-ms': `${VOID.hover.exitFadeMs}ms`,
   '--pg-readout-max-width': `${VOID.readout.maxWidth}px`,
   '--pg-readout-size': `${VOID.readout.fontSize}px`,
   '--pg-readout-tracking': VOID.readout.letterSpacing,
@@ -181,15 +192,33 @@ export default function InfinitePlaygroundGrid() {
 
   // Hover effects pause while the grid is dragged (data-dragging, once a press passes the drag threshold) or still
   // gliding after a drag or wheel (data-moving, until the animation settles). Starting either clears the active card.
+  // Last mouse/pen position, to re-check which project is under a still pointer once the grid stops moving (content
+  // gliding under the pointer fires no pointer events).
+  const lastPointer = useRef<{ x: number; y: number } | null>(null);
+
   const setMotionFlag = useCallback((flag: 'data-dragging' | 'data-moving', on: boolean) => {
     const el = containerRef.current;
     if (!el) return;
     if (on) {
       el.setAttribute(flag, '');
-      setActiveCard(null);
-    } else {
-      el.removeAttribute(flag);
+      gridMotionStarted();
+      return;
     }
+    if (!el.hasAttribute(flag)) return;
+    el.removeAttribute(flag);
+    if (el.hasAttribute('data-dragging') || el.hasAttribute('data-moving')) return;
+    // Settled: re-hit-test the pointer, then start the idle delay.
+    const p = lastPointer.current;
+    if (p) {
+      const card = document.elementFromPoint(p.x, p.y)?.closest<HTMLElement>('.pg-card');
+      const key = card && el.contains(card) ? card.dataset.cell : undefined;
+      if (key) pointerEnterCard(key);
+      else {
+        const active = getActiveCard();
+        if (active) pointerLeaveCard(active);
+      }
+    }
+    gridMotionEnded();
   }, []);
 
   // Set the initial transform before the first paint.
@@ -205,6 +234,7 @@ export default function InfinitePlaygroundGrid() {
       setIsPageVisible(visible);
 
       if (!visible) {
+        resetCardState();
         // Cancel animation frame
         if (rafIdRef.current !== null) {
           cancelAnimationFrame(rafIdRef.current);
@@ -339,6 +369,7 @@ export default function InfinitePlaygroundGrid() {
     };
 
     const handlePointerMove = (e: PointerEvent) => {
+      lastPointer.current = e.pointerType === 'touch' ? null : { x: e.clientX, y: e.clientY };
       if (!isVisibleRef.current || !dragStart.current) return;
       e.preventDefault();
 
@@ -495,6 +526,7 @@ export default function InfinitePlaygroundGrid() {
   useEffect(() => {
     return () => {
       if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+      resetCardState();
     };
   }, []);
 

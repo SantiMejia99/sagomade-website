@@ -1,6 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { CARD_SIZE, getLayoutSeed, type GridMedia } from '@/components/playground/grid-data';
-import { getActiveCard, setActiveCard, useIsActiveCard } from '@/components/playground/active-card';
+import {
+  getActiveCard,
+  pointerEnterCard,
+  pointerLeaveCard,
+  setActiveCard,
+  useIsActiveCard,
+  useIsHoveredCard,
+} from '@/components/playground/active-card';
 import TerminalReadout from '@/components/playground/terminal-readout';
 import { useInView } from '@/components/playground/use-in-view';
 import { VOID, hash01 } from '@/components/playground/void-config';
@@ -30,12 +37,6 @@ function driftStyle(row: number, col: number): React.CSSProperties {
 }
 
 const R = VOID.readout;
-
-// No hover effects while the grid is dragged or still gliding (attributes set by the grid).
-function motionBlocked(card: HTMLElement | null) {
-  const grid = card?.closest('.pg-grid');
-  return !!grid && (grid.hasAttribute('data-dragging') || grid.hasAttribute('data-moving'));
-}
 
 // Memoized card component to prevent unnecessary re-renders. Props are primitives plus stable references
 // (the hasMoved ref and a shared onNavigate), so a card re-renders only when its own data changes, or when it gains
@@ -76,6 +77,9 @@ const ProjectCard = React.memo(
     const inView = useInView(mediaRef, IN_VIEW_ROOT_MARGIN, '.pg-grid');
     const key = `${cellRow}:${cellCol}`;
     const isActive = useIsActiveCard(key);
+    const isHovered = useIsHoveredCard(key);
+    // Whether the current activation came from a touch tap (the readout then says [TAP]).
+    const touchActivation = useRef(false);
     // Which side the readout floats on and whether it says [TAP], fixed when the card activates. It stays set while
     // the readout fades out after deactivation, then clears.
     const [readout, setReadout] = useState<{ side: 'left' | 'right' | 'below'; touch: boolean } | null>(null);
@@ -103,8 +107,10 @@ const ProjectCard = React.memo(
       return () => clearTimeout(timer);
     }, [isActive, readout]);
 
-    const activate = useCallback(
-      (touch: boolean) => {
+    // When this card becomes active (by resting, focus or tap), place its readout from where the project is drawn.
+    useLayoutEffect(() => {
+      if (!isActive) return;
+      {
         // Where the project is drawn (after the CRT barrel), not its grid box.
         const rect = (mediaRef.current ?? cardRef.current)?.getBoundingClientRect();
         const w = window.innerWidth;
@@ -116,24 +122,26 @@ const ProjectCard = React.memo(
           if (w < R.belowBreakpoint || (coarse && noRoomBeside)) side = 'below';
           else if (rect.right > w - R.flipMargin) side = 'left';
         }
-        setReadout({ side, touch });
-        setActiveCard(key);
+        setReadout({ side, touch: touchActivation.current });
+      }
+    }, [isActive]);
+
+    // Leaving the grid (unmounted while panning) ends any hover or rest on this cell.
+    useEffect(() => () => pointerLeaveCard(key), [key]);
+
+    // Mouse and pen: entering the drawn disc starts "passing over" and the dwell (active-card.ts decides when it rests).
+    const handlePointerOver = useCallback(
+      (e: React.PointerEvent) => {
+        if (e.pointerType === 'touch') return;
+        touchActivation.current = false;
+        pointerEnterCard(key);
       },
       [key]
     );
 
-    // Mouse and pen: hovering activates. pointermove re-activates after the grid settles under a still pointer.
-    const handlePointerOver = useCallback(
-      (e: React.PointerEvent) => {
-        if (e.pointerType === 'touch' || getActiveCard() === key || motionBlocked(cardRef.current)) return;
-        activate(false);
-      },
-      [activate, key]
-    );
-
     const handlePointerLeave = useCallback(
       (e: React.PointerEvent) => {
-        if (e.pointerType !== 'touch' && getActiveCard() === key) setActiveCard(null);
+        if (e.pointerType !== 'touch') pointerLeaveCard(key);
       },
       [key]
     );
@@ -154,17 +162,22 @@ const ProjectCard = React.memo(
         if (hasMoved.current) return;
         e.preventDefault();
         if (getActiveCard() === key) onNavigate(projectId);
-        else activate(true);
+        else {
+          touchActivation.current = true;
+          setActiveCard(key);
+        }
       },
-      [activate, hasMoved, key, onNavigate, projectId]
+      [hasMoved, key, onNavigate, projectId]
     );
 
     // Keyboard: focus activates (only for keyboard focus, not the focus a mouse press gives), Enter navigates.
     const handleFocus = useCallback(
       (e: React.FocusEvent<HTMLDivElement>) => {
-        if (e.currentTarget.matches(':focus-visible') && getActiveCard() !== key) activate(false);
+        if (!e.currentTarget.matches(':focus-visible') || getActiveCard() === key) return;
+        touchActivation.current = false;
+        setActiveCard(key); // focus is deliberate: no idle or dwell wait
       },
-      [activate, key]
+      [key]
     );
 
     const handleBlur = useCallback(() => {
@@ -187,6 +200,8 @@ const ProjectCard = React.memo(
         ref={cardRef}
         className='pg-card absolute'
         data-active={isActive ? '' : undefined}
+        data-hover={isHovered ? '' : undefined}
+        data-cell={key}
         role='link'
         tabIndex={0}
         aria-label={`${header}, ${type}`}

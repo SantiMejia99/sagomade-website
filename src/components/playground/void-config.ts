@@ -24,6 +24,13 @@ export const VOID = {
     liftBrightness: 1.08,
     dimOpacity: 0.4,
     durationMs: 400,
+    // Pointer devices: nothing shows while the grid moves or for gridIdleMs after it settles; passing over a project
+    // only brightens it slightly; resting on one for dwellMs (with the grid idle) reveals lift, dim and readout.
+    gridIdleMs: 700,
+    dwellMs: 400,
+    passBrightness: 1.04,
+    passEaseMs: 200,
+    exitFadeMs: 150, // how fast an active project settles back when the grid starts moving
     easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
   },
 

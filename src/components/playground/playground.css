@@ -109,6 +109,18 @@
   filter: brightness(var(--pg-lift-brightness));
 }
 
+/* Passing over (grid idle, pointer not yet rested): only a faint brighten of the project under the pointer. */
+.pg-grid:not([data-dragging]):not([data-moving]) .pg-card[data-hover]:not([data-active]) .pg-media {
+  filter: brightness(var(--pg-pass-brightness));
+  transition-duration: var(--pg-pass-ms);
+}
+
+/* When the grid starts moving, whatever was showing settles back quickly. */
+.pg-grid[data-dragging] .pg-media,
+.pg-grid[data-moving] .pg-media {
+  transition-duration: var(--pg-exit-ms);
+}
+
 /* Opacity, not filter, on the many dimmed cards: much cheaper with ~40 playing videos. */
 .pg-grid:not([data-dragging]):not([data-moving]):has(.pg-card[data-active]) .pg-card:not([data-active]) .pg-media {
   opacity: var(--pg-dim-opacity);
