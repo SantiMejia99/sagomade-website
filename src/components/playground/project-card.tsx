@@ -1,5 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { CARD_SIZE, type Project } from '@/components/playground/grid-data';
+import { useLazyImage } from '@/components/playground/use-lazy-image';
+
+// Start loading a card's image when it is within about one card of the viewport.
+const LAZY_ROOT_MARGIN = `${CARD_SIZE}px`;
 
 // Memoized card component to prevent unnecessary re-renders
 const ProjectCard = React.memo(
@@ -8,7 +12,6 @@ const ProjectCard = React.memo(
     baseX,
     baseY,
     gif,
-    isContentLoaded,
     isPageVisible,
     hasMoved,
     onNavigate,
@@ -17,12 +20,14 @@ const ProjectCard = React.memo(
     baseX: number;
     baseY: number;
     gif: string | undefined;
-    isContentLoaded: boolean;
     isDragging: boolean;
     isPageVisible: boolean;
     hasMoved: boolean;
     onNavigate: () => void;
   }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const isContentLoaded = useLazyImage(gif, cardRef, LAZY_ROOT_MARGIN);
+
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
         // Only navigate if user didn't drag (clicked in place)
@@ -46,6 +51,7 @@ const ProjectCard = React.memo(
 
     return (
       <div
+        ref={cardRef}
         className='group absolute'
         style={{
           left: baseX,

@@ -11,7 +11,7 @@ import {
   projectsArray,
 } from '@/components/playground/grid-data';
 
-export default function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> }) {
+export default function InfinitePlaygroundGrid() {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -307,7 +307,6 @@ export default function InfinitePlaygroundGrid({ loadedContent }: { loadedConten
         const baseY = gridRow * (CARD_SIZE + GRID_GAP);
 
         const gif = getProjectGif(project.id);
-        const isContentLoaded = gif ? loadedContent.has(gif) : true;
 
         cardElements.push(
           <ProjectCard
@@ -316,7 +315,6 @@ export default function InfinitePlaygroundGrid({ loadedContent }: { loadedConten
             baseX={baseX}
             baseY={baseY}
             gif={gif}
-            isContentLoaded={isContentLoaded}
             isDragging={isDragging}
             isPageVisible={isPageVisible}
             hasMoved={hasMoved.current}
@@ -332,7 +330,7 @@ export default function InfinitePlaygroundGrid({ loadedContent }: { loadedConten
     }
 
     return cardElements;
-  }, [offset.x, offset.y, windowSize, loadedContent, isDragging, isPageVisible, navigate]);
+  }, [offset.x, offset.y, windowSize, isDragging, isPageVisible, navigate]);
 
   return (
     <div
