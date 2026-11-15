@@ -42,6 +42,13 @@ const HOVER_VARS = {
   '--pg-readout-dim': VOID.readout.dim,
   '--pg-readout-fade-ms': `${VOID.readout.fadeOutMs}ms`,
   '--pg-cursor-ms': `${VOID.readout.cursorBlinkMs}ms`,
+  '--pg-scan-period': `${VOID.crt.scanlinePeriod}px`,
+  '--pg-scan-opacity': VOID.crt.scanlineOpacity,
+  '--pg-crt-radius': `${VOID.crt.cornerRadius}px`,
+  '--pg-crt-radius-phone': `${VOID.crt.cornerRadiusPhone}px`,
+  '--pg-vignette': VOID.crt.vignette,
+  '--pg-vignette-inset': VOID.crt.vignetteInset,
+  '--pg-glass-opacity': VOID.crt.highlightOpacity,
   '--pg-halo-pad': `${VOID.readout.haloPadding}px`,
   '--pg-halo-near': `${HALO_NEAR}px`,
   '--pg-halo-opacity': VOID.readout.haloOpacity,
@@ -90,9 +97,32 @@ export default function InfinitePlaygroundGrid() {
   );
   const cellWindowRef = useRef(cellWindow);
 
+  // CRT barrel: each mounted card's .pg-crt wrapper, with its card's undistorted centre in grid space. Refreshed
+  // whenever the mounted cards change; applied whenever the pan offset or viewport changes.
+  const crtCardsRef = useRef<{ el: HTMLElement; cx: number; cy: number }[]>([]);
+
+  const applyCrt = useCallback(() => {
+    const { k, k2 } = VOID.crt;
+    const w = windowSizeRef.current.width;
+    const h = windowSizeRef.current.height;
+    const halfDiagonal = Math.hypot(w / 2, h / 2);
+    const { x: ox, y: oy } = offsetRef.current;
+    for (const { el, cx, cy } of crtCardsRef.current) {
+      // Undistorted on-screen centre, relative to the viewport centre.
+      const px = cx + ox - w / 2;
+      const py = cy + oy - h / 2;
+      const r2 = (px * px + py * py) / (halfDiagonal * halfDiagonal);
+      const pull = 1 - k * r2; // centre moves to p * pull
+      const scale = pull * (1 - k2 * r2);
+      // 2D on purpose: translate3d would force a compositor layer per wrapper; the drift layers inside suffice.
+      el.style.transform = `translate(${(px * (pull - 1)).toFixed(2)}px, ${(py * (pull - 1)).toFixed(2)}px) scale(${scale.toFixed(4)})`;
+    }
+  }, []);
+
   const applyTransform = useCallback(() => {
     if (innerRef.current) innerRef.current.style.transform = toTransform(offsetRef.current);
-  }, []);
+    applyCrt();
+  }, [applyCrt]);
 
   // Recompute the visible cell window and re-render only if it changed. From the animation loop, `sync`
   // flushes the render inside the current frame so newly exposed cells appear together with the transform.
@@ -197,6 +227,7 @@ export default function InfinitePlaygroundGrid() {
       timeoutId = setTimeout(() => {
         windowSizeRef.current = { width: window.innerWidth, height: window.innerHeight };
         syncCellWindow();
+        applyCrt();
       }, 150);
     };
 
@@ -205,7 +236,7 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timeoutId);
     };
-  }, [isPageVisible, syncCellWindow]);
+  }, [isPageVisible, syncCellWindow, applyCrt]);
 
   const ensureAnimLoop = useCallback(() => {
     // Don't start animation if page is not visible
@@ -476,6 +507,17 @@ export default function InfinitePlaygroundGrid() {
     return cardElements;
   }, [cellWindow, isPageVisible, handleNavigate]);
 
+  // New cards mounted (or the window shifted): re-cache their CRT wrappers and curve them before paint.
+  useLayoutEffect(() => {
+    const inner = innerRef.current;
+    if (!inner) return;
+    crtCardsRef.current = Array.from(inner.querySelectorAll<HTMLElement>('.pg-crt')).map(el => {
+      const card = el.parentElement as HTMLElement;
+      return { el, cx: card.offsetLeft + CARD_SIZE / 2, cy: card.offsetTop + CARD_SIZE / 2 };
+    });
+    applyCrt();
+  }, [cards, applyCrt]);
+
   return (
     <div
       ref={containerRef}
@@ -502,13 +544,10 @@ export default function InfinitePlaygroundGrid() {
         {cards}
       </div>
       <div
+        // The glass: scanlines, a faint highlight, edge shading and rounded corners, all on one static element
+        // (playground.css). Above the grid, below the nav.
         aria-hidden='true'
-        className='pointer-events-none absolute inset-0'
-        style={{
-          zIndex: 5,
-          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 48%, rgba(0,0,0,0.55) 100%)',
-          boxShadow: 'inset 0 0 180px rgba(0,0,0,0.5)',
-        }}
+        className='pg-screen'
       />
     </div>
   );

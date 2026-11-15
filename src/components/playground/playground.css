@@ -50,6 +50,42 @@
   }
 }
 
+/* CRT glass over the grid: one static element. Layers, top to bottom: scanlines (a 1 px dark line every period), a
+   faint diagonal highlight in the top left, and radial edge shading matched to the barrel. The rounded screen corners
+   are its own outer shadow in the void colour, which fills everything outside its rounded border. */
+.pg-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  /* Its own composited layer: rasterised once and reused while the grid pans beneath it (measured: without this,
+     drag fps drops by about a fifth). */
+  will-change: transform;
+  border-radius: var(--pg-crt-radius);
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / var(--pg-scan-opacity)) 0 1px,
+      transparent 1px var(--pg-scan-period)
+    ),
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / var(--pg-glass-opacity)) 0%,
+      rgb(255 255 255 / calc(var(--pg-glass-opacity) * 0.4)) 16%,
+      transparent 34%
+    ),
+    radial-gradient(ellipse at center, rgb(0 0 0 / 0) 46%, rgb(0 0 0 / var(--pg-vignette)) 100%);
+  box-shadow:
+    0 0 0 100vmax #0d0d0d,
+    inset 0 0 180px rgb(0 0 0 / var(--pg-vignette-inset));
+}
+
+@media (max-width: 640px) {
+  .pg-screen {
+    border-radius: var(--pg-crt-radius-phone);
+  }
+}
+
 /* Hover lift and dim. The active card carries data-active; nothing applies while the grid is being dragged or is still
    gliding (data-dragging / data-moving on the container, set imperatively). */
 /* Hit area = the visible disc. The card box ignores the pointer; only its media (clipped to the circle the mask fades

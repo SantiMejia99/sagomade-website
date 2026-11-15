@@ -27,6 +27,23 @@ export const VOID = {
     easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
   },
 
+  // CRT screen: the home grid seen through curved glass.
+  crt: {
+    // Barrel distortion applied per project (a real transform, so hit-testing stays exact). With r the distance from
+    // the viewport centre over the half-diagonal: centre moves to p * (1 - k r^2), and the project scales by
+    // (1 - k r^2)(1 - k2 r^2). At a screen corner (r = 1): 10% closer to the centre and 17% smaller.
+    k: 0.1,
+    k2: 0.08,
+    scanlinePeriod: 3, // px: one 1 px dark line every period
+    scanlineOpacity: 0.055,
+    cornerRadius: 28, // px, the glass's rounded corners
+    cornerRadiusPhone: 20, // px, below 640 px wide
+    vignette: 0.62, // edge darkness of the radial shading (was 0.55 before the CRT)
+    vignetteInset: 0.55, // inner edge shadow strength (was 0.5)
+    highlightOpacity: 0.025, // faint diagonal glass highlight, top left
+    navStrength: 1, // multiplier on k for the nav's curvature (home only)
+  },
+
   // Terminal readout floating beside the active project.
   readout: {
     offset: 0.72, // its near edge sits this fraction of CARD_SIZE from the card centre

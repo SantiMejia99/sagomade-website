@@ -195,52 +195,54 @@ const ProjectCard = React.memo(
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       >
-        {/* Float: x and y swing on separate CSS animations (playground.css), inside the positioned card so they
-            never affect layout, panning or hit-testing logic. */}
-        <div className='void-drift-x w-full h-full' style={drift}>
-          <div className='void-drift-y relative w-full h-full'>
-            {/* The media: masked to feather into the void; lifts or dims via playground.css. */}
-            <div
-              className='pg-media relative w-full h-full overflow-hidden touch-manipulation'
-              style={{ WebkitMaskImage: CARD_MASK, maskImage: CARD_MASK }}
-            >
-              {media ? (
-                // object-fit: cover, centered, fills the square card like the original artwork. The poster shows
-                // until the first frame; sources are attached only once activated, so preload='none' fetches nothing
-                // before then. Source order lets each browser pick a format it hardware-decodes.
-                <video
-                  ref={videoRef}
-                  className='absolute inset-0 w-full h-full object-cover object-center'
-                  poster={media.poster}
-                  muted
-                  loop
-                  playsInline
-                  preload='none'
-                  disablePictureInPicture
-                  disableRemotePlayback
-                  aria-hidden='true'
-                >
-                  {activated && (
-                    <>
-                      {/* Codecs match the encodes: VP9 profile 0, and H.264 High@L3.0 (avc1.64001E). */}
-                      <source src={media.webm} type='video/webm; codecs="vp9"' />
-                      <source src={media.mp4} type='video/mp4; codecs="avc1.64001E"' />
-                    </>
-                  )}
-                </video>
-              ) : null}
+        {/* CRT barrel: the grid writes this wrapper's transform (pull toward the screen centre and shrink) as it
+            pans. Float: x and y swing on separate CSS animations (playground.css), inside it. */}
+        <div className='pg-crt w-full h-full'>
+          <div className='void-drift-x w-full h-full' style={drift}>
+            <div className='void-drift-y relative w-full h-full'>
+              {/* The media: masked to feather into the void; lifts or dims via playground.css. */}
+              <div
+                className='pg-media relative w-full h-full overflow-hidden touch-manipulation'
+                style={{ WebkitMaskImage: CARD_MASK, maskImage: CARD_MASK }}
+              >
+                {media ? (
+                  // object-fit: cover, centered, fills the square card like the original artwork. The poster shows
+                  // until the first frame; sources are attached only once activated, so preload='none' fetches nothing
+                  // before then. Source order lets each browser pick a format it hardware-decodes.
+                  <video
+                    ref={videoRef}
+                    className='absolute inset-0 w-full h-full object-cover object-center'
+                    poster={media.poster}
+                    muted
+                    loop
+                    playsInline
+                    preload='none'
+                    disablePictureInPicture
+                    disableRemotePlayback
+                    aria-hidden='true'
+                  >
+                    {activated && (
+                      <>
+                        {/* Codecs match the encodes: VP9 profile 0, and H.264 High@L3.0 (avc1.64001E). */}
+                        <source src={media.webm} type='video/webm; codecs="vp9"' />
+                        <source src={media.mp4} type='video/mp4; codecs="avc1.64001E"' />
+                      </>
+                    )}
+                  </video>
+                ) : null}
+              </div>
+              {/* Outside the mask, inside the drift: floats with the project, unfaded. */}
+              {readout && (
+                <TerminalReadout
+                  projectId={projectId}
+                  header={header}
+                  year={type}
+                  side={readout.side}
+                  touch={readout.touch}
+                  leaving={!isActive}
+                />
+              )}
             </div>
-            {/* Outside the mask, inside the drift: floats with the project, unfaded. */}
-            {readout && (
-              <TerminalReadout
-                projectId={projectId}
-                header={header}
-                year={type}
-                side={readout.side}
-                touch={readout.touch}
-                leaving={!isActive}
-              />
-            )}
           </div>
         </div>
       </div>
