@@ -51,6 +51,9 @@ export const VOID = {
   readout: {
     offset: 0.72, // its near edge sits this fraction of CARD_SIZE from the card centre
     flipMargin: 280, // px: if the card's right edge is closer than this to the viewport's right edge, show it on the left
+    belowBreakpoint: 640, // px: narrower viewports (and coarse pointers with no room beside) show it below the project
+    belowGap: 16, // px between the project's (lifted) rim and the readout when it sits below
+    viewportGutter: 16, // px: the readout is nudged to stay at least this far inside the viewport
     maxWidth: 260, // px
     fontSize: 11.5, // px
     letterSpacing: '0.06em',

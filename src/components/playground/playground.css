@@ -145,6 +145,14 @@
   text-align: right;
 }
 
+/* Narrow screens: centred below the project, never wider than the screen allows. */
+.pg-readout[data-side='below'] {
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--pg-readout-max-width), calc(100vw - 2 * var(--pg-readout-gutter)));
+  max-width: none;
+}
+
 /* Halo: void colour behind the text, feathered to nothing on every side (two intersected gradient masks, eased stops),
    so there is no edge. It is inside the readout's stacking context: above the neighbouring cards, below the text. The
    side facing the project uses the clamped --pg-halo-near padding. */
@@ -154,14 +162,17 @@
   content: '';
   position: absolute;
   z-index: -1;
-  top: calc(var(--pg-halo-pad) * -1);
-  bottom: calc(var(--pg-halo-pad) * -1);
+  --pg-halo-top: var(--pg-halo-pad);
+  --pg-halo-bottom: var(--pg-halo-pad);
+  top: calc(var(--pg-halo-top) * -1);
+  bottom: calc(var(--pg-halo-bottom) * -1);
   left: calc(var(--pg-halo-left) * -1);
   right: calc(var(--pg-halo-right) * -1);
   background: rgb(13 13 13 / var(--pg-halo-opacity));
   --pg-fx-l: calc(var(--pg-halo-left) * var(--pg-halo-falloff));
   --pg-fx-r: calc(var(--pg-halo-right) * var(--pg-halo-falloff));
-  --pg-fy: calc(var(--pg-halo-pad) * var(--pg-halo-falloff));
+  --pg-fy-t: calc(var(--pg-halo-top) * var(--pg-halo-falloff));
+  --pg-fy-b: calc(var(--pg-halo-bottom) * var(--pg-halo-falloff));
   --pg-halo-x: linear-gradient(
     to right,
     transparent 0,
@@ -178,14 +189,14 @@
   --pg-halo-y: linear-gradient(
     to bottom,
     transparent 0,
-    rgb(0 0 0 / 0.16) calc(var(--pg-fy) * 0.25),
-    rgb(0 0 0 / 0.5) calc(var(--pg-fy) * 0.5),
-    rgb(0 0 0 / 0.84) calc(var(--pg-fy) * 0.75),
-    #000 var(--pg-fy),
-    #000 calc(100% - var(--pg-fy)),
-    rgb(0 0 0 / 0.84) calc(100% - var(--pg-fy) * 0.75),
-    rgb(0 0 0 / 0.5) calc(100% - var(--pg-fy) * 0.5),
-    rgb(0 0 0 / 0.16) calc(100% - var(--pg-fy) * 0.25),
+    rgb(0 0 0 / 0.16) calc(var(--pg-fy-t) * 0.25),
+    rgb(0 0 0 / 0.5) calc(var(--pg-fy-t) * 0.5),
+    rgb(0 0 0 / 0.84) calc(var(--pg-fy-t) * 0.75),
+    #000 var(--pg-fy-t),
+    #000 calc(100% - var(--pg-fy-b)),
+    rgb(0 0 0 / 0.84) calc(100% - var(--pg-fy-b) * 0.75),
+    rgb(0 0 0 / 0.5) calc(100% - var(--pg-fy-b) * 0.5),
+    rgb(0 0 0 / 0.16) calc(100% - var(--pg-fy-b) * 0.25),
     transparent 100%
   );
   -webkit-mask-image: var(--pg-halo-x), var(--pg-halo-y);
@@ -198,6 +209,14 @@
 .pg-readout[data-side='left']::before {
   --pg-halo-left: var(--pg-halo-pad);
   --pg-halo-right: var(--pg-halo-near);
+}
+
+/* Below: full padding left and right, and the side facing the project only as deep as the gap above the readout, so
+   the halo stops at the lifted rim and never darkens the project. */
+.pg-readout[data-side='below']::before {
+  --pg-halo-left: var(--pg-halo-pad);
+  --pg-halo-right: var(--pg-halo-pad);
+  --pg-halo-top: var(--pg-readout-below-gap);
 }
 
 @keyframes pg-halo-in {

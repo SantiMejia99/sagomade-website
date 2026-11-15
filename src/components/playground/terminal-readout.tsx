@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { CARD_SIZE } from '@/components/playground/grid-data';
 import { VOID, hash01 } from '@/components/playground/void-config';
 
@@ -37,14 +37,35 @@ export default function TerminalReadout({
   projectId: number;
   header: string;
   year: string;
-  side: 'left' | 'right';
+  side: 'left' | 'right' | 'below';
   touch: boolean;
   leaving: boolean;
 }) {
   const lines = useMemo(() => readoutLines(projectId, header, year, touch), [projectId, header, year, touch]);
   const segments = useMemo(() => lines.flat(), [lines]);
+  const rootRef = useRef<HTMLDivElement>(null);
   const spanRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const cursorRef = useRef<HTMLSpanElement>(null);
+
+  // Keep the whole readout on screen: lay out the full text once, measure where it lands (after the card's CRT
+  // scale), and nudge it inside the viewport gutter. Runs before paint, so the measuring is never seen.
+  useLayoutEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    segments.forEach((seg, i) => {
+      const span = spanRefs.current[i];
+      if (span) span.textContent = seg.text;
+    });
+    el.style.translate = '';
+    const rect = el.getBoundingClientRect();
+    const scale = el.offsetWidth ? rect.width / el.offsetWidth : 1; // the card's CRT scale
+    const g = R.viewportGutter;
+    const clamp = (start: number, end: number, size: number) =>
+      start < g ? g - start : end > size - g ? Math.max(g - start, size - g - end) : 0;
+    const dx = clamp(rect.left, rect.right, window.innerWidth);
+    const dy = clamp(rect.top, rect.bottom, window.innerHeight);
+    if (dx || dy) el.style.translate = `${dx / scale}px ${dy / scale}px`;
+  }, [segments, side]);
 
   useLayoutEffect(() => {
     const spans = spanRefs.current;
@@ -99,13 +120,18 @@ export default function TerminalReadout({
 
   let index = 0;
   const distance = CARD_SIZE * (0.5 + R.offset);
+  // Below: under the lifted rim plus a gap, centred (playground.css), its halo's top stopping at the rim.
+  const belowTop = CARD_SIZE / 2 + (CARD_SIZE / 2) * VOID.hover.liftScale + R.belowGap;
+  const position: React.CSSProperties =
+    side === 'right' ? { left: distance } : side === 'left' ? { right: distance } : { top: belowTop };
   return (
     <div
+      ref={rootRef}
       className='pg-readout'
       aria-hidden='true'
       data-side={side}
       data-leaving={leaving ? '' : undefined}
-      style={side === 'right' ? { left: distance } : { right: distance }}
+      style={position}
     >
       {lines.map((line, l) => (
         <div key={l}>

@@ -50,6 +50,8 @@ const HOVER_VARS = {
   '--pg-vignette-inset': VOID.crt.vignetteInset,
   '--pg-glass-opacity': VOID.crt.highlightOpacity,
   '--pg-halo-pad': `${VOID.readout.haloPadding}px`,
+  '--pg-readout-gutter': `${VOID.readout.viewportGutter}px`,
+  '--pg-readout-below-gap': `${VOID.readout.belowGap}px`,
   '--pg-halo-near': `${HALO_NEAR}px`,
   '--pg-halo-opacity': VOID.readout.haloOpacity,
   '--pg-halo-falloff': VOID.readout.haloFalloff,

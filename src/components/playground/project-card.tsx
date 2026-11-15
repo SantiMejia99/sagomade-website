@@ -78,7 +78,7 @@ const ProjectCard = React.memo(
     const isActive = useIsActiveCard(key);
     // Which side the readout floats on and whether it says [TAP], fixed when the card activates. It stays set while
     // the readout fades out after deactivation, then clears.
-    const [readout, setReadout] = useState<{ side: 'left' | 'right'; touch: boolean } | null>(null);
+    const [readout, setReadout] = useState<{ side: 'left' | 'right' | 'below'; touch: boolean } | null>(null);
 
     // Latches true the first time the card comes near the viewport: video sources are attached only from then on.
     const [activated, setActivated] = useState(false);
@@ -105,8 +105,17 @@ const ProjectCard = React.memo(
 
     const activate = useCallback(
       (touch: boolean) => {
-        const rect = cardRef.current?.getBoundingClientRect();
-        const side = rect && rect.right > window.innerWidth - R.flipMargin ? 'left' : 'right';
+        // Where the project is drawn (after the CRT barrel), not its grid box.
+        const rect = (mediaRef.current ?? cardRef.current)?.getBoundingClientRect();
+        const w = window.innerWidth;
+        let side: 'left' | 'right' | 'below' = 'right';
+        if (rect) {
+          const need = R.maxWidth + (R.offset - 0.5) * rect.width;
+          const noRoomBeside = w - rect.right < need && rect.left < need;
+          const coarse = window.matchMedia?.('(pointer: coarse)').matches;
+          if (w < R.belowBreakpoint || (coarse && noRoomBeside)) side = 'below';
+          else if (rect.right > w - R.flipMargin) side = 'left';
+        }
         setReadout({ side, touch });
         setActiveCard(key);
       },
