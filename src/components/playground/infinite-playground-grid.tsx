@@ -2,7 +2,10 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallba
 import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { transitionRef } from '@/components/transitionRef';
+import NeuronLinks from '@/components/playground/neuron-links';
 import ProjectCard from '@/components/playground/project-card';
+import { VOID } from '@/components/playground/void-config';
+import '@/components/playground/playground.css';
 import {
   CARD_SIZE,
   GRID_GAP,
@@ -362,6 +365,8 @@ export default function InfinitePlaygroundGrid() {
           <ProjectCard
             key={`${gridRow}-${gridCol}`}
             projectId={project.id}
+            cellRow={gridRow}
+            cellCol={gridCol}
             header={project.header}
             type={project.type}
             baseX={gridCol * CELL}
@@ -381,8 +386,10 @@ export default function InfinitePlaygroundGrid() {
   return (
     <div
       ref={containerRef}
-      className='fixed inset-0 w-screen h-screen overflow-hidden select-none bg-background z-0'
+      className='fixed inset-0 w-screen h-screen overflow-hidden select-none z-0'
       style={{
+        // Explicit, so the void matches the videos' baked background exactly.
+        backgroundColor: VOID.background,
         touchAction: 'none',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',
@@ -398,6 +405,7 @@ export default function InfinitePlaygroundGrid() {
           willChange: isPageVisible ? 'transform' : 'auto',
         }}
       >
+        {isPageVisible && <NeuronLinks cellWindow={cellWindow} />}
         {cards}
       </div>
       <div

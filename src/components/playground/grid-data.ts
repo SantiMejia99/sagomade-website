@@ -184,6 +184,11 @@ export function buildLayoutTile(seed: number, projects: number, strict = true): 
 const tiles = new Map<number, Int16Array>();
 const layoutSeed = sessionSeed();
 
+// The per-session seed, shared with other per-cell randomness (e.g. the neuron links) so it all changes together.
+export function getLayoutSeed(): number {
+  return layoutSeed;
+}
+
 function layoutTile(projects: number): Int16Array {
   let tile = tiles.get(projects);
   if (!tile) {
