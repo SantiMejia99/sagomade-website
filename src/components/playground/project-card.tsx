@@ -1,14 +1,17 @@
-import React, { useCallback, useRef } from 'react';
-import { CARD_SIZE, type Project } from '@/components/playground/grid-data';
+import React, { useCallback, useRef, type RefObject } from 'react';
+import { CARD_SIZE } from '@/components/playground/grid-data';
 import { useLazyImage } from '@/components/playground/use-lazy-image';
 
 // Start loading a card's image when it is within about one card of the viewport.
 const LAZY_ROOT_MARGIN = `${CARD_SIZE}px`;
 
-// Memoized card component to prevent unnecessary re-renders
+// Memoized card component to prevent unnecessary re-renders. Props are primitives plus stable references
+// (the hasMoved ref and a shared onNavigate), so a card re-renders only when its own data changes.
 const ProjectCard = React.memo(
   ({
-    project,
+    projectId,
+    header,
+    type,
     baseX,
     baseY,
     gif,
@@ -16,14 +19,16 @@ const ProjectCard = React.memo(
     hasMoved,
     onNavigate,
   }: {
-    project: Project;
+    projectId: number;
+    header: string;
+    type: string;
     baseX: number;
     baseY: number;
     gif: string | undefined;
-    isDragging: boolean;
     isPageVisible: boolean;
-    hasMoved: boolean;
-    onNavigate: () => void;
+    // Read at event time, so the click-vs-drag check sees the live value rather than one captured at render.
+    hasMoved: RefObject<boolean>;
+    onNavigate: (projectId: number) => void;
   }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const isContentLoaded = useLazyImage(gif, cardRef, LAZY_ROOT_MARGIN);
@@ -31,22 +36,22 @@ const ProjectCard = React.memo(
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
         // Only navigate if user didn't drag (clicked in place)
-        if (!hasMoved && !('ontouchstart' in window)) {
+        if (!hasMoved.current && !('ontouchstart' in window)) {
           e.stopPropagation();
-          onNavigate();
+          onNavigate(projectId);
         }
       },
-      [hasMoved, onNavigate]
+      [hasMoved, onNavigate, projectId]
     );
 
     const handleTouchEnd = useCallback(
       (e: React.TouchEvent) => {
-        if (!hasMoved && 'ontouchstart' in window) {
+        if (!hasMoved.current && 'ontouchstart' in window) {
           e.preventDefault();
-          onNavigate();
+          onNavigate(projectId);
         }
       },
-      [hasMoved, onNavigate]
+      [hasMoved, onNavigate, projectId]
     );
 
     return (
@@ -85,7 +90,7 @@ const ProjectCard = React.memo(
             />
           ) : (
             <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
-              {project.header?.[0] || '?'}
+              {header?.[0] || '?'}
             </div>
           )}
           <div
@@ -100,8 +105,8 @@ const ProjectCard = React.memo(
               transition: isPageVisible ? 'opacity 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
             }}
           >
-            <h3 className='text-xl font-bold mb-1 text-center'>{project.header}</h3>
-            <p className='text-md text-center opacity-90'>{project.type}</p>
+            <h3 className='text-xl font-bold mb-1 text-center'>{header}</h3>
+            <p className='text-md text-center opacity-90'>{type}</p>
           </div>
         </div>
       </div>

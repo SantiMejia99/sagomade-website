@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { transitionRef } from '@/components/transitionRef';
 import ProjectCard from '@/components/playground/project-card';
@@ -11,30 +12,75 @@ import {
   projectsArray,
 } from '@/components/playground/grid-data';
 
+type Offset = { x: number; y: number };
+type CellWindow = { startRow: number; startCol: number; rows: number; cols: number };
+
+const CELL = CARD_SIZE + GRID_GAP;
+
+// The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side.
+function computeCellWindow(offset: Offset, width: number, height: number): CellWindow {
+  return {
+    startRow: Math.floor(-offset.y / CELL) - 1,
+    startCol: Math.floor(-offset.x / CELL) - 1,
+    rows: Math.ceil(height / CELL) + 2,
+    cols: Math.ceil(width / CELL) + 2,
+  };
+}
+
+function sameCellWindow(a: CellWindow, b: CellWindow) {
+  return a.startRow === b.startRow && a.startCol === b.startCol && a.rows === b.rows && a.cols === b.cols;
+}
+
+function toTransform(offset: Offset) {
+  return `translate3d(${offset.x}px, ${offset.y}px, 0)`;
+}
+
 export default function InfinitePlaygroundGrid() {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
+  const innerRef = useRef<HTMLDivElement>(null);
   const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
-  const lastOffset = useRef(offset);
-  const targetOffsetRef = useRef(offset);
+  // The pan offset lives in refs only; the rAF loop writes it straight to the DOM.
+  const offsetRef = useRef<Offset>({ x: 0, y: 0 });
+  const lastOffset = useRef<Offset>(offsetRef.current);
+  const targetOffsetRef = useRef<Offset>(offsetRef.current);
   const rafIdRef = useRef<number | null>(null);
   const animatingRef = useRef(false);
-  const offsetRef = useRef(offset);
-  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const windowSizeRef = useRef({ width: window.innerWidth, height: window.innerHeight });
   const isVisibleRef = useRef(!document.hidden);
   const isDraggingRef = useRef(false);
   const hasMoved = useRef(false);
 
-  useEffect(() => {
-    offsetRef.current = offset;
-  }, [offset]);
+  // React state only tracks which cells are mounted, so it changes only when a row or column crosses an edge.
+  const [cellWindow, setCellWindow] = useState<CellWindow>(() =>
+    computeCellWindow(offsetRef.current, windowSizeRef.current.width, windowSizeRef.current.height)
+  );
+  const cellWindowRef = useRef(cellWindow);
 
-  useEffect(() => {
-    isDraggingRef.current = isDragging;
-  }, [isDragging]);
+  const applyTransform = useCallback(() => {
+    if (innerRef.current) innerRef.current.style.transform = toTransform(offsetRef.current);
+  }, []);
+
+  // Recompute the visible cell window and re-render only if it changed. From the animation loop, `sync`
+  // flushes the render inside the current frame so newly exposed cells appear together with the transform.
+  const syncCellWindow = useCallback((sync = false) => {
+    const next = computeCellWindow(offsetRef.current, windowSizeRef.current.width, windowSizeRef.current.height);
+    if (sameCellWindow(next, cellWindowRef.current)) return;
+    cellWindowRef.current = next;
+    if (sync) flushSync(() => setCellWindow(next));
+    else setCellWindow(next);
+  }, []);
+
+  const setDragging = useCallback((dragging: boolean) => {
+    isDraggingRef.current = dragging;
+    if (containerRef.current) containerRef.current.style.cursor = dragging ? 'grabbing' : 'grab';
+  }, []);
+
+  // Set the initial transform before the first paint.
+  useLayoutEffect(() => {
+    applyTransform();
+  }, [applyTransform]);
 
   // Comprehensive page visibility handling - stops everything when tab is hidden
   useEffect(() => {
@@ -52,14 +98,14 @@ export default function InfinitePlaygroundGrid() {
         }
 
         // Reset dragging state
-        setIsDragging(false);
+        setDragging(false);
         dragStart.current = null;
         document.body.style.userSelect = '';
 
         // Snap to target position immediately (no animation)
-        const target = targetOffsetRef.current;
-        offsetRef.current = target;
-        setOffset(target);
+        offsetRef.current = targetOffsetRef.current;
+        applyTransform();
+        syncCellWindow();
       }
     };
 
@@ -92,7 +138,7 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
     };
-  }, []);
+  }, [applyTransform, syncCellWindow, setDragging]);
 
   // Debounced resize - only when visible
   useEffect(() => {
@@ -102,7 +148,8 @@ export default function InfinitePlaygroundGrid() {
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        windowSizeRef.current = { width: window.innerWidth, height: window.innerHeight };
+        syncCellWindow();
       }, 150);
     };
 
@@ -111,12 +158,19 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timeoutId);
     };
-  }, [isPageVisible]);
+  }, [isPageVisible, syncCellWindow]);
 
   const ensureAnimLoop = useCallback(() => {
     // Don't start animation if page is not visible
     if (animatingRef.current || !isVisibleRef.current) return;
     animatingRef.current = true;
+
+    // Move the grid and, only when a row or column crosses an edge, mount the new cells in the same frame.
+    const commit = (next: Offset) => {
+      offsetRef.current = next;
+      applyTransform();
+      syncCellWindow(true);
+    };
 
     const step = () => {
       // Stop immediately if page becomes hidden
@@ -134,9 +188,7 @@ export default function InfinitePlaygroundGrid() {
 
       if (dist < 0.5) {
         if (dx !== 0 || dy !== 0) {
-          const snapped = { x: target.x, y: target.y };
-          offsetRef.current = snapped;
-          setOffset(snapped);
+          commit({ x: target.x, y: target.y });
         }
         animatingRef.current = false;
         rafIdRef.current = null;
@@ -144,23 +196,21 @@ export default function InfinitePlaygroundGrid() {
       }
 
       const alpha = isDraggingRef.current ? 0.3 : 0.15;
-      const next = {
+      commit({
         x: current.x + dx * alpha,
         y: current.y + dy * alpha,
-      };
-      offsetRef.current = next;
-      setOffset(next);
+      });
       rafIdRef.current = requestAnimationFrame(step);
     };
 
     rafIdRef.current = requestAnimationFrame(step);
-  }, []);
+  }, [applyTransform, syncCellWindow]);
 
   // Pointer events - disabled when page not visible
   useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
       if (!isVisibleRef.current || e.button !== 0) return;
-      setIsDragging(true);
+      setDragging(true);
       hasMoved.current = false;
       dragStart.current = { x: e.clientX, y: e.clientY };
       lastOffset.current = offsetRef.current;
@@ -187,7 +237,7 @@ export default function InfinitePlaygroundGrid() {
     };
 
     const handlePointerUp = () => {
-      setIsDragging(false);
+      setDragging(false);
       dragStart.current = null;
       document.body.style.userSelect = '';
       // Reset hasMoved after a short delay to prevent click
@@ -206,7 +256,7 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('pointerup', handlePointerUp);
       document.body.style.userSelect = '';
     };
-  }, [ensureAnimLoop]);
+  }, [ensureAnimLoop, setDragging]);
 
   // Wheel - disabled when page not visible
   useEffect(() => {
@@ -284,53 +334,49 @@ export default function InfinitePlaygroundGrid() {
     };
   }, []);
 
-  // Memoized cards - only recalculate when page is visible
+  // One stable navigate callback shared by every card, so React.memo on ProjectCard holds.
+  const handleNavigate = useCallback(
+    (projectId: number) => {
+      transitionRef.current?.navigate(() => navigate(`/projects/${projectId}`), colorMap[projectId] ?? '#0d0d0d');
+    },
+    [navigate]
+  );
+
+  // Memoized cards - rebuilt only when the visible cell window changes
   const cards = useMemo(() => {
     // Don't render cards if page is not visible (saves memory and CPU)
     if (!isPageVisible) return [];
 
     const cardElements: React.ReactNode[] = [];
-    const startRow = Math.floor(-offset.y / (CARD_SIZE + GRID_GAP)) - 1;
-    const startCol = Math.floor(-offset.x / (CARD_SIZE + GRID_GAP)) - 1;
+    const { startRow, startCol, rows, cols } = cellWindow;
 
-    const visibleRows = Math.ceil(windowSize.height / (CARD_SIZE + GRID_GAP)) + 2;
-    const visibleCols = Math.ceil(windowSize.width / (CARD_SIZE + GRID_GAP)) + 2;
-
-    for (let row = 0; row < visibleRows; row++) {
-      for (let col = 0; col < visibleCols; col++) {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
         // Use seeded random to get a consistent random project for each grid position
         const gridRow = startRow + row;
         const gridCol = startCol + col;
         const projIdx = getProjectIndex(gridRow, gridCol, projectsArray.length);
         const project = projectsArray[projIdx];
-        const baseX = gridCol * (CARD_SIZE + GRID_GAP);
-        const baseY = gridRow * (CARD_SIZE + GRID_GAP);
-
-        const gif = getProjectGif(project.id);
 
         cardElements.push(
           <ProjectCard
             key={`${gridRow}-${gridCol}`}
-            project={project}
-            baseX={baseX}
-            baseY={baseY}
-            gif={gif}
-            isDragging={isDragging}
+            projectId={project.id}
+            header={project.header}
+            type={project.type}
+            baseX={gridCol * CELL}
+            baseY={gridRow * CELL}
+            gif={getProjectGif(project.id)}
             isPageVisible={isPageVisible}
-            hasMoved={hasMoved.current}
-            onNavigate={() =>
-              transitionRef.current?.navigate(
-                () => navigate(`/projects/${project.id}`),
-                colorMap[project.id] ?? '#0d0d0d'
-              )
-            }
+            hasMoved={hasMoved}
+            onNavigate={handleNavigate}
           />
         );
       }
     }
 
     return cardElements;
-  }, [offset.x, offset.y, windowSize, isDragging, isPageVisible, navigate]);
+  }, [cellWindow, isPageVisible, handleNavigate]);
 
   return (
     <div
@@ -340,12 +386,14 @@ export default function InfinitePlaygroundGrid() {
         touchAction: 'none',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',
-        cursor: isDragging ? 'grabbing' : 'grab',
+        // Updated imperatively while dragging; see setDragging.
+        cursor: 'grab',
       }}
     >
       <div
+        ref={innerRef}
         style={{
-          transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+          // transform is written directly by the animation loop, not through React.
           // Only use willChange when page is visible
           willChange: isPageVisible ? 'transform' : 'auto',
         }}
