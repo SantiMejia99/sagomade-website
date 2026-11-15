@@ -56,14 +56,22 @@ const HOVER_VARS = {
   '--pg-halo-in-ms': `${VOID.readout.haloFadeInMs}ms`,
 } as React.CSSProperties;
 
-// The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side.
+// The CRT barrel draws cells up to k * r^3 * R closer to the centre than their grid position (R the half-diagonal,
+// r up to ~1.15 for anything that can land on screen), so cells that far outside the viewport can be on screen. Mount
+// them too, or they pop in visibly inside the edge as the window shifts.
+function barrelMargin(width: number, height: number) {
+  return Math.ceil(VOID.crt.k * 1.5 * Math.hypot(width / 2, height / 2));
+}
+
+// The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side plus
+// the barrel margin.
 function computeCellWindow(offset: Offset, width: number, height: number): CellWindow {
-  return {
-    startRow: Math.floor(-offset.y / CELL) - 1,
-    startCol: Math.floor(-offset.x / CELL) - 1,
-    rows: Math.ceil(height / CELL) + 2,
-    cols: Math.ceil(width / CELL) + 2,
-  };
+  const m = barrelMargin(width, height);
+  const startRow = Math.floor((-offset.y - m) / CELL) - 1;
+  const startCol = Math.floor((-offset.x - m) / CELL) - 1;
+  const endRow = Math.floor((-offset.y + height + m) / CELL) + 1;
+  const endCol = Math.floor((-offset.x + width + m) / CELL) + 1;
+  return { startRow, startCol, rows: endRow - startRow + 1, cols: endCol - startCol + 1 };
 }
 
 function sameCellWindow(a: CellWindow, b: CellWindow) {

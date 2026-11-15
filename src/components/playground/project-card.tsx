@@ -70,7 +70,10 @@ const ProjectCard = React.memo(
   }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const inView = useInView(cardRef, IN_VIEW_ROOT_MARGIN);
+    const mediaRef = useRef<HTMLDivElement>(null);
+    // Observe the media (where the card is actually drawn, after the CRT barrel), against the grid container (whose
+    // overflow clip would otherwise swallow the margin), so videos start before they come into view.
+    const inView = useInView(mediaRef, IN_VIEW_ROOT_MARGIN, '.pg-grid');
     const key = `${cellRow}:${cellCol}`;
     const isActive = useIsActiveCard(key);
     // Which side the readout floats on and whether it says [TAP], fixed when the card activates. It stays set while
@@ -202,6 +205,7 @@ const ProjectCard = React.memo(
             <div className='void-drift-y relative w-full h-full'>
               {/* The media: masked to feather into the void; lifts or dims via playground.css. */}
               <div
+                ref={mediaRef}
                 className='pg-media relative w-full h-full overflow-hidden touch-manipulation'
                 style={{ WebkitMaskImage: CARD_MASK, maskImage: CARD_MASK }}
               >
