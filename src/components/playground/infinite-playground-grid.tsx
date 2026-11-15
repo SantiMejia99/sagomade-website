@@ -63,6 +63,22 @@ function barrelMargin(width: number, height: number) {
   return Math.ceil(VOID.crt.k * 1.5 * Math.hypot(width / 2, height / 2));
 }
 
+// Inverse of the CRT barrel for a point on screen: where it sits in the undistorted plane (grid position + pan
+// offset). Fixed-point iteration of q = c + (p - c)(1 - k r^2); converges in a few steps for small k.
+function unbarrel(x: number, y: number, width: number, height: number): Offset {
+  const cx = width / 2;
+  const cy = height / 2;
+  const r2Scale = 1 / (cx * cx + cy * cy);
+  let px = x - cx;
+  let py = y - cy;
+  for (let i = 0; i < 4; i++) {
+    const pull = 1 - VOID.crt.k * (px * px + py * py) * r2Scale;
+    px = (x - cx) / pull;
+    py = (y - cy) / pull;
+  }
+  return { x: px + cx, y: py + cy };
+}
+
 // The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side plus
 // the barrel margin.
 function computeCellWindow(offset: Offset, width: number, height: number): CellWindow {
@@ -88,6 +104,20 @@ export default function InfinitePlaygroundGrid() {
   const innerRef = useRef<HTMLDivElement>(null);
   const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
+  // The grid point (undistorted) under the pointer when a drag starts; see anchoredOffset.
+  const grabPoint = useRef<Offset>({ x: 0, y: 0 });
+
+  // Drag anchoring: remember which undistorted grid point is under the pointer at the start, then pan so that point
+  // stays under the pointer (VOID.crt.anchorDrag). Without anchoring, the pan follows the raw pointer delta.
+  const grabAt = (x: number, y: number): Offset => {
+    const u = unbarrel(x, y, windowSizeRef.current.width, windowSizeRef.current.height);
+    return { x: u.x - offsetRef.current.x, y: u.y - offsetRef.current.y };
+  };
+  const dragOffset = (start: Offset, grab: Offset, x: number, y: number, dx: number, dy: number): Offset => {
+    if (!VOID.crt.anchorDrag) return { x: start.x + dx, y: start.y + dy };
+    const u = unbarrel(x, y, windowSizeRef.current.width, windowSizeRef.current.height);
+    return { x: u.x - grab.x, y: u.y - grab.y };
+  };
   // The pan offset lives in refs only; the rAF loop writes it straight to the DOM.
   const offsetRef = useRef<Offset>({ x: 0, y: 0 });
   const lastOffset = useRef<Offset>(offsetRef.current);
@@ -302,6 +332,7 @@ export default function InfinitePlaygroundGrid() {
       hasMoved.current = false;
       dragStart.current = { x: e.clientX, y: e.clientY };
       lastOffset.current = offsetRef.current;
+      grabPoint.current = grabAt(e.clientX, e.clientY);
       document.body.style.userSelect = 'none';
     };
 
@@ -319,10 +350,7 @@ export default function InfinitePlaygroundGrid() {
         setMotionFlag('data-moving', true);
       }
 
-      targetOffsetRef.current = {
-        x: lastOffset.current.x + dx,
-        y: lastOffset.current.y + dy,
-      };
+      targetOffsetRef.current = dragOffset(lastOffset.current, grabPoint.current, e.clientX, e.clientY, dx, dy);
       ensureAnimLoop();
     };
 
@@ -389,6 +417,7 @@ export default function InfinitePlaygroundGrid() {
   useEffect(() => {
     let touchStart = { x: 0, y: 0 };
     let touchStartOffset = { x: 0, y: 0 };
+    let touchGrab = { x: 0, y: 0 };
     let isTouching = false;
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -396,6 +425,7 @@ export default function InfinitePlaygroundGrid() {
       isTouching = true;
       touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       touchStartOffset = { ...offsetRef.current };
+      touchGrab = grabAt(touchStart.x, touchStart.y);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -405,10 +435,7 @@ export default function InfinitePlaygroundGrid() {
       const touch = e.touches[0];
       const dx = touch.clientX - touchStart.x;
       const dy = touch.clientY - touchStart.y;
-      targetOffsetRef.current = {
-        x: touchStartOffset.x + dx,
-        y: touchStartOffset.y + dy,
-      };
+      targetOffsetRef.current = dragOffset(touchStartOffset, touchGrab, touch.clientX, touch.clientY, dx, dy);
       ensureAnimLoop();
     };
 

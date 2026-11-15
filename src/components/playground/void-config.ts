@@ -42,6 +42,9 @@ export const VOID = {
     vignetteInset: 0.55, // inner edge shadow strength (was 0.5)
     highlightOpacity: 0.025, // faint diagonal glass highlight, top left
     navStrength: 1, // multiplier on k for the nav's curvature (home only)
+    // Keep the point you grab under the pointer while dragging. The barrel's local gain is 1 - 3k r^2, so without this
+    // a project grabbed near the edge slides out from under the pointer (at r = 0.9 it moves only 76% as fast).
+    anchorDrag: true,
   },
 
   // Terminal readout floating beside the active project.
