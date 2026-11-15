@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useMemo, useCallba
 import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { transitionRef } from '@/components/transitionRef';
+import { setActiveCard } from '@/components/playground/active-card';
 import ProjectCard from '@/components/playground/project-card';
 import { VOID } from '@/components/playground/void-config';
 import '@/components/playground/playground.css';
@@ -18,6 +19,23 @@ type Offset = { x: number; y: number };
 type CellWindow = { startRow: number; startCol: number; rows: number; cols: number };
 
 const CELL = CARD_SIZE + GRID_GAP;
+
+// Hover and readout tunables (void-config.ts) as CSS custom properties for playground.css.
+const HOVER_VARS = {
+  '--pg-lift-scale': VOID.hover.liftScale,
+  '--pg-lift-brightness': VOID.hover.liftBrightness,
+  '--pg-dim-opacity': VOID.hover.dimOpacity,
+  '--pg-hover-ms': `${VOID.hover.durationMs}ms`,
+  '--pg-hover-ease': VOID.hover.easing,
+  '--pg-readout-max-width': `${VOID.readout.maxWidth}px`,
+  '--pg-readout-size': `${VOID.readout.fontSize}px`,
+  '--pg-readout-tracking': VOID.readout.letterSpacing,
+  '--pg-readout-leading': VOID.readout.lineHeight,
+  '--pg-readout-bright': VOID.readout.bright,
+  '--pg-readout-dim': VOID.readout.dim,
+  '--pg-readout-fade-ms': `${VOID.readout.fadeOutMs}ms`,
+  '--pg-cursor-ms': `${VOID.readout.cursorBlinkMs}ms`,
+} as React.CSSProperties;
 
 // The block of grid cells that covers the viewport at a given pan offset, with a one-cell buffer on each side.
 function computeCellWindow(offset: Offset, width: number, height: number): CellWindow {
@@ -79,6 +97,19 @@ export default function InfinitePlaygroundGrid() {
     if (containerRef.current) containerRef.current.style.cursor = dragging ? 'grabbing' : 'grab';
   }, []);
 
+  // Hover effects pause while the grid is dragged (data-dragging, once a press passes the drag threshold) or still
+  // gliding after a drag or wheel (data-moving, until the animation settles). Starting either clears the active card.
+  const setMotionFlag = useCallback((flag: 'data-dragging' | 'data-moving', on: boolean) => {
+    const el = containerRef.current;
+    if (!el) return;
+    if (on) {
+      el.setAttribute(flag, '');
+      setActiveCard(null);
+    } else {
+      el.removeAttribute(flag);
+    }
+  }, []);
+
   // Set the initial transform before the first paint.
   useLayoutEffect(() => {
     applyTransform();
@@ -101,6 +132,8 @@ export default function InfinitePlaygroundGrid() {
 
         // Reset dragging state
         setDragging(false);
+        setMotionFlag('data-dragging', false);
+        setMotionFlag('data-moving', false);
         dragStart.current = null;
         document.body.style.userSelect = '';
 
@@ -140,7 +173,7 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [applyTransform, syncCellWindow, setDragging]);
+  }, [applyTransform, syncCellWindow, setDragging, setMotionFlag]);
 
   // Debounced resize - only when visible
   useEffect(() => {
@@ -179,6 +212,7 @@ export default function InfinitePlaygroundGrid() {
       if (!isVisibleRef.current) {
         animatingRef.current = false;
         rafIdRef.current = null;
+        setMotionFlag('data-moving', false);
         return;
       }
 
@@ -194,6 +228,7 @@ export default function InfinitePlaygroundGrid() {
         }
         animatingRef.current = false;
         rafIdRef.current = null;
+        if (!isDraggingRef.current) setMotionFlag('data-moving', false);
         return;
       }
 
@@ -206,7 +241,7 @@ export default function InfinitePlaygroundGrid() {
     };
 
     rafIdRef.current = requestAnimationFrame(step);
-  }, [applyTransform, syncCellWindow]);
+  }, [applyTransform, syncCellWindow, setMotionFlag]);
 
   // Pointer events - disabled when page not visible
   useEffect(() => {
@@ -227,8 +262,10 @@ export default function InfinitePlaygroundGrid() {
       const dy = e.clientY - dragStart.current.y;
 
       // Track if user has moved more than 3px (indicates drag intent, not click)
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      if (!hasMoved.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
         hasMoved.current = true;
+        setMotionFlag('data-dragging', true);
+        setMotionFlag('data-moving', true);
       }
 
       targetOffsetRef.current = {
@@ -238,8 +275,22 @@ export default function InfinitePlaygroundGrid() {
       ensureAnimLoop();
     };
 
-    const handlePointerUp = () => {
+    const handlePointerUp = (e: PointerEvent) => {
+      // A tap or click on the empty void (not a drag) clears the active card.
+      const target = e.target as Element | null;
+      if (
+        dragStart.current &&
+        !hasMoved.current &&
+        target &&
+        containerRef.current?.contains(target) &&
+        !target.closest('.pg-card')
+      ) {
+        setActiveCard(null);
+      }
       setDragging(false);
+      setMotionFlag('data-dragging', false);
+      // If the grid is already still, hover can resume now; otherwise the animation clears data-moving on settling.
+      if (!animatingRef.current) setMotionFlag('data-moving', false);
       dragStart.current = null;
       document.body.style.userSelect = '';
       // Reset hasMoved after a short delay to prevent click
@@ -258,7 +309,7 @@ export default function InfinitePlaygroundGrid() {
       window.removeEventListener('pointerup', handlePointerUp);
       document.body.style.userSelect = '';
     };
-  }, [ensureAnimLoop, setDragging]);
+  }, [ensureAnimLoop, setDragging, setMotionFlag]);
 
   // Wheel - disabled when page not visible
   useEffect(() => {
@@ -266,6 +317,7 @@ export default function InfinitePlaygroundGrid() {
       if (!isVisibleRef.current) return;
       e.preventDefault();
 
+      setMotionFlag('data-moving', true);
       const deltaX = e.deltaX * 1.1;
       const deltaY = e.deltaY * 1.1;
       targetOffsetRef.current = {
@@ -280,7 +332,7 @@ export default function InfinitePlaygroundGrid() {
     return () => {
       if (ref) ref.removeEventListener('wheel', handleWheel);
     };
-  }, [ensureAnimLoop]);
+  }, [ensureAnimLoop, setMotionFlag]);
 
   // Touch - disabled when page not visible
   useEffect(() => {
@@ -326,6 +378,36 @@ export default function InfinitePlaygroundGrid() {
         ref.removeEventListener('touchmove', handleTouchMove);
         ref.removeEventListener('touchend', handleTouchEnd);
       }
+    };
+  }, [ensureAnimLoop]);
+
+  // Keyboard focus: bring a focused card that is off-screen into view, and undo the scroll the browser applies to
+  // this overflow-hidden container when focusing (panning is done with transforms, never scrolling).
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handleFocusIn = (e: FocusEvent) => {
+      const card = (e.target as Element | null)?.closest?.('.pg-card');
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const margin = CARD_SIZE / 2;
+      const { innerWidth: w, innerHeight: h } = window;
+      if (rect.left >= margin && rect.right <= w - margin && rect.top >= margin && rect.bottom <= h - margin) return;
+      targetOffsetRef.current = {
+        x: targetOffsetRef.current.x + (w / 2 - (rect.left + rect.width / 2)),
+        y: targetOffsetRef.current.y + (h / 2 - (rect.top + rect.height / 2)),
+      };
+      ensureAnimLoop();
+    };
+    const handleScroll = () => {
+      el.scrollTop = 0;
+      el.scrollLeft = 0;
+    };
+    el.addEventListener('focusin', handleFocusIn);
+    el.addEventListener('scroll', handleScroll);
+    return () => {
+      el.removeEventListener('focusin', handleFocusIn);
+      el.removeEventListener('scroll', handleScroll);
     };
   }, [ensureAnimLoop]);
 
@@ -385,10 +467,11 @@ export default function InfinitePlaygroundGrid() {
   return (
     <div
       ref={containerRef}
-      className='fixed inset-0 w-screen h-screen overflow-hidden select-none z-0'
+      className='pg-grid fixed inset-0 w-screen h-screen overflow-hidden select-none z-0'
       style={{
         // Explicit, so the void matches the videos' baked background exactly.
         backgroundColor: VOID.background,
+        ...HOVER_VARS,
         touchAction: 'none',
         WebkitOverflowScrolling: 'touch',
         overscrollBehavior: 'none',

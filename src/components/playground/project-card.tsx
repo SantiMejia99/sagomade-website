@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { CARD_SIZE, getLayoutSeed, type GridMedia } from '@/components/playground/grid-data';
+import { getActiveCard, setActiveCard, useIsActiveCard } from '@/components/playground/active-card';
+import TerminalReadout from '@/components/playground/terminal-readout';
 import { useInView } from '@/components/playground/use-in-view';
 import { VOID, hash01 } from '@/components/playground/void-config';
 
@@ -27,8 +29,17 @@ function driftStyle(row: number, col: number): React.CSSProperties {
   } as React.CSSProperties;
 }
 
+const R = VOID.readout;
+
+// No hover effects while the grid is dragged or still gliding (attributes set by the grid).
+function motionBlocked(card: HTMLElement | null) {
+  const grid = card?.closest('.pg-grid');
+  return !!grid && (grid.hasAttribute('data-dragging') || grid.hasAttribute('data-moving'));
+}
+
 // Memoized card component to prevent unnecessary re-renders. Props are primitives plus stable references
-// (the hasMoved ref and a shared onNavigate), so a card re-renders only when its own data changes.
+// (the hasMoved ref and a shared onNavigate), so a card re-renders only when its own data changes, or when it gains
+// or loses the active (hover / focus / first-tap) state.
 const ProjectCard = React.memo(
   ({
     projectId,
@@ -47,7 +58,7 @@ const ProjectCard = React.memo(
     cellRow: number;
     cellCol: number;
     header: string;
-    type: string;
+    type: string; // the project's year
     baseX: number;
     baseY: number;
     // Same object per project id (see getProjectMedia), so it does not break memoization.
@@ -60,6 +71,11 @@ const ProjectCard = React.memo(
     const cardRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const inView = useInView(cardRef, IN_VIEW_ROOT_MARGIN);
+    const key = `${cellRow}:${cellCol}`;
+    const isActive = useIsActiveCard(key);
+    // Which side the readout floats on and whether it says [TAP], fixed when the card activates. It stays set while
+    // the readout fades out after deactivation, then clears.
+    const [readout, setReadout] = useState<{ side: 'left' | 'right'; touch: boolean } | null>(null);
 
     // Latches true the first time the card comes near the viewport: video sources are attached only from then on.
     const [activated, setActivated] = useState(false);
@@ -77,25 +93,79 @@ const ProjectCard = React.memo(
       }
     }, [activated, inView, isPageVisible]);
 
+    // After deactivation, keep the readout mounted for its fade-out, then remove it.
+    useEffect(() => {
+      if (isActive || !readout) return;
+      const timer = setTimeout(() => setReadout(null), R.fadeOutMs);
+      return () => clearTimeout(timer);
+    }, [isActive, readout]);
+
+    const activate = useCallback(
+      (touch: boolean) => {
+        const rect = cardRef.current?.getBoundingClientRect();
+        const side = rect && rect.right > window.innerWidth - R.flipMargin ? 'left' : 'right';
+        setReadout({ side, touch });
+        setActiveCard(key);
+      },
+      [key]
+    );
+
+    // Mouse and pen: hovering activates. pointermove re-activates after the grid settles under a still pointer.
+    const handlePointerOver = useCallback(
+      (e: React.PointerEvent) => {
+        if (e.pointerType === 'touch' || getActiveCard() === key || motionBlocked(cardRef.current)) return;
+        activate(false);
+      },
+      [activate, key]
+    );
+
+    const handlePointerLeave = useCallback(
+      (e: React.PointerEvent) => {
+        if (e.pointerType !== 'touch' && getActiveCard() === key) setActiveCard(null);
+      },
+      [key]
+    );
+
+    // Mouse click navigates (touch taps are handled in touchend, which suppresses the click).
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
-        // Only navigate if user didn't drag (clicked in place)
-        if (!hasMoved.current && !('ontouchstart' in window)) {
-          e.stopPropagation();
-          onNavigate(projectId);
-        }
+        if (hasMoved.current) return;
+        e.stopPropagation();
+        onNavigate(projectId);
       },
       [hasMoved, onNavigate, projectId]
     );
 
+    // Touch: the first tap activates, a second tap on the active card navigates.
     const handleTouchEnd = useCallback(
       (e: React.TouchEvent) => {
-        if (!hasMoved.current && 'ontouchstart' in window) {
-          e.preventDefault();
-          onNavigate(projectId);
-        }
+        if (hasMoved.current) return;
+        e.preventDefault();
+        if (getActiveCard() === key) onNavigate(projectId);
+        else activate(true);
       },
-      [hasMoved, onNavigate, projectId]
+      [activate, hasMoved, key, onNavigate, projectId]
+    );
+
+    // Keyboard: focus activates (only for keyboard focus, not the focus a mouse press gives), Enter navigates.
+    const handleFocus = useCallback(
+      (e: React.FocusEvent<HTMLDivElement>) => {
+        if (e.currentTarget.matches(':focus-visible') && getActiveCard() !== key) activate(false);
+      },
+      [activate, key]
+    );
+
+    const handleBlur = useCallback(() => {
+      if (getActiveCard() === key) setActiveCard(null);
+    }, [key]);
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        onNavigate(projectId);
+      },
+      [onNavigate, projectId]
     );
 
     const drift = useMemo(() => driftStyle(cellRow, cellCol), [cellRow, cellCol]);
@@ -103,29 +173,36 @@ const ProjectCard = React.memo(
     return (
       <div
         ref={cardRef}
-        className='group absolute'
+        className='pg-card absolute'
+        data-active={isActive ? '' : undefined}
+        role='link'
+        tabIndex={0}
+        aria-label={`${header}, ${type}`}
         style={{
           left: baseX,
           top: baseY,
           width: CARD_SIZE,
           height: CARD_SIZE,
-          zIndex: 1,
+          // Above its neighbours while its readout is showing (or fading).
+          zIndex: readout ? 3 : 1,
         }}
+        onPointerOver={handlePointerOver}
+        onPointerMove={handlePointerOver}
+        onPointerLeave={handlePointerLeave}
         onClick={handleClick}
         onTouchEnd={handleTouchEnd}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
       >
         {/* Float: x and y swing on separate CSS animations (playground.css), inside the positioned card so they
             never affect layout, panning or hit-testing logic. */}
         <div className='void-drift-x w-full h-full' style={drift}>
-          <div className='void-drift-y w-full h-full'>
+          <div className='void-drift-y relative w-full h-full'>
+            {/* The media: masked to feather into the void; lifts or dims via playground.css. */}
             <div
-              className='relative w-full h-full overflow-hidden touch-manipulation'
-              style={{
-                // Disable transitions when page is not visible
-                transition: isPageVisible ? 'transform 200ms' : 'none',
-                WebkitMaskImage: CARD_MASK,
-                maskImage: CARD_MASK,
-              }}
+              className='pg-media relative w-full h-full overflow-hidden touch-manipulation'
+              style={{ WebkitMaskImage: CARD_MASK, maskImage: CARD_MASK }}
             >
               {media ? (
                 // object-fit: cover, centered, fills the square card like the original artwork. The poster shows
@@ -152,22 +229,18 @@ const ProjectCard = React.memo(
                   )}
                 </video>
               ) : null}
-              <div
-                className='absolute inset-0 group-hover:bg-black/30'
-                style={{
-                  transition: isPageVisible ? 'background-color 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
-                }}
-              />
-              <div
-                className='absolute inset-0 flex flex-col justify-center items-starts text-white p-4 opacity-0 group-hover:opacity-100'
-                style={{
-                  transition: isPageVisible ? 'opacity 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
-                }}
-              >
-                <h3 className='text-xl font-bold mb-1 text-center'>{header}</h3>
-                <p className='text-md text-center opacity-90'>{type}</p>
-              </div>
             </div>
+            {/* Outside the mask, inside the drift: floats with the project, unfaded. */}
+            {readout && (
+              <TerminalReadout
+                projectId={projectId}
+                header={header}
+                year={type}
+                side={readout.side}
+                touch={readout.touch}
+                leaving={!isActive}
+              />
+            )}
           </div>
         </div>
       </div>

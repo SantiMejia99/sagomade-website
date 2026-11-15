@@ -17,6 +17,34 @@ export const VOID = {
     halfPeriodMin: 4, // s (8 s loop)
     halfPeriodMax: 6, // s (12 s loop)
   },
+
+  // Hover / focus / first tap: the active project lifts and brightens, every other project dims.
+  hover: {
+    liftScale: 1.06,
+    liftBrightness: 1.08,
+    dimOpacity: 0.7,
+    durationMs: 400,
+    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+  },
+
+  // Terminal readout floating beside the active project.
+  readout: {
+    offset: 0.72, // its near edge sits this fraction of CARD_SIZE from the card centre
+    flipMargin: 280, // px: if the card's right edge is closer than this to the viewport's right edge, show it on the left
+    maxWidth: 260, // px
+    fontSize: 11.5, // px
+    letterSpacing: '0.06em',
+    lineHeight: 1.5,
+    labelWidth: 15, // characters for "YEAR ......... " so the values line up
+    typeMs: 300, // whole readout types out in this long
+    scrambleSteps: 2, // random glyphs a character shows before resolving
+    glyphStepMs: 25, // how long each random glyph shows
+    glyphs: '░▒▓/\\|_-=+*#<>01',
+    fadeOutMs: 150,
+    cursorBlinkMs: 1000,
+    bright: '#f4efe9', // Sago paper-50: title, command, values
+    dim: '#969695', // Sago paper-500: prompt, labels, dot leaders, [CLICK]
+  },
 } as const;
 
 // Deterministic hash of integers to [0, 1). Used for per-cell randomness that must stay the same whenever a cell

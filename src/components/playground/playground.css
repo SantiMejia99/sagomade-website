@@ -1,5 +1,28 @@
-/* Playground "void": per-project drift. Values come from void-config.ts via custom properties set inline on each
-   card. Pure CSS, so nothing runs per frame in JS. */
+/* Playground "void": per-project drift, the hover lift and dim, and the terminal readout. Values come from
+   void-config.ts via custom properties set inline (on each card, or on the grid container). Pure CSS, so nothing runs
+   per frame in JS except the readout's short type-on. */
+
+/* Geist Mono for the readout: only the latin and symbols2 subsets (symbols2 has the block glyphs the scramble and
+   cursor use), instead of all six subsets that @fontsource-variable/geist-mono's index.css declares. */
+@font-face {
+  font-family: 'Geist Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Geist Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-symbols2-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
 
 .void-drift-x {
   animation: void-drift-x var(--drift-x-dur) ease-in-out var(--drift-x-delay) infinite alternate;
@@ -27,9 +50,94 @@
   }
 }
 
+/* Hover lift and dim. The active card carries data-active; nothing applies while the grid is being dragged or is still
+   gliding (data-dragging / data-moving on the container, set imperatively). */
+/* Hit area = the visible disc. The card box ignores the pointer; only its media (clipped to the circle the mask fades
+   to, so nothing visible changes) receives it, so the empty-looking corners of a card are void, not card. Events still
+   bubble to the card's handlers. */
+.pg-card {
+  pointer-events: none;
+}
+
+.pg-media {
+  pointer-events: auto;
+  clip-path: circle(50% at 50% 50%);
+  transition:
+    transform var(--pg-hover-ms) var(--pg-hover-ease),
+    filter var(--pg-hover-ms) var(--pg-hover-ease),
+    opacity var(--pg-hover-ms) var(--pg-hover-ease);
+}
+
+.pg-grid:not([data-dragging]):not([data-moving]) .pg-card[data-active] .pg-media {
+  transform: scale(var(--pg-lift-scale));
+  filter: brightness(var(--pg-lift-brightness));
+}
+
+/* Opacity, not filter, on the many dimmed cards: much cheaper with ~40 playing videos. */
+.pg-grid:not([data-dragging]):not([data-moving]):has(.pg-card[data-active]) .pg-card:not([data-active]) .pg-media {
+  opacity: var(--pg-dim-opacity);
+}
+
+/* The lift and readout are the focus indicator. */
+.pg-card:focus {
+  outline: none;
+}
+
+/* Terminal readout: floats in the void beside the active card, no panel. */
+.pg-readout {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: max-content;
+  max-width: var(--pg-readout-max-width);
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: var(--pg-readout-size);
+  letter-spacing: var(--pg-readout-tracking);
+  line-height: var(--pg-readout-leading);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  white-space: pre-wrap;
+  color: var(--pg-readout-bright);
+  text-shadow:
+    0 0 10px #0d0d0d,
+    0 0 10px #0d0d0d;
+  pointer-events: none;
+  transition: opacity var(--pg-readout-fade-ms) linear;
+}
+
+.pg-readout[data-side='left'] {
+  text-align: right;
+}
+
+.pg-readout[data-leaving] {
+  opacity: 0;
+}
+
+.pg-readout .pg-dim {
+  color: var(--pg-readout-dim);
+}
+
+.pg-cursor {
+  animation: pg-blink var(--pg-cursor-ms) steps(1) infinite;
+}
+
+@keyframes pg-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .void-drift-x,
   .void-drift-y {
+    animation: none;
+  }
+
+  .pg-media {
+    transition: none;
+  }
+
+  .pg-cursor {
     animation: none;
   }
 }
