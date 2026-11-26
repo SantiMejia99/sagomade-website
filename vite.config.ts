@@ -2,10 +2,9 @@ import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsconfigPaths()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -16,8 +15,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // This will create a separate 'vendor.js' for these libraries
-          vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+          // Long-lived vendor chunk so app changes don't bust the framework cache
+          vendor: ['react', 'react-dom', 'react-router-dom', 'motion/react'],
         },
       },
     },
