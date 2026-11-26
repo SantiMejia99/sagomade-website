@@ -1,16 +1,13 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { transitionRef } from './transitionRef';
+import { navigateWithTransition } from '@/lib/page-transition';
 
-export default function SagoNavigation() {
+const navItems = [{ name: 'ABOUT', href: '/about' }];
+
+export default function SiteNavigation() {
   const location = useLocation();
   const navigate = useNavigate();
-  const navItems = [{ name: 'ABOUT', href: '/about' }];
 
-  const goTo = (path: string) => {
-    const go = () => navigate(path);
-    if (transitionRef.current) transitionRef.current.navigate(go, '#0d0d0d');
-    else go();
-  };
+  const goTo = (path: string) => navigateWithTransition(() => navigate(path));
 
   return (
     <header className='fixed top-4 lg:top-8 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 transition-all duration-500'>

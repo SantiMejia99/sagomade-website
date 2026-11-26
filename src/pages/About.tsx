@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { CalendarHeatmap } from '@/components/calendar-heatmap';
+import { CalendarHeatmap } from '@/components/ui/calendar-heatmap';
 import activitiesData from '@/data/designActivities.json';
+import type { DesignActivity } from '@/types';
 
 function useMonths() {
   const [months, setMonths] = useState(1);
@@ -19,9 +20,7 @@ function useMonths() {
   return months;
 }
 
-type Activity = { date: string; weight: number; entry: string };
-
-const activities: Activity[] = activitiesData;
+const activities: DesignActivity[] = activitiesData;
 
 const latestActivity = activities.reduce((a, b) => (a.date > b.date ? a : b));
 const activityMap = new Map(activities.map(a => [a.date, a]));
@@ -32,7 +31,7 @@ const weightedDates = activities.map(a => ({
 
 export default function About() {
   const numberOfMonths = useMonths();
-  const [activeEntry, setActiveEntry] = useState<Activity>(latestActivity);
+  const [activeEntry, setActiveEntry] = useState<DesignActivity>(latestActivity);
 
   const socialLinks = [
     { label: 'CV', href: 'https://drive.google.com/file/d/1r2jqilfmB_IEjn0m0e2fb13FWa9k1gEh/view?usp=drive_link' },

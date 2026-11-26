@@ -1,200 +1,19 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import projects from '../app/dashboard/data.json';
-import LoadingScreenV2 from '../components/LoadingScreen-v2';
-import { transitionRef } from '../components/transitionRef';
+import ProjectCard from '@/components/home/ProjectCard';
+import homeProjects from '@/data/homeProjects.json';
+import { homeProjectImages } from '@/data/homeProjectImages';
+import { CELL_SIZE, getProjectIndex } from '@/lib/home-grid';
+import { navigateWithTransition } from '@/lib/page-transition';
+import type { HomeProject } from '@/types';
 
-type Project = {
-  id: number;
-  header: string;
-  type: string;
-};
+const projects: HomeProject[] = homeProjects;
 
-const projectsArray = Object.values(projects);
-
-const CARD_SIZE = 240;
-const GRID_GAP = 24;
-
-const gifMap: Record<number, string> = {
-  1: '/optimized/consultation-notice.webp',
-  2: '/optimized/espacio-ideal.webp',
-  3: '/optimized/wine-bottles.webp',
-  4: '/optimized/beer-bottles.webp',
-  5: '/optimized/standing-desk.webp',
-  6: '/optimized/poss-magazine.webp',
-  7: '/optimized/running-shirt.webp',
-  8: '/optimized/green-standards-toolkit.webp',
-  9: '/optimized/tote-bag.webp',
-  10: '/optimized/paradigm-shift.webp',
-  11: '/projects/espacio-ideal-catalogues/espacio-catalogues-placeholder-1.webp',
-  12: '/projects/espacio-ideal-website/espacio-website-placeholder.webp',
-  13: '/projects/25-years/biglieri-25-years-ph.webp',
-  14: '/projects/biglieri-rebrand/biglieri-bph.webp',
-};
-
-const colorMap: Record<number, string> = {
-  1: '#0d0d0d',
-  2: '#0d0d0d',
-  3: '#0d0d0d',
-  4: '#0d0d0d',
-  5: '#0d0d0d',
-  6: '#0d0d0d',
-  7: '#0d0d0d',
-  8: '#0d0d0d',
-  9: '#0d0d0d',
-  10: '#0d0d0d',
-  11: '#0d0d0d',
-  12: '#0d0d0d',
-  13: '#0d0d0d',
-  14: '#0d0d0d',
-};
-
-function getProjectGif(id: number) {
-  return gifMap[id] || undefined;
-}
-
-// Seeded random function for consistent randomization
-function seededRandom(seed: number): number {
-  let hash = seed * 2654435761;
-  hash = (hash ^ (hash >>> 16)) * 0x85ebca6b;
-  hash = (hash ^ (hash >>> 13)) * 0xc2b2ae35;
-  hash = hash ^ (hash >>> 16);
-  return Math.abs(hash) / 2147483647;
-}
-
-// Get project index ensuring even distribution with no adjacent duplicates
-function getProjectIndex(row: number, col: number, projectsLength: number): number {
-  const patternCols = 6;
-  const patternRows = 4;
-
-  // Find title
-  const tileRow = Math.floor(row / patternRows);
-  const tileCol = Math.floor(col / patternCols);
-
-  // Position within the tile
-  const localRow = ((row % patternRows) + patternRows) % patternRows;
-  const localCol = ((col % patternCols) + patternCols) % patternCols;
-  const cellIndex = localRow * patternCols + localCol;
-
-  // Generate a unique shuffled arrangement for this tile
-  const tileSeed = tileRow * 92821 + tileCol * 93563;
-  const arrangement = Array.from({ length: projectsLength }, (_, i) => i);
-
-  // Fisher-Yates shuffle with seeded random
-  for (let i = projectsLength - 1; i > 0; i--) {
-    const j = Math.floor(seededRandom(tileSeed + i * 2654435761) * (i + 1));
-    [arrangement[i], arrangement[j]] = [arrangement[j], arrangement[i]];
-  }
-
-  // Return the project at this cell's position
-  return arrangement[cellIndex % projectsLength];
-}
-
-// Memoized card component to prevent unnecessary re-renders
-const ProjectCard = React.memo(
-  ({
-    project,
-    baseX,
-    baseY,
-    gif,
-    isContentLoaded,
-    isPageVisible,
-    hasMoved,
-    onNavigate,
-  }: {
-    project: Project;
-    baseX: number;
-    baseY: number;
-    gif: string | undefined;
-    isContentLoaded: boolean;
-    isDragging: boolean;
-    isPageVisible: boolean;
-    hasMoved: boolean;
-    onNavigate: () => void;
-  }) => {
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        // Only navigate if user didn't drag (clicked in place)
-        if (!hasMoved && !('ontouchstart' in window)) {
-          e.stopPropagation();
-          onNavigate();
-        }
-      },
-      [hasMoved, onNavigate]
-    );
-
-    const handleTouchEnd = useCallback(
-      (e: React.TouchEvent) => {
-        if (!hasMoved && 'ontouchstart' in window) {
-          e.preventDefault();
-          onNavigate();
-        }
-      },
-      [hasMoved, onNavigate]
-    );
-
-    return (
-      <div
-        className='group absolute'
-        style={{
-          left: baseX,
-          top: baseY,
-          width: CARD_SIZE,
-          height: CARD_SIZE,
-          zIndex: 1,
-        }}
-        onClick={handleClick}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div
-          className='relative w-full h-full overflow-hidden touch-manipulation'
-          style={{
-            // Disable transitions when page is not visible
-            transition: isPageVisible ? 'transform 200ms' : 'none',
-            backgroundColor: '#0d0d0d',
-            WebkitMaskImage: 'radial-gradient(ellipse 65% 65% at center, #000 60%, transparent 100%)',
-            maskImage: 'radial-gradient(ellipse 65% 65% at center, #000 60%, transparent 100%)',
-          }}
-        >
-          {gif && isContentLoaded ? (
-            <div
-              className='absolute inset-0 bg-cover bg-center'
-              style={{
-                backgroundImage: `url(${gif})`,
-                aspectRatio: '1/1',
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          ) : (
-            <div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-700 text-white text-3xl font-bold opacity-60'>
-              {project.header?.[0] || '?'}
-            </div>
-          )}
-          <div
-            className='absolute inset-0 group-hover:bg-black/30'
-            style={{
-              transition: isPageVisible ? 'background-color 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
-            }}
-          />
-          <div
-            className='absolute inset-0 flex flex-col justify-center items-starts text-white p-4 opacity-0 group-hover:opacity-100'
-            style={{
-              transition: isPageVisible ? 'opacity 500ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
-            }}
-          >
-            <h3 className='text-xl font-bold mb-1 text-center'>{project.header}</h3>
-            <p className='text-md text-center opacity-90'>{project.type}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-);
-
-ProjectCard.displayName = 'ProjectCard';
-
-function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> }) {
+/**
+ * Full-screen, endlessly pannable grid of project tiles (drag, wheel or touch).
+ * Only the tiles intersecting the viewport (plus a 1-tile margin) are rendered.
+ */
+export default function InfiniteProjectGrid({ loadedContent }: { loadedContent: Set<string> }) {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -281,7 +100,7 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
   useEffect(() => {
     if (!isPageVisible) return;
 
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
@@ -473,24 +292,23 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
     if (!isPageVisible) return [];
 
     const cardElements: React.ReactNode[] = [];
-    const startRow = Math.floor(-offset.y / (CARD_SIZE + GRID_GAP)) - 1;
-    const startCol = Math.floor(-offset.x / (CARD_SIZE + GRID_GAP)) - 1;
+    const startRow = Math.floor(-offset.y / CELL_SIZE) - 1;
+    const startCol = Math.floor(-offset.x / CELL_SIZE) - 1;
 
-    const visibleRows = Math.ceil(windowSize.height / (CARD_SIZE + GRID_GAP)) + 2;
-    const visibleCols = Math.ceil(windowSize.width / (CARD_SIZE + GRID_GAP)) + 2;
+    const visibleRows = Math.ceil(windowSize.height / CELL_SIZE) + 2;
+    const visibleCols = Math.ceil(windowSize.width / CELL_SIZE) + 2;
 
     for (let row = 0; row < visibleRows; row++) {
       for (let col = 0; col < visibleCols; col++) {
         // Use seeded random to get a consistent random project for each grid position
         const gridRow = startRow + row;
         const gridCol = startCol + col;
-        const projIdx = getProjectIndex(gridRow, gridCol, projectsArray.length);
-        const project = projectsArray[projIdx];
-        const baseX = gridCol * (CARD_SIZE + GRID_GAP);
-        const baseY = gridRow * (CARD_SIZE + GRID_GAP);
+        const project = projects[getProjectIndex(gridRow, gridCol, projects.length)];
+        const baseX = gridCol * CELL_SIZE;
+        const baseY = gridRow * CELL_SIZE;
 
-        const gif = getProjectGif(project.id);
-        const isContentLoaded = gif ? loadedContent.has(gif) : true;
+        const image = homeProjectImages[project.id];
+        const isContentLoaded = image ? loadedContent.has(image) : true;
 
         cardElements.push(
           <ProjectCard
@@ -498,24 +316,18 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
             project={project}
             baseX={baseX}
             baseY={baseY}
-            gif={gif}
+            image={image}
             isContentLoaded={isContentLoaded}
-            isDragging={isDragging}
             isPageVisible={isPageVisible}
-            hasMoved={hasMoved.current}
-            onNavigate={() =>
-              transitionRef.current?.navigate(
-                () => navigate(`/projects/${project.id}`),
-                colorMap[project.id] ?? '#0d0d0d'
-              )
-            }
+            hasMovedRef={hasMoved}
+            onNavigate={() => navigateWithTransition(() => navigate(`/projects/${project.id}`))}
           />
         );
       }
     }
 
     return cardElements;
-  }, [offset.x, offset.y, windowSize, loadedContent, isDragging, isPageVisible, navigate]);
+  }, [offset.x, offset.y, windowSize, loadedContent, isPageVisible, navigate]);
 
   return (
     <div
@@ -546,65 +358,6 @@ function InfinitePlaygroundGrid({ loadedContent }: { loadedContent: Set<string> 
           boxShadow: 'inset 0 0 180px rgba(0,0,0,0.5)',
         }}
       />
-    </div>
-  );
-}
-
-export default function Home() {
-  const [loadedContent, setLoadedContent] = useState<Set<string>>(new Set());
-  const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
-  const [showLoading, setShowLoading] = useState(true);
-  const [hasSeenLoading, setHasSeenLoading] = useState(false);
-
-  // Check if user has already seen the loading screen in this session
-  useEffect(() => {
-    const seen = sessionStorage.getItem('hasSeenHomeLoading');
-    if (seen === 'true') {
-      setShowLoading(false);
-      setHasSeenLoading(true);
-    }
-  }, []);
-
-  // Track page visibility at the top level too
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      setIsPageVisible(!document.hidden);
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
-
-  // Preload images (for cards that appear after loading screen)
-  useEffect(() => {
-    if (!isPageVisible || hasSeenLoading) return;
-
-    const preload = () => {
-      Object.values(gifMap).forEach(src => {
-        const img = new Image();
-        img.onload = () => {
-          setLoadedContent(prev => new Set([...prev, src]));
-        };
-        img.src = src;
-      });
-    };
-
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(preload);
-    } else {
-      setTimeout(preload, 100);
-    }
-  }, [isPageVisible, hasSeenLoading]);
-
-  const handleLoadingComplete = () => {
-    setShowLoading(false);
-    sessionStorage.setItem('hasSeenHomeLoading', 'true');
-  };
-
-  return (
-    <div className='bg-background'>
-      {showLoading && <LoadingScreenV2 onComplete={handleLoadingComplete} />}{' '}
-      <InfinitePlaygroundGrid loadedContent={loadedContent} />
     </div>
   );
 }
