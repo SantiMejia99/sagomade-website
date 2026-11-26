@@ -14,7 +14,10 @@ interface PixelPageTransitionProps {
 /* ── Component ───────────────────────────────────────────────────────────── */
 
 const PixelPageTransition = forwardRef<PixelPageTransitionHandle, PixelPageTransitionProps>(
-  function PixelPageTransition({ children, gridSize = 7, pixelColor = TRANSITION_COLOR, animationStepDuration = 0.6 }, ref) {
+  function PixelPageTransition(
+    { children, gridSize = 7, pixelColor = TRANSITION_COLOR, animationStepDuration = 0.6 },
+    ref
+  ) {
     const pixelGridRef = useRef<HTMLDivElement>(null);
     const delayedCallRef = useRef<gsap.core.Tween | null>(null);
     const busyRef = useRef(false);

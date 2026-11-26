@@ -8,7 +8,9 @@ export function CodeSnippet({ code, language = 'python' }: { code: string; langu
 
   return (
     <div className='relative'>
-      <div className={`relative rounded-lg border bg-muted/50 overflow-hidden ${maxHeight} transition-all duration-300`}>
+      <div
+        className={`relative rounded-lg border bg-muted/50 overflow-hidden ${maxHeight} transition-all duration-300`}
+      >
         <div className='px-4 py-2 border-b text-xs font-mono text-muted-foreground'>{language}</div>
         <pre className='overflow-x-auto p-4'>
           <code className='font-mono text-sm text-foreground whitespace-pre'>{code}</code>

@@ -14,13 +14,13 @@ and design philosophy to potential clients and employers.
 
 The site has four parts:
 
-- **Home (`/`)**: a full-screen, endlessly pannable grid of project tiles. Drag, scroll or swipe in any direction;
-  click a tile to open the case study. A short typing intro plays once per browser session.
+- **Home (`/`)**: a full-screen, endlessly pannable grid of project tiles. Drag, scroll or swipe in any direction; click
+  a tile to open the case study. A short typing intro plays once per browser session.
 - **Project pages (`/projects/:id`)**: case-study template rendered from `src/data/projectData.json` (overview, vision,
   problem, research, process, solution, impact, images and "deep dive" dialogs). Typography projects also get an
   interactive type playground.
-- **About (`/about`)**: links (CV, portfolio, LinkedIn, GitHub) and a "Design Uptime" calendar heatmap of logged
-  design sessions from `src/data/designActivities.json`. Hovering a day shows that day's journal entry.
+- **About (`/about`)**: links (CV, portfolio, LinkedIn, GitHub) and a "Design Uptime" calendar heatmap of logged design
+  sessions from `src/data/designActivities.json`. Hovering a day shows that day's journal entry.
 - **Contact (`/contact`)**: contact details and availability (the route exists but is not linked from the nav).
 
 Every in-app navigation runs through a full-screen pixel-dissolve transition (GSAP).
@@ -86,8 +86,8 @@ The `@/` import alias points to `src/` (configured in `vite.config.ts` and `tsco
 ## Editing content
 
 - **Add or edit a case study**: add an entry to `src/data/projectData.json` keyed by its id (see `ProjectDetail` in
-  `src/types/index.ts` for the fields; image fields are indexes into `images`). To show it on the home grid, add the same
-  id to `src/data/homeProjects.json` and its preview image to `src/data/homeProjectImages.ts`.
+  `src/types/index.ts` for the fields; image fields are indexes into `images`). To show it on the home grid, add the
+  same id to `src/data/homeProjects.json` and its preview image to `src/data/homeProjectImages.ts`.
 - **Log a design session**: append `{ "date": "YYYY-MM-DD", "weight": <hours>, "entry": "..." }` to
   `src/data/designActivities.json`. The most recent entry is shown by default on the About page.
 
