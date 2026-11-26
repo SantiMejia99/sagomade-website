@@ -1,81 +1,96 @@
-# Personal Portfolio – SagoMade
+# Sago Made: Personal Portfolio
 
-### Video Demo:
+Portfolio site of Santiago Mejia Mora, a designer based in Toronto. Deployed on Vercel.
 
-https://youtu.be/wBHqlOYGtAY
+Video demo: https://youtu.be/wBHqlOYGtAY
 
-### Description:
+## About the project
 
-My coding journey began with learning front-end development fundamentals through **HTML and CSS**, which enabled me to transform static designs into web experiences. As I progressed, I developed an interest in creating dynamic, interactive websites, naturally drawing me toward JavaScript and modern frameworks. For my final project, I built a **personal portfolio website** that showcases my skills in a practical, personal way. This site not only demonstrates my technical abilities but also serves as a platform to present my professional work, projects, and design philosophy to potential clients and employers.
+My coding journey began with learning front-end development fundamentals through **HTML and CSS**, which enabled me to
+transform static designs into web experiences. As I progressed, I developed an interest in creating dynamic, interactive
+websites, naturally drawing me toward JavaScript and modern frameworks. This **personal portfolio website** showcases my
+skills in a practical, personal way: it demonstrates my technical abilities and presents my professional work, projects
+and design philosophy to potential clients and employers.
 
-I built this project with **React** and **TypeScript**, taking advantage of React's modular structure, scalability, and rich ecosystem. I created a **component architecture** where each section (landing page, about, contact, projects) functions as a reusable component, keeping the codebase clean and maintainable. For navigation, I used **React Router** to create a seamless multi-page experience within a single-page framework. The **landing page** features engaging scroll-based interactions, including an **infinite scroll effect** and **dynamic scroll behaviors** that reveal content and animations progressively. Rather than hardcoding pages, I implemented **dynamic page templates** that pull content from structured data, making the portfolio flexible and easy to update. I also focused on **web optimization** by minimizing asset sizes, optimizing images, and refining code structure for faster loading and smooth performance across all devices.
+The site has four parts:
 
----
+- **Home (`/`)**: a full-screen, endlessly pannable grid of project tiles. Drag, scroll or swipe in any direction;
+  click a tile to open the case study. A short typing intro plays once per browser session.
+- **Project pages (`/projects/:id`)**: case-study template rendered from `src/data/projectData.json` (overview, vision,
+  problem, research, process, solution, impact, images and "deep dive" dialogs). Typography projects also get an
+  interactive type playground.
+- **About (`/about`)**: links (CV, portfolio, LinkedIn, GitHub) and a "Design Uptime" calendar heatmap of logged
+  design sessions from `src/data/designActivities.json`. Hovering a day shows that day's journal entry.
+- **Contact (`/contact`)**: contact details and availability (the route exists but is not linked from the nav).
 
-### Repository Structure
+Every in-app navigation runs through a full-screen pixel-dissolve transition (GSAP).
 
-The repository for my project is available here:
+## Tech stack
 
-https://github.com/SantiMejia99/sagomade-website
+- [Vite 6](https://vite.dev) + [React 19](https://react.dev) + TypeScript (strict)
+- [React Router 7](https://reactrouter.com) with route-level code splitting
+- [Tailwind CSS 4](https://tailwindcss.com) via `@tailwindcss/vite`, plus `tw-animate-css`
+- [GSAP](https://gsap.com) (page transition, intro fade), [Motion](https://motion.dev) (typing animation)
+- [react-day-picker](https://daypicker.dev) (heatmap), [Headless UI](https://headlessui.com) (dialogs),
+  [lucide-react](https://lucide.dev) (icons), shadcn-style `Button`
+- [Vercel Analytics](https://vercel.com/docs/analytics) and Speed Insights
 
-Below is an overview of the important files and folders:
+## Getting started
 
-- **`/public`**  
-  Contains static assets such as fonts, images, GIFs, and videos. Includes the `index.html` file, which serves as the entry point of the app. Files in this folder are publicly accessible and bypass the build process.  
-  - **`/fonts`**: Custom fonts like `Espacio Ideal.otf`.  
-  - **`/gifs`**: Original and optimized GIFs for the project.  
-  - **`/videos`**: Optimized video files converted from GIFs.  
-  - **`/projects`**: Project-specific images.  
+Requires Node 20+.
 
-- **`/src`**  
-  The main source folder where all React and TypeScript code resides. Key subfolders include:  
-  - **`App.tsx`**: The root component that defines the app's structure and page routing.  
-  - **`main.tsx`**: The entry file that renders the React app into the DOM.  
-  - **`/components`**: Contains reusable components like `NavigationMenu`, `CustomCursor`, and UI elements such as `Button`, `Carousel`, and `Table`.  
-  - **`/pages`**: High-level page components such as `Home`, `About`, `Contact`, and `Project-page`.  
-  - **`/app`**: Includes dashboard-related data like `data.json`.  
-  - **`/lib`**: Utility functions, such as `cn` for merging class names.  
-  - **`/hooks`**: Custom React hooks for managing state and mobile behavior.  
+```bash
+npm ci
+npm run dev        # dev server at http://localhost:5173
+```
 
-- **`package.json`**  
-  Defines project dependencies, scripts, and metadata. Includes React, TypeScript, React Router, and animation libraries.  
+| Script                 | What it does                                          |
+| ---------------------- | ----------------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server                             |
+| `npm run build`        | Type-check (`tsc -b`) and build to `dist/`            |
+| `npm run preview`      | Serve the production build locally                    |
+| `npm run typecheck`    | Type-check only                                       |
+| `npm run lint`         | ESLint                                                |
+| `npm run format`       | Format everything with Prettier                       |
+| `npm run format:check` | Check formatting without writing                      |
+| `npm run check`        | Typecheck, lint and format check (run before pushing) |
 
-- **`tsconfig.json`**  
-  Configures TypeScript behavior, enforcing strict typing rules to reduce runtime errors.  
+## Project structure
 
-- **`.gitignore`**  
-  Specifies files and folders to exclude from version control, such as `node_modules` and build outputs.  
+```
+public/
+  fonts/                 Espacio Ideal typeface (used by the type playground)
+  optimized/             Home-grid preview images (WebP)
+  projects/<slug>/       Case-study images, referenced from projectData.json
+scripts/
+  optimize-images.sh     ffmpeg helper: public/gifs/*.gif -> public/optimized/*.webp
+src/
+  main.tsx               Entry point
+  App.tsx                Router, lazy routes, Vercel Analytics / Speed Insights
+  index.css              Tailwind import, fonts, global styles, CSS variables
+  pages/                 One component per route (Home, About, Contact, ProjectPage, NotFound)
+  components/
+    layout/              Layout (route shell), SiteNavigation, PixelPageTransition
+    home/                InfiniteProjectGrid, ProjectCard, LoadingScreen (intro)
+    project/             Case-study building blocks, CodeSnippet, TypographyPlayground
+    ui/                  Generic primitives: button, image, detail-dialog, calendar-heatmap,
+                         typing-animation, progressive-blur, interactive-hover-button
+  data/                  Content: projectData.json, designActivities.json, homeProjects.json,
+                         homeProjectImages.ts
+  lib/                   utils (cn), page-transition (shared transition handle), home-grid (grid math)
+  types/                 Types for the JSON content
+```
 
-- **`README.md`**  
-  Provides documentation about the project, its purpose, and its structure.  
+The `@/` import alias points to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`).
 
----
+## Editing content
 
-### Technical Decisions
+- **Add or edit a case study**: add an entry to `src/data/projectData.json` keyed by its id (see `ProjectDetail` in
+  `src/types/index.ts` for the fields; image fields are indexes into `images`). To show it on the home grid, add the same
+  id to `src/data/homeProjects.json` and its preview image to `src/data/homeProjectImages.ts`.
+- **Log a design session**: append `{ "date": "YYYY-MM-DD", "weight": <hours>, "entry": "..." }` to
+  `src/data/designActivities.json`. The most recent entry is shown by default on the About page.
 
-- **React with TypeScript**  
-  Used React for its component-based architecture, and TypeScript ensures type safety, reducing runtime errors and improving maintainability.  
+## Deployment
 
-- **React Router**  
-  Enables navigation between pages like `Home`, `About`, `Contact`, and `Projects` while maintaining a single-page application structure.  
-
-- **Reusable Components**  
-  Components like `NavigationMenu`, `CustomCursor`, `Carousel`, and `Table` are designed for reusability and consistency across the app.  
-
-- **Dynamic Content**  
-  Content is dynamically rendered using JSON data, allowing for easy updates without modifying the codebase.  
-
-- **Performance Optimization**  
-  Techniques like lazy loading, code splitting, and asset optimization are implemented to ensure smooth performance across devices.  
-
-- **Custom Utilities and Hooks**  
-  Utilities like `cn` simplify class name management, while custom hooks manage state, mobile breakpoints, and behavior efficiently.  
-
-- **Tailwind CSS**  
-  Used for styling, enabling a utility-first approach to create responsive and consistent designs.  
-
----
-
-### Conclusion
-
-This portfolio project reflects both my coding journey and my technical growth in building modern, efficient web applications. By combining my foundation in HTML and CSS with the capabilities of React and TypeScript, I've created a portfolio that's visually engaging and technically sound. The project not only showcases my work but also serves as a foundation I can build upon as I continue to develop as a programmer and designer.
+Deployed on Vercel. `vercel.json` rewrites every path to `index.html` so client-side routes work on refresh.
