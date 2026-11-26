@@ -1,4 +1,7 @@
 #!/bin/bash
+# Convert source GIFs in public/gifs/ into the WebP previews used by the home grid
+# (public/optimized/). Requires ffmpeg. Paths are relative to the repo root.
+cd "$(dirname "$0")/.."
 
 # Create optimized images directory
 mkdir -p public/optimized
