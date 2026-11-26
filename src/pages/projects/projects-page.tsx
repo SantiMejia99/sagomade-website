@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 // import { ArrowLeft } from 'lucide-react';
 // import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import projectData from '@/data/projectData.json';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { DetailDialog } from '@/components/ui/detail-dialog';
+import { ChapterScrubber, type Chapter } from '@/components/ui/chapter-scrubber';
 
 // Define the TypeScript type
 type ProjectData = Record<
@@ -64,6 +65,58 @@ type ProjectData = Record<
 // imported data to type
 const typedProjectData = projectData as ProjectData;
 
+/** Section titles, in the order they appear down the case study. */
+const PROJECT_SECTIONS: { id: string; title: string }[] = [
+  { id: 'project-details', title: 'Project Details' },
+  { id: 'overview', title: 'Overview' },
+  { id: 'vision', title: 'The Vision' },
+  { id: 'problem', title: 'Problem' },
+  { id: 'research', title: 'Research & Insights' },
+  { id: 'process', title: 'Process' },
+  { id: 'solution', title: 'Solution' },
+  { id: 'impact', title: 'Impact & Reflection' },
+];
+
+/**
+ * Flatten a section's markup into one line for the scrubber card.
+ * List items are stored as HTML, and the card only has room for plain text.
+ */
+function plainExcerpt(value: string | undefined, max = 140): string | undefined {
+  if (!value) return undefined;
+  const text = value
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!text) return undefined;
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).trimEnd()}…`;
+}
+
+/**
+ * One chapter per rendered heading, so the rail stays in lockstep with the page
+ * no matter which project is open. Problem and Process are image-led and often
+ * have no body copy; those cards show the title alone.
+ */
+function buildProjectChapters(project: ProjectData[string]): Chapter[] {
+  const descriptionFor: Record<string, string | undefined> = {
+    'project-details': [project.role, project.duration, project.year].filter(Boolean).join(' · '),
+    overview: plainExcerpt(project.overview),
+    vision: plainExcerpt(project.context[0]),
+    problem: plainExcerpt(project.problem),
+    research: plainExcerpt(project.research[0]),
+    process: plainExcerpt(project.process),
+    solution: plainExcerpt(project.solution[0]),
+    impact: plainExcerpt(project.impact[0]),
+  };
+
+  return PROJECT_SECTIONS.map((section, index) => ({
+    id: section.id,
+    title: section.title,
+    description: descriptionFor[section.id],
+    meta: String(index + 1).padStart(2, '0'),
+  }));
+}
+
 interface ProjectPageProps {
   params: {
     id: string;
@@ -74,7 +127,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [, setIsLoading] = useState(true);
   const [isCodeExpanded, setIsCodeExpanded] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const { id } = params;
+  const project = id ? typedProjectData[id] : undefined;
+  const chapters = useMemo(() => (project ? buildProjectChapters(project) : []), [project]);
 
   console.log('ProjectPage rendered with id:', id);
   console.log('Available project IDs:', Object.keys(typedProjectData));
@@ -89,16 +145,77 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!id || !typedProjectData[id]) {
+  // The tick marked "current" is whichever section title has crossed the
+  // reading line. Resize covers late-loading images shifting those titles.
+  useEffect(() => {
+    if (chapters.length === 0) return;
+
+    const sectionIds = chapters.map(chapter => chapter.id);
+
+    const sync = () => {
+      // The last heading sits near the bottom of the page, so a high reading
+      // line never reaches it. Drop the line once the user is at the end.
+      const distanceFromBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const line = window.innerHeight * (distanceFromBottom < 160 ? 0.72 : 0.33);
+      let next = 0;
+      sectionIds.forEach((sectionId, index) => {
+        const heading = document.getElementById(sectionId);
+        if (heading && heading.getBoundingClientRect().top <= line) next = index;
+      });
+      setCurrentIndex(prev => (prev === next ? prev : next));
+    };
+
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        sync();
+      });
+    };
+
+    sync();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    const observer = new ResizeObserver(onScroll);
+    observer.observe(document.body);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      observer.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [chapters]);
+
+  if (!project) {
     return <div className='container mx-auto py-10 px-4'>Project not found.</div>;
   }
 
-  const project = typedProjectData[id];
+  const scrollToChapter = (chapter: Chapter) => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(chapter.id)?.scrollIntoView({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  };
   const isTypographyProject =
     project.category?.toLowerCase().includes('type') || project.title?.toLowerCase().includes('typography');
 
   return (
     <div className='bg-background'>
+      {/* Fixed to the viewport so the rail stays put while the case study scrolls.
+          The card opens inward; the ticks themselves stay in the left gutter. */}
+      <aside className='fixed top-1/2 left-4 z-40 hidden -translate-y-1/2 lg:block xl:left-6'>
+        <ChapterScrubber
+          chapters={chapters}
+          currentIndex={currentIndex}
+          side='right'
+          rowHeight={18}
+          label='Project sections'
+          onSelect={scrollToChapter}
+        />
+      </aside>
       <main className='container mx-auto pt-22 md:pt-30 pb-16 px-4'>
         {/* Back Navigation
         <div className='mb-4 flex justify-center'>
@@ -147,7 +264,12 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             {/* Left Column: Project Metadata */}
             <div className='space-y-8'>
               <div>
-                <h3 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Project Details</h3>
+                <h3
+                  id='project-details'
+                  className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'
+                >
+                  Project Details
+                </h3>
                 <div className='space-y-4'>
                   <div>
                     <div className='font-bold mb-2 tracking-tight text-muted-foreground'>Role</div>
@@ -184,7 +306,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
             <div className='space-y-6'>
               <div>
-                <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Overview</h2>
+                <h2 id='overview' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+                  Overview
+                </h2>
                 <p className='text-muted-foreground/60 mb-6 leading-relaxed whitespace-pre-line'>{project.overview}</p>
               </div>
             </div>
@@ -218,7 +342,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Context */}
           <div>
             <div className='flex items-center justify-between w-full'>
-              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>The Vision</h2>
+              <h2 id='vision' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+                The Vision
+              </h2>
               {/* Dialog Context Section */}
               {project.accordionContextData && (
                 <div className='mb-4 space-y-2'>
@@ -259,7 +385,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Problem */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Problem</h2>
+            <h2 id='problem' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+              Problem
+            </h2>
             <p className='text-muted-foreground/60'>{project.problem}</p>
 
             {/* Problem Image */}
@@ -281,7 +409,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Research & Insights*/}
           <div>
             <div className='flex items-center justify-between w-full'>
-              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Research & Insights</h2>
+              <h2 id='research' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+                Research & Insights
+              </h2>
               {/* Dialog Context Section */}
               {project.accordionResearchData && (
                 <div className='mb-4 space-y-2'>
@@ -328,7 +458,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Process */}
           <div>
-            <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Process</h2>
+            <h2 id='process' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+              Process
+            </h2>
             <p className='text-muted-foreground/60'>{project.process}</p>
 
             {/* Process Image */}
@@ -350,7 +482,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Solution */}
           <div>
             <div className='flex items-center justify-between w-full'>
-              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Solution</h2>
+              <h2 id='solution' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+                Solution
+              </h2>
               {/* Dialog Context Section */}
               {project.accordionSolutionData && (
                 <div className='mb-4 space-y-2'>
@@ -438,7 +572,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Impact */}
           <div>
             <div className='flex items-center justify-between w-full'>
-              <h2 className='text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>Impact & Reflection</h2>
+              <h2 id='impact' className='scroll-mt-32 text-2xl font-bold mb-4 tracking-tight text-muted-foreground'>
+                Impact & Reflection
+              </h2>
               {/* Dialog Context Section */}
               {project.accordionResearchData && (
                 <div className='mb-4 space-y-2'>

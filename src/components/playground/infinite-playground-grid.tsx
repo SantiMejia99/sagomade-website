@@ -291,7 +291,8 @@ export default function InfinitePlaygroundGrid() {
   useEffect(() => {
     if (!isPageVisible) return;
 
-    let timeoutId: NodeJS.Timeout;
+    // DOM setTimeout returns a number; NodeJS.Timeout is not in the browser tsconfig.
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
