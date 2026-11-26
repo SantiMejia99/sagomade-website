@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { CalendarHeatmap } from '@/components/calendar-heatmap';
 import activitiesData from '@/data/designActivities.json';
@@ -54,8 +52,6 @@ export default function About() {
 
   const handleDayMouseEnter = (day: Date) => {
     const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
-    console.log('hovered key:', key);
-    console.log('found:', activityMap.get(key));
     const activity = activityMap.get(key);
     if (activity) {
       setActiveEntry(activity);

@@ -1,8 +1,5 @@
-@import url('https://use.typekit.net/ujl6hjj.css');
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
-/* @custom-variant dark (&:is(.dark *)); */
 
 /* Import Espacio Ideal font */
 @font-face {
@@ -98,37 +95,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hardware acceleration for smooth scrolling */
-.scroll-container {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  transform: translateZ(0);
-}
-
-/* Optimize video rendering for smooth playback */
-video {
-  transform: translateZ(0);
-  will-change: auto;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000px;
-}
-
-/* Ensure videos play smoothly without buffering */
-video[preload='auto'] {
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Prevent video buffering during scroll */
-video {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -199,25 +165,18 @@ body {
   color: #0d0d0d;
 }
 
-/* @theme inline {
-  --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
-  @keyframes blink-cursor {
-    0%,
-    49% {
-      opacity: 1;
-    }
-    50%,
-    100% {
-      opacity: 0;
-    }
-  }
-} */
+/* App shell: hidden scrollbar and root container */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
 
-/* @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-} */
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}

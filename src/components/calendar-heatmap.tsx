@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
@@ -147,10 +145,7 @@ function CalendarHeatmap({
             <td
               {...dayProps}
               className={dayClassName}
-              onMouseEnter={() => {
-                console.log('Day hovered:', day.date);
-                onDayMouseEnter?.(day.date);
-              }}
+              onMouseEnter={() => onDayMouseEnter?.(day.date)}
               onMouseLeave={() => onDayMouseLeave?.()}
             />
           ),
