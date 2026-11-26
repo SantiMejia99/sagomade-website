@@ -7,7 +7,9 @@ export default function SagoNavigation() {
   const navItems = [{ name: 'ABOUT', href: '/about' }];
 
   const goTo = (path: string) => {
-    transitionRef.current?.navigate(() => navigate(path), '#0d0d0d');
+    const go = () => navigate(path);
+    if (transitionRef.current) transitionRef.current.navigate(go, '#0d0d0d');
+    else go();
   };
 
   return (

@@ -38,9 +38,9 @@ export function TypingAnimation({
   cursorStyle = 'line',
   ...props
 }: TypingAnimationProps) {
-  const MotionComponent = motion.create(Component, {
-    forwardMotionProps: true,
-  });
+  // Create the motion wrapper once per element type; creating it during every
+  // render gives React a new component type each tick and remounts the node.
+  const MotionComponent = useMemo(() => motion.create(Component, { forwardMotionProps: true }), [Component]);
 
   const [displayedText, setDisplayedText] = useState<string>('');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);

@@ -35,7 +35,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 } & VariantDatesInput;
 
 // utility functions
-function useModifiers(
+function buildModifiers(
   variantClassnames: Classname[],
   datesPerVariant: Date[][]
 ): [Record<string, Date[]>, Record<string, string>] {
@@ -62,8 +62,10 @@ function useModifiers(
 }
 
 function categorizeDatesPerVariant(weightedDates: WeightedDateEntry[], noOfVariants: number) {
-  const sortedEntries = weightedDates.sort((a, b) => a.weight - b.weight);
+  // Copy before sorting so the caller's array is never mutated
+  const sortedEntries = [...weightedDates].sort((a, b) => a.weight - b.weight);
   const categorizedRecord = [...Array(noOfVariants)].map(() => [] as Date[]);
+  if (sortedEntries.length === 0) return categorizedRecord;
   const minNumber = sortedEntries[0].weight;
   const maxNumber = sortedEntries[sortedEntries.length - 1].weight;
   const range = minNumber === maxNumber ? 1 : (maxNumber - minNumber) / noOfVariants;
@@ -92,7 +94,7 @@ function CalendarHeatmap({
   weightedDates = weightedDates ?? [];
   datesPerVariant = datesPerVariant ?? categorizeDatesPerVariant(weightedDates, noOfVariants);
 
-  const [modifiers, modifiersClassNames] = useModifiers(variantClassnames, datesPerVariant);
+  const [modifiers, modifiersClassNames] = buildModifiers(variantClassnames, datesPerVariant);
 
   const defaultMonth = React.useMemo(() => {
     const today = new Date();

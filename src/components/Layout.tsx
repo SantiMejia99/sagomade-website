@@ -9,6 +9,9 @@ export default function Layout() {
 
   useEffect(() => {
     transitionRef.current = ref.current;
+    return () => {
+      transitionRef.current = null;
+    };
   }, []);
 
   return (

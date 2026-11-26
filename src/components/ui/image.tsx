@@ -21,28 +21,20 @@ export function Image({
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  const handleLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  const handleError = () => {
+    setIsLoading(false);
+    setHasError(true);
+  };
+
+  // A cached image can finish loading before React attaches handlers; catch that case on mount.
   useEffect(() => {
-    if (imgRef.current) {
-      const img = imgRef.current;
-
-      const handleLoad = () => {
-        setIsLoading(false);
-        setHasError(false);
-      };
-
-      const handleError = () => {
-        setIsLoading(false);
-        setHasError(true);
-      };
-
-      img.addEventListener('load', handleLoad);
-      img.addEventListener('error', handleError);
-
-      return () => {
-        img.removeEventListener('load', handleLoad);
-        img.removeEventListener('error', handleError);
-      };
-    }
+    const img = imgRef.current;
+    if (img?.complete && img.naturalWidth > 0) setIsLoading(false);
   }, [src]);
 
   const aspectRatioClasses = {
@@ -75,6 +67,8 @@ export function Image({
           className
         )}
         loading='lazy'
+        onLoad={handleLoad}
+        onError={handleError}
         {...props}
       />
     </div>

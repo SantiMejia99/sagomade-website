@@ -47,16 +47,27 @@ const PixelPageTransition = forwardRef<PixelPageTransitionHandle, PixelPageTrans
       }
     }, [gridSize, pixelColor]);
 
+    /* Kill any in-flight tweens if the transition host unmounts */
+    useEffect(() => {
+      const grid = pixelGridRef.current;
+      return () => {
+        delayedCallRef.current?.kill();
+        if (grid) gsap.killTweensOf(grid.children);
+      };
+    }, []);
+
     useImperativeHandle(ref, () => ({
       navigate(fn, color) {
         if (busyRef.current) return;
-        busyRef.current = true;
 
         const grid = pixelGridRef.current;
-        if (!grid) return;
-
-        const pixels = grid.querySelectorAll<HTMLDivElement>('div');
-        if (!pixels.length) return;
+        const pixels = grid?.querySelectorAll<HTMLDivElement>('div');
+        if (!pixels?.length) {
+          // Grid not ready: navigate without the effect rather than dropping the click
+          void fn();
+          return;
+        }
+        busyRef.current = true;
 
         if (color) {
           pixels.forEach(px => (px.style.backgroundColor = color));
@@ -78,8 +89,11 @@ const PixelPageTransition = forwardRef<PixelPageTransitionHandle, PixelPageTrans
 
         // Swap page at midpoint
         delayedCallRef.current = gsap.delayedCall(animationStepDuration, async () => {
-          await Promise.resolve(fn?.());
-          busyRef.current = false;
+          try {
+            await fn();
+          } finally {
+            busyRef.current = false;
+          }
         });
 
         // Uncover — pixels snap out
